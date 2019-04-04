@@ -93,6 +93,15 @@ export default new Router({
                     component: resolve => require(['../components/page/project/ProjectForm.vue'], resolve),
                     meta: { title: '实训项目上传', permission: true }
                 },
+
+                // 测试
+                {
+                    path: '/teacherAdmin',
+                    component: resolve => require(['../components/page/admin/TeacherAdmin.vue'],resolve),
+                    hidden: true
+                },
+
+
                 {
                     path: '/404',
                     component: resolve => require(['../components/page/404.vue'], resolve),
@@ -114,5 +123,7 @@ export default new Router({
             path: '*',
             redirect: '/404'
         }
+
+
     ]
 })
