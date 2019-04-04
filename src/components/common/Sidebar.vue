@@ -108,8 +108,23 @@
                         ]
                     },
                     {
-                        icon: 'el-icon-lx-warn',
+                        icon: 'el-icon-lx-calendar',
                         index: '7',
+                        title: '实训项目',
+                        subs: [
+                            {
+                                index: 'project_list',
+                                title: '项目列表',
+                            },
+                            {
+                                index: 'project_form',
+                                title: '项目上传',
+                            }
+                        ]
+                    },
+                    {
+                        icon: 'el-icon-lx-warn',
+                        index: '8',
                         title: '错误处理',
                         subs: [
                             {
