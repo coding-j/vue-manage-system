@@ -82,6 +82,18 @@ export default new Router({
                     meta: { title: '权限测试', permission: true }
                 },
                 {
+                    // 实训项目列表
+                    path: '/project_list',
+                    component: resolve => require(['../components/page/project/ProjectList.vue'], resolve),
+                    meta: { title: '实训项目列表', permission: true }
+                },
+                {
+                    // 实训项目列表
+                    path: '/project_form',
+                    component: resolve => require(['../components/page/project/ProjectForm.vue'], resolve),
+                    meta: { title: '实训项目上传', permission: true }
+                },
+                {
                     path: '/404',
                     component: resolve => require(['../components/page/404.vue'], resolve),
                     meta: { title: '404' }
