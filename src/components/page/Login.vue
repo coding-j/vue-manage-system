@@ -1,7 +1,7 @@
 <template>
     <div class="login-wrap">
         <div class="ms-login">
-            <div class="ms-title">后台管理系统</div>
+            <div class="ms-title">实训项目展示平台</div>
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="ms-content">
                 <el-form-item prop="username">
                     <el-input v-model="ruleForm.username" placeholder="username">
@@ -69,8 +69,8 @@
         line-height: 50px;
         text-align: center;
         font-size:20px;
-        color: #fff;
-        border-bottom: 1px solid #ddd;
+        color: #EEC900;
+        border-bottom: 1px solid #EEC900;
     }
     .ms-login{
         position: absolute;
@@ -96,6 +96,6 @@
     .login-tips{
         font-size:12px;
         line-height:30px;
-        color:#fff;
+        color:#ff00ff;
     }
 </style>

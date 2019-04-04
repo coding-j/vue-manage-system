@@ -41,17 +41,27 @@
                     {
                         icon: 'el-icon-lx-home',
                         index: 'dashboard',
-                        title: '系统首页'
+                        title: '首页'
                     },
                     {
                         icon: 'el-icon-lx-cascades',
                         index: 'table',
-                        title: '基础表格'
+                        title: '实训成果'
                     },
                     {
                         icon: 'el-icon-lx-copy',
                         index: 'tabs',
-                        title: 'tab选项卡'
+                        title: '学生介绍'
+                    },
+                    {
+                        icon: 'el-icon-lx-emoji',
+                        index: 'icon',
+                        title: '名师阵容'
+                    },
+                    {
+                        icon: 'el-icon-lx-favor',
+                        index: 'charts',
+                        title: '关于我们'
                     },
                     {
                         icon: 'el-icon-lx-calendar',
@@ -81,16 +91,6 @@
                                 title: '文件上传'
                             }
                         ]
-                    },
-                    {
-                        icon: 'el-icon-lx-emoji',
-                        index: 'icon',
-                        title: '自定义图标'
-                    },
-                    {
-                        icon: 'el-icon-lx-favor',
-                        index: 'charts',
-                        title: 'schart图表'
                     },
                     {
                         icon: 'el-icon-rank',
