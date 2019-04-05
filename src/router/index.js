@@ -100,6 +100,17 @@ export default new Router({
                     component: resolve => require(['../components/page/admin/TeacherAdmin.vue'],resolve),
                     hidden: true
                 },
+                {
+                    path: '/projectReview',
+                    component: resolve => require(['../components/page/admin/ProjectReview.vue'],resolve),
+                    hidden: true
+                },
+                {
+                    path: '/projectReviewList',
+                    component: resolve => require(['../components/page/admin/ProjectReviewList.vue'],resolve),
+                    hidden: true
+                },
+
 
 
                 {

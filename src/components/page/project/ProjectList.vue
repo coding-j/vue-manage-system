@@ -8,25 +8,25 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-select v-model="select_cate" placeholder="筛选条件" class="handle-select mr10">
-                    <el-option key="1" label="广东省" value="广东省"></el-option>
-                    <el-option key="2" label="湖南省" value="湖南省"></el-option>
-                </el-select>
+                <!--<el-select v-model="select_cate" placeholder="筛选条件" class="handle-select mr10">-->
+                    <!--<el-option key="1" label="广东省" value="广东省"></el-option>-->
+                    <!--<el-option key="2" label="湖南省" value="湖南省"></el-option>-->
+                <!--</el-select>-->
                 <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div>
             <div class="form-box">
                 <el-form ref="form"  label-width="80px">
                     <el-form-item label="技术实现">
-                        <el-select placeholder="请选择" filterable>
-                            <el-option v-for="(technology, index) in technologies" :key="index" :label="technology.label" :value="technology.value"></el-option>
-                        </el-select>
+                        <div v-for="(type, index) in typeList" style="float: left; margin-right: 20px">
+                            <el-button type="text">{{type.label}}</el-button>
+                        </div>
                     </el-form-item>
                     <el-form-item label="实施时间">
                         <div v-for="(finishDate, index) in finishDates" style="float: left; margin-right: 20px">
                             <el-button type="text">{{finishDate.label}}</el-button>
                         </div>
-                        <el-button >更多></el-button>
+                        <!--<el-button >更多></el-button>-->
                         <!--<el-col :span="11">-->
                             <!--<el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>-->
                         <!--</el-col>-->
@@ -37,8 +37,8 @@
                     </el-form-item>
                 </el-form>
             </div>
-            <el-row v-for="(projects, xAxis) in projectss">
-                <el-col :span="24 / projectss[xAxis].length" v-for="(project, yAxis) in projectss[xAxis]">
+            <el-row :gutter="10" v-for="(projects, xAxis) in projectss">
+                <el-col :span="8" v-for="(project, yAxis) in projectss[xAxis]">
                     <el-card class="box-card">
                         <div><img src="../../../assets/img/img.jpg"></div>
                         <div slot="header" class="clearfix">
@@ -142,7 +142,19 @@
                     {
                         label: "2017下",
                         value: "2017下"
+                    },
+                    {
+                        label: "更早",
+                        value: "更早"
                     }
+                ],
+                typeList:[
+                    {label:"Javaweb",value:"Javaweb"},
+                    {label:"Python",value:"Python"},
+                    {label:"Android",value:"Android"},
+                    {label:"嵌入式",value:"嵌入式"},
+                    {label:".Net",value:".Net"},
+                    {label:"大数据",value:"大数据"}
                 ],
                 tableData: [],
                 pageIndex: 1,

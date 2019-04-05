@@ -96,6 +96,17 @@
                     {imgUrl: pic1},
                     {imgUrl: pic1}
                 ],
+                // projectList:[
+                //     {name:project1},
+                //     {name:project2},
+                //     {name:project3},
+                //     {name:project4},
+                //     {name:project5},
+                //     {name:project6},
+                //     {name:project7},
+                //     {name:project8},
+                //     {name:project9}
+                // ]
             }
         }
     }
