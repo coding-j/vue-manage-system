@@ -1,0 +1,5 @@
+message 消息提示 提示上传成功
+popover弹出框 删除弹出确定删除
+collapse折叠面板 学生弹出介绍
+upload 图片缩略图上传
+rate评分 项目评分

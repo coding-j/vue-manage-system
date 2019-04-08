@@ -37,25 +37,34 @@
                             <!--</el-col>-->
                         <!--</div>-->
                     <!--</el-form-item>-->
-
-                    <el-table
-                            max-height="250"
-                            title="图片"
-                            ref="multipleTable"
-                            :data="picturess"
-                            tooltip-effect="dark"
-                            style="width: 100%"
-                            @selection-change="handleSelectionChange">
-                        <el-table-column
-                                type="selection"
-                                width="55">
-                        </el-table-column>
-                        <el-table-column
-                                prop="imgUrl"
-                                label="图片名称"
-                                width="200">
-                        </el-table-column>
-                    </el-table>
+                    <el-upload
+                            class="upload-demo"
+                            action="https://jsonplaceholder.typicode.com/posts/"
+                            :on-preview="handlePreview"
+                            :on-remove="handleRemove"
+                            :file-list="pictureList"
+                            list-type="picture">
+                        <el-button size="small" type="primary">点击上传</el-button>
+                        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
+                    <!--<el-table-->
+                            <!--max-height="250"-->
+                            <!--title="图片"-->
+                            <!--ref="multipleTable"-->
+                            <!--:data="picturess"-->
+                            <!--tooltip-effect="dark"-->
+                            <!--style="width: 100%"-->
+                            <!--@selection-change="handleSelectionChange">-->
+                        <!--<el-table-column-->
+                                <!--type="selection"-->
+                                <!--width="55">-->
+                        <!--</el-table-column>-->
+                        <!--<el-table-column-->
+                                <!--prop="imgUrl"-->
+                                <!--label="图片名称"-->
+                                <!--width="200">-->
+                        <!--</el-table-column>-->
+                    <!--</el-table>-->
 
                     <br><br>
                     <!--<el-form-item label="视频">-->
@@ -133,6 +142,11 @@
         name: "ProjectReview",
         data: function(){
             return {
+                pictureList: [
+                    {name: 'food.jpeg', url: require('../../../assets/img/img.jpg')},
+                    {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
+                ],
+
                 picturess:[
                     {imgUrl:require('../../../assets/img/login-bg.jpg')},
                     {imgUrl:require("../../../assets/img/login-bg.jpg")},
@@ -260,6 +274,12 @@
         methods: {
             onSubmit() {
                 this.$message.success('提交成功！');
+            },
+            handleRemove(file, fileList) {
+                console.log(file, fileList);
+            },
+            handlePreview(file) {
+                console.log(file);
             }
         }
     }

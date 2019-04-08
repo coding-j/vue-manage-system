@@ -84,17 +84,17 @@
 </template>
 
 <script>
-    import pic1 from "../../assets/img/img.jpg";
+    //import pic1 from "../../assets/img/img.jpg";
     export default {
         name: 'dashboard',
         data() {
             return {
                 name: localStorage.getItem('ms_username'),
                 itemList: [
-                    {imgUrl: pic1},
-                    {imgUrl: pic1},
-                    {imgUrl: pic1},
-                    {imgUrl: pic1}
+                    {imgUrl: require('../../assets/img/login-bg.jpg')},
+                    {imgUrl: require('../../assets/img/login-bg.jpg')},
+                    {imgUrl: require('../../assets/img/login-bg.jpg')},
+                    {imgUrl: require('../../assets/img/login-bg.jpg')}
                 ],
                 // projectList:[
                 //     {name:project1},

@@ -95,11 +95,11 @@ export default new Router({
                 },
 
                 // 测试
-                {
-                    path: '/teacherAdmin',
-                    component: resolve => require(['../components/page/admin/TeacherAdmin.vue'],resolve),
-                    hidden: true
-                },
+                // {
+                //     path: '/teacherAdmin',
+                //     component: resolve => require(['../components/page/admin/TeacherAdmin.vue'],resolve),
+                //     hidden: true
+                // },
                 {
                     path: '/projectReview',
                     component: resolve => require(['../components/page/admin/ProjectReview.vue'],resolve),
@@ -108,6 +108,21 @@ export default new Router({
                 {
                     path: '/projectReviewList',
                     component: resolve => require(['../components/page/admin/ProjectReviewList.vue'],resolve),
+                    hidden: true
+                },
+                {
+                    path: '/teacherShow',
+                    component: resolve => require(['../components/page/teacher/TeacherShow.vue'],resolve),
+                    hidden: true
+                },
+                {
+                    path: '/teacherEdit',
+                    component: resolve => require(['../components/page/admin/TeacherEdit.vue'],resolve),
+                    hidden: true
+                },
+                {
+                    path: 'teacherAdminShow',
+                    component: resolve=> require(['../components/page/admin/TeacherAdminShow.vue'],resolve),
                     hidden: true
                 },
 
