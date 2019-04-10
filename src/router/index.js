@@ -122,9 +122,21 @@ export default new Router({
                 },
                 {
                     path: 'teacherAdminShow',
-                    component: resolve=> require(['../components/page/admin/TeacherAdminShow.vue'],resolve),
+                    component: resolve => require(['../components/page/admin/TeacherAdminShow.vue'],resolve),
                     hidden: true
                 },
+                {
+                    path: '/teacherList',
+                    component: resolve => require(['../components/page/teacher/TeacherList.vue'],resolve),
+                    hidden: true
+                },
+                {
+                    path: '/projectShow',
+                    component: resolve => require(['../components/page/project/ProjectShow.vue'],resolve),
+                    hidden: true
+                },
+
+
 
 
 
