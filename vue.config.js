@@ -3,6 +3,10 @@ module.exports = {
     productionSourceMap: false,
     devServer: {
         proxy: {
+            '/project':{
+                target:'http://localhost:8088',
+                changeOrigin:true,
+            },
             '/api':{
                 target:'http://jsonplaceholder.typicode.com',
                 changeOrigin:true,

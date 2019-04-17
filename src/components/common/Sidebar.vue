@@ -45,7 +45,7 @@
                     },
                     {
                         icon: 'el-icon-lx-cascades',
-                        index: 'table',
+                        index: 'project_list',
                         title: '实训成果'
                     },
                     {

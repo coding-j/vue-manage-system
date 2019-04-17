@@ -13,17 +13,19 @@
         <div class="login-btn">
             <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
         </div>
-        <p class="login-tips">Tips : 用户名和密码随便填。</p>
+        <!--<p class="login-tips">Tips : 用户名和密码随便填。</p>-->
     </el-form>
 </template>
 
 <script>
+    import axios from 'axios'
+    import qs from 'qs'
     export default {
         data: function(){
             return {
                 ruleForm: {
-                    username: 'admin',
-                    password: '123123'
+                    username: '',
+                    password: ''
                 },
                 rules: {
                     username: [
@@ -36,17 +38,30 @@
             }
         },
         methods: {
-            submitForm(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        localStorage.setItem('ms_username',this.ruleForm.username);
-                        this.$router.push('/');
-                    } else {
-                        console.log('error submit!!');
-                        return false;
+            submitForm(formName){
+                formName.preventDefault();
+
+                axios.post('http://localhost:8088/project/login',qs.stringify({
+                    'userName' : this.ruleForm.username,
+                    'password' : this.ruleForm.password
+                })).then((response) => {
+                    var status = response.data;
+                    if(status == 'success'){
+                        this.$router.push('/homePage')
                     }
-                });
+                })
             }
+            // submitForm(formName) {
+            //     this.$refs[formName].validate((valid) => {
+            //         if (valid) {
+            //             localStorage.setItem('ms_username',this.ruleForm.username);
+            //             this.$router.push('/');
+            //         } else {
+            //             console.log('error submit!!');
+            //             return false;
+            //         }
+            //     });
+            // }
         }
     }
 </script>

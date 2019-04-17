@@ -23,12 +23,14 @@
 </template>
 
 <script>
+    import axios from 'axios'
+    import qs from 'qs'
     export default {
         data: function(){
             return {
                 ruleForm: {
-                    username: 'admin',
-                    password: '123123'
+                    username: '',
+                    password: ''
                 },
                 rules: {
                     username: [
@@ -41,17 +43,34 @@
             }
         },
         methods: {
-            submitForm(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        localStorage.setItem('ms_username',this.ruleForm.username);
-                        this.$router.push('/');
-                    } else {
-                        console.log('error submit!!');
-                        return false;
+            submitForm(formName){
+                //formName.preventDefault();
+
+                let user = {'userName' : this.ruleForm.username, 'password' : this.ruleForm.password};
+                axios.post('http://localhost:8088/login',user).then((response) => {
+                    var status = response.data;
+                    console.log(status);
+                    if(status == 'success'){
+                        this.$router.push({ path:'/dashboard'})
+                    } else{
+                        alert(response.data.message);
                     }
+                    console.log(response);
+                }).catch((error) =>{
+                    console.log(response);
                 });
             }
+            // submitForm(formName) {
+            //     this.$refs[formName].validate((valid) => {
+            //         if (valid) {
+            //             localStorage.setItem('ms_username',this.ruleForm.username);
+            //             this.$router.push('/');
+            //         } else {
+            //             console.log('error submit!!');
+            //             return false;
+            //         }
+            //     });
+            // }
         }
     }
 </script>

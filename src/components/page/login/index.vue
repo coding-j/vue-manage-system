@@ -6,9 +6,9 @@
                 <el-tab-pane label="用户登陆" name="user" >
                     <Login></Login>
                 </el-tab-pane>
-                <el-tab-pane label="用户注册" name="code" >
-                    <register></register>
-                </el-tab-pane>
+                <!--<el-tab-pane label="用户注册" name="code" >-->
+                    <!--<register></register>-->
+                <!--</el-tab-pane>-->
             </el-tabs>
         </div>
     </div>
