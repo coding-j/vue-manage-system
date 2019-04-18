@@ -15,12 +15,12 @@
                 <el-form ref="form"  label-width="80px">
                     <el-form-item label="技术实现">
                         <div v-for="(type, index) in typeList" style="float: left; margin-right: 20px">
-                            <el-button type="text">{{type.label}}</el-button>
+                            <el-button type="text">{{type}}</el-button>
                         </div>
                     </el-form-item>
                     <el-form-item label="实施时间">
                         <div v-for="(finishDate, index) in finishDates" style="float: left; margin-right: 20px">
-                            <el-button type="text">{{finishDate.label}}</el-button>
+                            <el-button type="text">{{finishDate}}</el-button>
                         </div>
                         <!--<el-button >更多></el-button>-->
                         <!--<el-col :span="11">-->
@@ -33,15 +33,15 @@
                     </el-form-item>
                 </el-form>
             </div>
-            <el-row :gutter="10" v-for="(projects, xAxis) in projectss">
-                <el-col :span="8" v-for="(project, yAxis) in projectss[xAxis]">
+            <el-row :gutter="10">
+                <el-col :span="8" v-for="project in projectss">
                     <el-card class="box-card">
                         <div><img src="../../../assets/img/img.jpg"></div>
                         <div slot="header" class="clearfix">
-                            <span>{{project.name}}</span>
+                            <span>{{project.projectName}}</span>
                             <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
                         </div>
-                        {{project.description}}
+                        {{project.projectDetail}}
                     </el-card>
                 </el-col>
             </el-row>
@@ -84,74 +84,74 @@
 
 <script>
     import ElButton from "../../../../node_modules/element-ui/packages/button/src/button.vue";
-
+    import axios from 'axios'
     export default {
         components: {ElButton},
         name: 'ProjectList',
         data() {
             return {
-                technologies: [
-                    {
-                        label: "Java",
-                        value: "Java"
-                    },
-                    {
-                        label: "Android",
-                        value: "Android"
-                    },
-                    {
-                        label: "Python",
-                        value: "Python"
-                    }
-                ],
-                projectss: [
-                    [
-                        {
-                            name: "project1",
-                            description: "description1"
-                        },
-                        {
-                            name: "project2",
-                            description: "description2"
-                        },
-                        {
-                            name: "project3",
-                            description: "description3"
-                        },
-                    ],
-                    [
-                        {
-                            name: "project4",
-                            description: "description4"
-                        },
-                        {
-                            name: "project5",
-                            description: "description5"
-                        }
-                    ]
-                ],
-                finishDates: [
-                    {
-                        label: "2017上",
-                        value: "2017上"
-                    },
-                    {
-                        label: "2017下",
-                        value: "2017下"
-                    },
-                    {
-                        label: "更早",
-                        value: "更早"
-                    }
-                ],
-                typeList:[
-                    {label:"Javaweb",value:"Javaweb"},
-                    {label:"Python",value:"Python"},
-                    {label:"Android",value:"Android"},
-                    {label:"嵌入式",value:"嵌入式"},
-                    {label:".Net",value:".Net"},
-                    {label:"大数据",value:"大数据"}
-                ],
+                // technologies: [
+                //     {
+                //         label: "Java",
+                //         value: "Java"
+                //     },
+                //     {
+                //         label: "Android",
+                //         value: "Android"
+                //     },
+                //     {
+                //         label: "Python",
+                //         value: "Python"
+                //     }
+                // ],
+                projectss: [],
+                //     [
+                //         {
+                //             name: "project1",
+                //             description: "description1"
+                //         },
+                //         {
+                //             name: "project2",
+                //             description: "description2"
+                //         },
+                //         {
+                //             name: "project3",
+                //             description: "description3"
+                //         },
+                //     ],
+                //     [
+                //         {
+                //             name: "project4",
+                //             description: "description4"
+                //         },
+                //         {
+                //             name: "project5",
+                //             description: "description5"
+                //         }
+                //     ]
+                // ],
+                finishDates: [],
+                //     {
+                //         label: "2017上",
+                //         value: "2017上"
+                //     },
+                //     {
+                //         label: "2017下",
+                //         value: "2017下"
+                //     },
+                //     {
+                //         label: "更早",
+                //         value: "更早"
+                //     }
+                // ],
+                typeList:[],
+                //     {label:"Javaweb",value:"Javaweb"},
+                //     {label:"Python",value:"Python"},
+                //     {label:"Android",value:"Android"},
+                //     {label:"嵌入式",value:"嵌入式"},
+                //     {label:".Net",value:".Net"},
+                //     {label:"大数据",value:"大数据"}
+                // ],
                 tableData: [],
                 pageIndex: 1,
                 pageSize: 10,
@@ -172,8 +172,40 @@
             }
         },
         created() {
+            this.getProjectList();
+            this.gettypeList();
+            this.getfinishDateList();
         },
         methods: {
+            // getProjectByName(){
+            //     axios.post('http://localhost:8088/searchName',qs.stringify({
+            //         'pName' :
+            //     }))
+            // },
+            getProjectList(){
+              axios.get('http://localhost:8088/projectList').then(response => {
+                      console.log(response.data);
+                      this.projectss = response.data;
+                  }).catch(e => {
+                      this.errors.push(e)
+              })
+            },
+            gettypeList(){
+                axios.get('http://localhost:8088/typeList').then(response => {
+                    console.log(response.data);
+                    this.typeList = response.data;
+                }).catch(e => {
+                    this.errors.push(e)
+                })
+            },
+            getfinishDateList(){
+                axios.get('http://localhost:8088/finishDateList').then(response => {
+                    console.log(response);
+                    this.finishDates = response.data;
+                }).catch(e => {
+                    this.errors.push(e)
+                })
+            },
             // 分页导航
             handleCurrentChange(val) {
                 this.pageIndex = val;

@@ -2,7 +2,7 @@
     <div>
         <el-row style="padding: 30px 80px 10px 50px" :gutter="20">
             <el-col :span="6">
-                <img src="../../../assets/img/img.jpg" class="pic_size"><br><br>
+                <img :src="{pictureUrl}" class="pic_size"><br><br>
                 <div align="center" v-bind:style="{fontSize:25+'px'}">
                     <span>{{TeacherName}}</span><br><br>
                     <div v-bind:style="{fontSize:15+'px'}">
@@ -25,7 +25,7 @@
                            <font size="5">工作经历</font>
                            <div class="Line"></div><br>
                            <div  v-for="work in works">
-                               {{work.local}}
+                               {{work}}
                            </div>
                        </el-card>
                    </div>
@@ -45,12 +45,12 @@
                                        width="50">
                                </el-table-column>
                                <el-table-column
-                                       property="date"
+                                       property="finishDate"
                                        label="完成时间"
                                        width="120">
                                </el-table-column>
                                <el-table-column
-                                       property="proName"
+                                       property="projectName"
                                        label="项目名称"
                                        width="120">
                                </el-table-column>
@@ -64,6 +64,8 @@
 </template>
 
 <script>
+    import axios from 'axios'
+    import qs from 'qs'
     export default {
         name: "TeacherShow",
         data(){
@@ -85,6 +87,35 @@
                     {date:'2016-05-02',proName:'项目1'},
                     {date:'2016-05-02',proName:'项目1'}
                 ]
+            }
+        },
+        created(){
+            this.teacherShow();
+            this.teacher_pro();
+        },
+        methods: {
+            teacherShow(teacherName){
+                axios.post('http://localhost:8088/teacherShow',qs.stringify({
+                    'teacherName' : teacherName
+                })).then((response) => {
+                    console.log(response.data);
+                    this.teacherName = response.data['teacherName'];
+                    this.pictureUrl = response.data['pictureUrl'];
+                    this.work_unit = response.data['working'];
+                    this.address = response.data['address'];
+                    this.TeacherDetail = response.data['teacherDetail'];
+                    this.works = response.data['workList']
+                }).catch((error) => {
+                    console.log(response);
+                });
+            },
+            teacher_pro(teacherName){
+                axios.post('http://localhost:8088/searchTeacherName',qs.stringify({
+                    'teacherName' : teacherName
+                })).then((response) => {
+                    console.log(response.data);
+                    this.projectlist = response.data;
+                })
             }
         }
     }

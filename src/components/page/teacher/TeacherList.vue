@@ -3,7 +3,7 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item><i class="el-icon-lx-calendar"></i> 实训项目</el-breadcrumb-item>
-                <el-breadcrumb-item>项目列表</el-breadcrumb-item>
+                <el-breadcrumb-item>导师列表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
@@ -12,15 +12,15 @@
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div>
 
-            <el-row :gutter="10" v-for="(teachers, xAxis) in teacherList">
-                <el-col :span="8" v-for="(teachers, yAxis) in teacherList[xAxis]">
+            <el-row :gutter="10">
+                <el-col :span="8" v-for="teachers in teacherList">
                     <el-card class="box-card">
                         <div><img src="../../../assets/img/img.jpg"></div>
                         <div slot="header" class="clearfix">
-                            <span>{{teachers.name}}</span>
+                            <span>{{teachers.teacherName}}</span>
                             <el-button style="float: right; padding: 3px 0" type="text" @click="teacherDetail">操作按钮</el-button>
                         </div>
-                        {{teachers.description}}
+                        {{teachers.introduction}}
                     </el-card>
                 </el-col>
             </el-row>
@@ -33,41 +33,51 @@
 </template>
 
 <script>
+    import axios from 'axios'
     export default {
         name: "TeacherList",
         data() {
             return {
-                teacherList: [
-                    [
-                        {
-                            name: "teacher1",
-                            description: "description1"
-                        },
-                        {
-                            name: "teacher2",
-                            description: "description2"
-                        },
-                        {
-                            name: "teacher3",
-                            description: "description3"
-                        },
-                    ],
-                    [
-                        {
-                            name: "teacher4",
-                            description: "description4"
-                        },
-                        {
-                            name: "teacher5",
-                            description: "description5"
-                        }
-                    ]
-                ]
+                teacherList: []
+                //     [
+                //         {
+                //             name: "teacher1",
+                //             description: "description1"
+                //         },
+                //         {
+                //             name: "teacher2",
+                //             description: "description2"
+                //         },
+                //         {
+                //             name: "teacher3",
+                //             description: "description3"
+                //         },
+                //     ],
+                //     [
+                //         {
+                //             name: "teacher4",
+                //             description: "description4"
+                //         },
+                //         {
+                //             name: "teacher5",
+                //             description: "description5"
+                //         }
+                //     ]
+                // ]
             }
         },
         created() {
+            this.getTeacherList();
         },
         methods: {
+            getTeacherList(){
+                axios.get('http://localhost:8088/getTeacherList').then(response => {
+                    console.log(response);
+                    this.teacherList = response.data;
+                }).catch(e => {
+                    this.errors.push(e)
+                })
+            },
             // 分页导航
             handleCurrentChange(val) {
                 this.pageIndex = val;
