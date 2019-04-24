@@ -1,6 +1,10 @@
 <template>
     <div>
         <div align="right">
+                <el-breadcrumb separator="/">
+                    <el-breadcrumb-item><i class="el-icon-lx-calendar"></i> 管理员</el-breadcrumb-item>
+                    <el-breadcrumb-item>导师管理</el-breadcrumb-item>
+                </el-breadcrumb>
             <el-button @click="Edit" type="warning">Edit</el-button>
         </div>
         <div>

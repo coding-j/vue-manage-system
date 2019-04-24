@@ -14,8 +14,9 @@
                         <!--<p>{{activity.projectStudent}}</p>-->
                         <el-collapse v-model="activeNames" @change="handleChange">
                             <el-collapse-item :title="activity.projectStudent" name="1">
-                                <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
-                                <div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
+                                <div>{{activity.teamDetail}}</div>
+                                <!--<div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>-->
+                                <!--<div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>-->
                             </el-collapse-item>
                         </el-collapse>
                         <p>{{activity.projectDesc}}</p>
@@ -91,6 +92,8 @@
 
 <script>
     import '../../../assets/font/iconfont.css'
+    import axios from 'axios'
+    import qs from 'qs'
     export default {
         name: "ProjectShow",
         data(){
@@ -107,6 +110,7 @@
                         projectType: "Javaweb",
                         projectStudent: "学生1、学生2、学生3、学生4、学生5",
                         projectDesc: "这是一个怎么样的项目",
+                        teamDetail: "hhh",
                         icon: 'el-icon-more'
                     },
                 pic:{
@@ -144,7 +148,59 @@
                 }
             }
         },
+        created(){
+            let pName = this.$route.query.name;
+            console.log("name:"+pName)
+            this.getProject(pName);
+            this.getPicture(pName);
+            this.getVideo(pName);
+            this.getFile(pName);
+        },
         methods: {
+
+            getProject(pName){
+                console.log(pName)
+                axios.post('http://localhost:8088/projectShow',qs.stringify({
+                    "pName" : pName
+                })).then(response => {
+                    this.activity.projectName = response.data['projectName']
+                    this.activity.projectTeacher = response.data['teacherName']
+                    this.activity.projectType = response.data['type']
+                    this.activity.projectStudent = response.data['studentName']
+                    this.activity.projectDesc = response.data['projectDetail']
+                    this.activity.teamDetail = response.data['teamDetail']
+                }).catch(e => {
+                    this.error.push(e)
+                })
+            },
+            getPicture(pName){
+                axios.post('http://localhost:8088/projectPicture',qs.stringify({
+                    'pName' : pName
+                })).then(response => {
+                    this.pic.picList = response.data
+                }).catch(e => {
+                    this.error.push(e)
+                })
+            },
+            getVideo(pName){
+                axios.post('http://localhost:8088/projectVideo',qs.stringify({
+                    'pName' : pName
+                })).then(response => {
+                    this.video.viderUrl = response.data
+                }).catch(e => {
+                    this.error.push(e)
+                })
+            },
+            getFile(pName){
+                axios.post('http://localhost:8088/projectFile',qs.stringify({
+                    'pName' : pName
+                })).then(response => {
+                    this.file.fileList = response.data
+                }).catch(e => {
+                    this.error.push(e)
+                })
+            },
+
             handleChange(val) {
                 console.log(val);
             },

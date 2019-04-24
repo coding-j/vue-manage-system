@@ -103,37 +103,37 @@ export default new Router({
                 {
                     path: '/projectReview',
                     component: resolve => require(['../components/page/admin/ProjectReview.vue'],resolve),
-                    hidden: true
+                    meta: { title: '项目审核', permission: true }
                 },
                 {
                     path: '/projectReviewList',
                     component: resolve => require(['../components/page/admin/ProjectReviewList.vue'],resolve),
-                    hidden: true
+                    meta: { title: '管理员', permission: true }
                 },
                 {
                     path: '/teacherShow',
                     component: resolve => require(['../components/page/teacher/TeacherShow.vue'],resolve),
-                    hidden: true
+                    meta: { title: '老师介绍', permission: true }
                 },
                 {
                     path: '/teacherEdit',
                     component: resolve => require(['../components/page/admin/TeacherEdit.vue'],resolve),
-                    hidden: true
+                    meta: { title: '老师信息编辑', permission: true }
                 },
                 {
                     path: 'teacherAdminShow',
                     component: resolve => require(['../components/page/admin/TeacherAdminShow.vue'],resolve),
-                    hidden: true
+                    meta: { title: '管理员教师管理', permission: true }
                 },
                 {
                     path: '/teacherList',
                     component: resolve => require(['../components/page/teacher/TeacherList.vue'],resolve),
-                    hidden: true
+                    meta: { title: '导师列表', permission: true }
                 },
                 {
                     path: '/projectShow',
                     component: resolve => require(['../components/page/project/ProjectShow.vue'],resolve),
-                    hidden: true
+                    meta: { title: '实训项目展示', permission: true }
                 },
 
 

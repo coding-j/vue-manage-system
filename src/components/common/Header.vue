@@ -23,18 +23,20 @@
                     <!--<span class="btn-bell-badge" v-if="message"></span>-->
                 <!--</div>-->
                 <!--登陆按钮-->
-                <div><el-button type="primary" round>登陆</el-button></div>
-                <!-- 用户头像 -->
-                <div class="user-avator"><img src="../../assets/img/img.jpg"></div>
-                <!-- 用户名下拉菜单 -->
-                <el-dropdown class="user-name" trigger="click" @command="handleCommand">
+                <div><el-button type="primary" @click="login" v-show="show" round>登陆</el-button></div>
+                <div v-show="seen">
+                    <!-- 用户头像 -->
+                    <div class="user-avator"><img src="../../assets/img/img.jpg"></div>
+                    <!-- 用户名下拉菜单 -->
+                    <el-dropdown class="user-name" trigger="click" @command="handleCommand">
                     <span class="el-dropdown-link">
                         {{username}} <i class="el-icon-caret-bottom"></i>
                     </span>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item divided  command="loginout">退出登录</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item divided  command="loginout">退出登录</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </div>
             </div>
         </div>
     </div>
@@ -46,22 +48,41 @@
             return {
                 collapse: false,
                 fullscreen: false,
-                name: 'linxin',
-                message: 2
+                name: '',
+                message: 2,
+                show: true,
+                seen: false
             }
         },
         computed:{
             username(){
-                let username = localStorage.getItem('ms_username');
+                // let username = localStorage.getItem('ms_username');
+                let username = sessionStorage.getItem("userName");
                 return username ? username : this.name;
             }
         },
+        created(){
+            this.isLogin();
+        },
         methods:{
+            isLogin(){
+                if(sessionStorage.getItem("userName") != null){
+                    this.show = false;
+                    this.seen = true;
+                }
+            },
+            login(){
+                this.$router.push('/login');
+            },
             // 用户名下拉菜单选择事件
             handleCommand(command) {
                 if(command == 'loginout'){
-                    localStorage.removeItem('ms_username')
-                    this.$router.push('/login');
+                    // localStorage.removeItem('ms_username')
+                    console.log("logout")
+                    sessionStorage.removeItem("userName")
+                    sessionStorage.removeItem("authority")
+                    // this.$router.push({ path:'/'})
+                    location.reload()
                 }
             },
             // 侧边栏折叠

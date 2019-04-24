@@ -15,12 +15,12 @@
                 <el-form ref="form"  label-width="80px">
                     <el-form-item label="技术实现">
                         <div v-for="(type, index) in typeList" style="float: left; margin-right: 20px">
-                            <el-button type="text">{{type}}</el-button>
+                            <el-button type="text" @click="searchType($event)" v-model="tech">{{type}}</el-button>
                         </div>
                     </el-form-item>
                     <el-form-item label="实施时间">
                         <div v-for="(finishDate, index) in finishDates" style="float: left; margin-right: 20px">
-                            <el-button type="text">{{finishDate}}</el-button>
+                            <el-button type="text" @click="searchFinishDate($event)">{{finishDate}}</el-button>
                         </div>
                         <!--<el-button >更多></el-button>-->
                         <!--<el-col :span="11">-->
@@ -36,12 +36,15 @@
             <el-row :gutter="10">
                 <el-col :span="8" v-for="project in projectss">
                     <el-card class="box-card">
-                        <div><img src="../../../assets/img/img.jpg"></div>
-                        <div slot="header" class="clearfix">
-                            <span>{{project.projectName}}</span>
-                            <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+                        <div>
+                            <img src="../../../assets/img/img.jpg">
+                            {{project.projectDetail}}
                         </div>
-                        {{project.projectDetail}}
+                        <div slot="header" class="clearfix">
+                            <!--<span @click="projectShow($event)">{{project.projectName}}</span>-->
+                            <el-button type="text" @click="projectShow($event)">{{project.projectName}}</el-button>
+                            <!--<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
+                        </div>
                     </el-card>
                 </el-col>
             </el-row>
@@ -52,39 +55,40 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="50px">
-                <el-form-item label="日期">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="form.date" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
-                </el-form-item>
-                <el-form-item label="姓名">
-                    <el-input v-model="form.name"></el-input>
-                </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="form.address"></el-input>
-                </el-form-item>
+        <!--<el-dialog title="编辑" :visible.sync="editVisible" width="30%">-->
+            <!--<el-form ref="form" :model="form" label-width="50px">-->
+                <!--<el-form-item label="日期">-->
+                    <!--<el-date-picker type="date" placeholder="选择日期" v-model="form.date" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="姓名">-->
+                    <!--<el-input v-model="form.name"></el-input>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="地址">-->
+                    <!--<el-input v-model="form.address"></el-input>-->
+                <!--</el-form-item>-->
 
-            </el-form>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="editVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveEdit">确 定</el-button>
-            </span>
-        </el-dialog>
+            <!--</el-form>-->
+            <!--<span slot="footer" class="dialog-footer">-->
+                <!--<el-button @click="editVisible = false">取 消</el-button>-->
+                <!--<el-button type="primary" @click="saveEdit">确 定</el-button>-->
+            <!--</span>-->
+        <!--</el-dialog>-->
 
         <!-- 删除提示框 -->
-        <el-dialog title="提示" :visible.sync="delVisible" width="300px" center>
-            <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="delVisible = false">取 消</el-button>
-                <el-button type="primary" @click="deleteRow">确 定</el-button>
-            </span>
-        </el-dialog>
+        <!--<el-dialog title="提示" :visible.sync="delVisible" width="300px" center>-->
+            <!--<div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div>-->
+            <!--<span slot="footer" class="dialog-footer">-->
+                <!--<el-button @click="delVisible = false">取 消</el-button>-->
+                <!--<el-button type="primary" @click="deleteRow">确 定</el-button>-->
+            <!--</span>-->
+        <!--</el-dialog>-->
     </div>
 </template>
 
 <script>
     import ElButton from "../../../../node_modules/element-ui/packages/button/src/button.vue";
     import axios from 'axios'
+    import qs from 'qs'
     export default {
         components: {ElButton},
         name: 'ProjectList',
@@ -159,6 +163,7 @@
                 multipleSelection: [],
                 select_cate: '',
                 select_word: '',
+                tech:'',
                 del_list: [],
                 is_search: false,
                 editVisible: false,
@@ -182,12 +187,22 @@
             //         'pName' :
             //     }))
             // },
+            projectShow(btn){
+                console.log(btn.target.innerText)
+                this.$router.push({ path:'/projectShow?name='+btn.target.innerText})
+                // axios.post('http://localhost:8088/projectShow',qs.stringify({
+                //     "projectName" : btn.target.innerText
+                // })).then(response => {
+                //
+                // })
+            },
             getProjectList(){
               axios.get('http://localhost:8088/projectList').then(response => {
                       console.log(response.data);
+                      console.log(response.data['projectDetail'])
                       this.projectss = response.data;
                   }).catch(e => {
-                      this.errors.push(e)
+                      this.error.push(e)
               })
             },
             gettypeList(){
@@ -195,7 +210,7 @@
                     console.log(response.data);
                     this.typeList = response.data;
                 }).catch(e => {
-                    this.errors.push(e)
+                    this.error.push(e)
                 })
             },
             getfinishDateList(){
@@ -212,7 +227,37 @@
             },
 
             search() {
-                this.is_search = true;
+                // this.is_search = true;
+                console.log(this.select_word)
+                axios.post('http://localhost:8088/searchName',qs.stringify({
+                    "projectName" : this.select_word
+                })).then(response => {
+                    this.projectss = response.data;
+                    console.log(response.data)
+                }).catch(e => {
+                    this.errors.push(e)
+                })
+            },
+            searchType(btn){
+                console.log(btn.target.innerText)
+                axios.post("http://localhost:8088/searchType",qs.stringify({
+                    "typeName" : btn.target.innerText
+                })).then(response => {
+                    console.log(response.data)
+                    this.projectss = response.data;
+                }).catch(e => {
+                    this.error.push(e)
+                })
+            },
+            searchFinishDate(btn){
+                axios.post('http://localhost:8088/searchTime',qs.stringify({
+                    "finishDate" : btn.target.innerText
+                })).then(response => {
+                    console.log(response.data)
+                    this.projectss = response.data;
+                }).catch(e => {
+                    this.error.push(e)
+                })
             },
             formatter(row, column) {
                 return row.address;

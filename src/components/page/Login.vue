@@ -42,6 +42,14 @@
                 }
             }
         },
+        beforeRouteEnter:(to,from,next) => {
+            //组件内守卫
+            //已登录状态回到登录界面，即 登出
+            next(vm => {
+                vm.$store.dispatch("setUser",null);
+            });
+
+        },
         methods: {
             submitForm(formName){
                 //formName.preventDefault();
@@ -50,14 +58,19 @@
                 axios.post('http://localhost:8088/login',user).then((response) => {
                     var status = response.data;
                     console.log(status);
-                    if(status == 'success'){
-                        this.$router.push({ path:'/dashboard'})
+                    if(status != null){
+                        console.log("success")
+                        sessionStorage.setItem("userName",response.data['userName']);
+                        sessionStorage.setItem("authority",response.data['authority']);
+                        // this.$store.dispatch("setUser",response.data['userName']);
+                        // this.$store.dispatch("setAuthority",response.data['authority'])
+                        this.$router.push({ path:'/'})
                     } else{
                         alert(response.data.message);
                     }
                     console.log(response);
                 }).catch((error) =>{
-                    console.log(response);
+                    console.log(error);
                 });
             }
             // submitForm(formName) {

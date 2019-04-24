@@ -15,15 +15,15 @@
                         <!--</div>-->
                     <!--</el-card>-->
                     <el-carousel indicator-position="outside" height="510px">
-                        <el-carousel-item v-for="item in itemList">
+                        <el-carousel-item v-for="item in projectList">
                             <div>
                                 <div style="position: relative">
                                     <div style="position: absolute" class="layout">
                                         <el-card class="box_style">
-                                            <span>{{item.introduction}}</span>
+                                            <span>{{item.projectDetail}}</span>
                                         </el-card>
                                     </div>
-                                    <img :src="item.imgUrl" height="100%" width="100%">
+                                    <img :src="item.firstPicture" height="100%" width="100%">
                                 </div>
                             </div>
                         </el-carousel-item>
@@ -103,6 +103,8 @@
 </template>
 
 <script>
+    import axios from 'axios'
+    import qs from 'qs'
     //import pic1 from "../../assets/img/img.jpg";
     export default {
         name: 'dashboard',
@@ -110,6 +112,7 @@
             return {
                 name: localStorage.getItem('ms_username'),
                 desc:"这是文字",
+                projectList:[],
                 itemList: [
                     {imgUrl: require('../../assets/img/login-bg.jpg'), introduction: "111"},
                     {imgUrl: require('../../assets/img/login-bg.jpg'), introduction: "222"},
@@ -127,6 +130,22 @@
                 //     {name:project8},
                 //     {name:project9}
                 // ]
+            }
+        },
+        computed: {
+
+        },
+        created(){
+            this.getTopProject();
+        },
+        methods: {
+            getTopProject(){
+                axios.get('http://localhost:8088/getHomePage').then(response => {
+                    console.log(response.data);
+                    this.projectList = response.data;
+                }).catch(e => {
+                    this.errors.push(e)
+                })
             }
         }
     }

@@ -1,5 +1,11 @@
 <template>
     <div>
+        <div class="crumbs">
+            <el-breadcrumb separator="/">
+                <el-breadcrumb-item><i class="el-icon-lx-calendar"></i> 管理员</el-breadcrumb-item>
+                <el-breadcrumb-item>教师信息编辑</el-breadcrumb-item>
+            </el-breadcrumb>
+        </div>
         <div>
             <el-upload
                     class="upload-demo"

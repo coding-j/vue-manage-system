@@ -2,9 +2,9 @@
     <div>
         <el-row style="padding: 30px 80px 10px 50px" :gutter="20">
             <el-col :span="6">
-                <img :src="{pictureUrl}" class="pic_size"><br><br>
+                <img src="../../../assets/img/img.jpg" class="pic_size"><br><br>
                 <div align="center" v-bind:style="{fontSize:25+'px'}">
-                    <span>{{TeacherName}}</span><br><br>
+                    <span>{{teacherName}}</span><br><br>
                     <div v-bind:style="{fontSize:15+'px'}">
                         <span>{{"工作单位:"+work_unit}}</span><br><br>
                         <span>{{"通讯地址:"+address}}</span>
@@ -17,7 +17,7 @@
                        <el-card >
                            <font size="5">个人简介</font>
                            <div class="Line"></div><br>
-                           <font>{{TeacherDetail}}</font>
+                           <span>{{TeacherDetail}}</span>
                        </el-card>
                    </div>
                    <div class="card-top">
@@ -71,7 +71,7 @@
         data(){
             return {
                 //fontSize: 30,
-                TeacherName: "陆坤老师",
+                teacherName: "",
                 work_unit: "大连理工大学软件学院",
                 address: "大连理工大学软件学院综合楼四楼实训基地",
                 TeacherDetail: "陆坤，工学博士，副教授，硕士生导师。本硕博均毕业于大连理工大学计算机系。承担或参与国家自然科学基金、省自然科学基金重点项目，IBM国际合作项目，中央高校基本科研业务费等多项课题。主要研究领域为移动群智感知，隐私保护，信任模型与激励机制。发表论文30余篇，其中SCI、EI检索20余篇，申请国家发明专利1项。获辽宁省自然科学学术成果二等奖2次。主持省部级教学改革项目6项（含教育部协同育人项目），校级多项；指导学生获得国家级及以上科技竞赛奖励40余项,100多人次。获得省优秀教学成果奖一等奖1次，二等奖2次。荣获IBM Faculty Award2次，国家留学基金委-IBM优秀教师奖教金3次，花旗集团优秀教师奖教金1次。",
@@ -90,32 +90,39 @@
             }
         },
         created(){
-            this.teacherShow();
-            this.teacher_pro();
+            let tName = this.$route.query.name;
+            this.teacherShow(tName);
+            this.teacher_pro(tName);
         },
         methods: {
-            teacherShow(teacherName){
+            teacherShow(tName){
                 axios.post('http://localhost:8088/teacherShow',qs.stringify({
-                    'teacherName' : teacherName
-                })).then((response) => {
+                    'tName' : tName
+                })).then(response => {
                     console.log(response.data);
                     this.teacherName = response.data['teacherName'];
+                    console.log(this.teacherName)
                     this.pictureUrl = response.data['pictureUrl'];
                     this.work_unit = response.data['working'];
                     this.address = response.data['address'];
-                    this.TeacherDetail = response.data['teacherDetail'];
+                    this.TeacherDetail = response.data['introduction'];
                     this.works = response.data['workList']
-                }).catch((error) => {
-                    console.log(response);
+                }).catch(e => {
+                    this.error.push(e)
                 });
             },
-            teacher_pro(teacherName){
-                axios.post('http://localhost:8088/searchTeacherName',qs.stringify({
-                    'teacherName' : teacherName
-                })).then((response) => {
+            teacher_pro(tName){
+                axios.post('http://localhost:8088/searchProjectByTeacherName',qs.stringify({
+                    'teacherName' : tName
+                })).then(response => {
                     console.log(response.data);
                     this.projectlist = response.data;
+                }).catch(e => {
+                    this.error.push(e)
                 })
+            },
+            handleCurrentChange(val) {
+                this.currentRow = val;
             }
         }
     }

@@ -17,8 +17,9 @@
                     <el-card class="box-card">
                         <div><img src="../../../assets/img/img.jpg"></div>
                         <div slot="header" class="clearfix">
-                            <span>{{teachers.teacherName}}</span>
-                            <el-button style="float: right; padding: 3px 0" type="text" @click="teacherDetail">操作按钮</el-button>
+                            <el-button type="text" @click="teacherDetail($event)">{{teachers.teacherName}}</el-button>
+                            <!--<span>{{teachers.teacherName}}</span>-->
+                            <!--<el-button style="float: right; padding: 3px 0" type="text" @click="teacherDetail">操作按钮</el-button>-->
                         </div>
                         {{teachers.introduction}}
                     </el-card>
@@ -34,10 +35,22 @@
 
 <script>
     import axios from 'axios'
+    import qs from 'qs'
     export default {
         name: "TeacherList",
         data() {
             return {
+                tableData: [],
+                pageIndex: 1,
+                pageSize: 10,
+                total: 0,
+                multipleSelection: [],
+                select_cate: '',
+                select_word: '',
+                del_list: [],
+                is_search: false,
+                editVisible: false,
+                delVisible: false,
                 teacherList: []
                 //     [
                 //         {
@@ -71,11 +84,11 @@
         },
         methods: {
             getTeacherList(){
-                axios.get('http://localhost:8088/getTeacherList').then(response => {
-                    console.log(response);
+                axios.get('http://localhost:8088/TeacherList').then(response => {
+                    console.log(response.data);
                     this.teacherList = response.data;
                 }).catch(e => {
-                    this.errors.push(e)
+                    this.error.push(e)
                 })
             },
             // 分页导航
@@ -84,7 +97,14 @@
             },
 
             search() {
-                this.is_search = true;
+                axios.post('http://localhost:8088/searchTeacherByName',qs.stringify({
+                    "teacherName" : this.select_word
+                })).then(response => {
+                    this.teacherList = response.data;
+                    console.log(response.data)
+                }).catch(e => {
+                    this.errors.push(e)
+                })
             },
             formatter(row, column) {
                 return row.address;
@@ -129,8 +149,8 @@
                 this.$message.success('删除成功');
                 this.delVisible = false;
             },
-            teacherDetail(){
-                this.$router.push({ path: '/teacherShow'})
+            teacherDetail(btn){
+                this.$router.push({ path: '/teacherShow?name='+btn.target.innerText})
             }
         }
     }
