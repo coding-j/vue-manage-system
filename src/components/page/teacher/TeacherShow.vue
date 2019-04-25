@@ -2,7 +2,7 @@
     <div>
         <el-row style="padding: 30px 80px 10px 50px" :gutter="20">
             <el-col :span="6">
-                <img src="../../../assets/img/img.jpg" class="pic_size"><br><br>
+                <img :src="imgUrl+pictureUrl" class="pic_size"><br><br>
                 <div align="center" v-bind:style="{fontSize:25+'px'}">
                     <span>{{teacherName}}</span><br><br>
                     <div v-bind:style="{fontSize:15+'px'}">
@@ -70,6 +70,8 @@
         name: "TeacherShow",
         data(){
             return {
+                imgUrl:'http://localhost:8088/show?pictureName=',
+                pictureUrl:'',
                 //fontSize: 30,
                 teacherName: "",
                 work_unit: "大连理工大学软件学院",

@@ -37,7 +37,7 @@
                 <el-col :span="8" v-for="project in projectss">
                     <el-card class="box-card">
                         <div>
-                            <img src="../../../assets/img/img.jpg">
+                            <img :src="imgUrl+project.firstPicture">
                             {{project.projectDetail}}
                         </div>
                         <div slot="header" class="clearfix">
@@ -94,6 +94,7 @@
         name: 'ProjectList',
         data() {
             return {
+                imgUrl:'http://localhost:8088/show?pictureName=',
                 // technologies: [
                 //     {
                 //         label: "Java",

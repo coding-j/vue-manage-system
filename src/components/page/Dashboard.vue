@@ -23,7 +23,8 @@
                                             <span>{{item.projectDetail}}</span>
                                         </el-card>
                                     </div>
-                                    <img :src="item.firstPicture" height="100%" width="100%">
+                                    <img :src='imgUrl+item.firstPicture' height="100%" width="100%">
+                                    <!--<img src="e:\coding-java\1.png" height="100%" width="100%">-->
                                 </div>
                             </div>
                         </el-carousel-item>
@@ -110,6 +111,7 @@
         name: 'dashboard',
         data() {
             return {
+                imgUrl:'http://localhost:8088/show?pictureName=',
                 name: localStorage.getItem('ms_username'),
                 desc:"这是文字",
                 projectList:[],

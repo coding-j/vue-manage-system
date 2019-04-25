@@ -15,7 +15,7 @@
             <el-row :gutter="10">
                 <el-col :span="8" v-for="teachers in teacherList">
                     <el-card class="box-card">
-                        <div><img src="../../../assets/img/img.jpg"></div>
+                        <div><img :src="imgUrl+teachers.pictureUrl"></div>
                         <div slot="header" class="clearfix">
                             <el-button type="text" @click="teacherDetail($event)">{{teachers.teacherName}}</el-button>
                             <!--<span>{{teachers.teacherName}}</span>-->
@@ -40,6 +40,7 @@
         name: "TeacherList",
         data() {
             return {
+                imgUrl:'http://localhost:8088/show?pictureName=',
                 tableData: [],
                 pageIndex: 1,
                 pageSize: 10,

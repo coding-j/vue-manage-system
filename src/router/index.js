@@ -106,7 +106,7 @@ export default new Router({
                     meta: { title: '项目审核', permission: true }
                 },
                 {
-                    path: '/projectReviewList',
+                    path: '/admin',
                     component: resolve => require(['../components/page/admin/ProjectReviewList.vue'],resolve),
                     meta: { title: '管理员', permission: true }
                 },

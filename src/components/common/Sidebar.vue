@@ -101,7 +101,7 @@
                     },
                     {
                         icon: 'el-icon-service',
-                        index: 'projectReviewList',
+                        index: 'admin',
                         title: '管理员'
                     },
                     {

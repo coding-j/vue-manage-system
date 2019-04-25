@@ -31,7 +31,7 @@
                         <!--轮播图-->
                         <el-carousel :interval="4000" type="card" height="200px">
                             <el-carousel-item v-for="item in pic.picList" :key="item">
-                                <img :src="item.imgUrl">
+                                <img :src="imgUrl+item.name">
                             </el-carousel-item>
                         </el-carousel>
                     </el-card>
@@ -73,11 +73,6 @@
                                     width="50">
                             </el-table-column>
                             <el-table-column
-                                    property="id"
-                                    label="编号"
-                                    width="120">
-                            </el-table-column>
-                            <el-table-column
                                     property="name"
                                     label="文件名"
                                     width="120">
@@ -98,7 +93,9 @@
         name: "ProjectShow",
         data(){
             return {
+                imgUrl:'http://localhost:8088/show?pictureName=',
                 activeNames: ['1'],
+                currentRow:null,
                 // downloadhttp: 'E:\\coding-web\\vue-manage-system\\src\\assets\\img\\img.jpg',
                 activity:
                     {
@@ -175,16 +172,17 @@
             },
             getPicture(pName){
                 axios.post('http://localhost:8088/projectPicture',qs.stringify({
-                    'pName' : pName
+                    'projectName' : pName
                 })).then(response => {
                     this.pic.picList = response.data
+                    console.log(this.pic.picList)
                 }).catch(e => {
                     this.error.push(e)
                 })
             },
             getVideo(pName){
                 axios.post('http://localhost:8088/projectVideo',qs.stringify({
-                    'pName' : pName
+                    'projectName' : pName
                 })).then(response => {
                     this.video.viderUrl = response.data
                 }).catch(e => {
@@ -193,9 +191,10 @@
             },
             getFile(pName){
                 axios.post('http://localhost:8088/projectFile',qs.stringify({
-                    'pName' : pName
+                    'projectName' : pName
                 })).then(response => {
                     this.file.fileList = response.data
+                    // console.log(this)
                 }).catch(e => {
                     this.error.push(e)
                 })
@@ -210,8 +209,21 @@
             handleCurrentChange(val) {
                 this.currentRow = val;
             },
-            downloadFile(row){
+            downloadFile(){
+                let row = this.currentRow
                  console.log(row)
+                axios.get("http://localhost:8088/download?filename="+row.name).then(res => {
+                    console.log("下载成功")
+                }).catch(e => {
+                    this.error.push(e)
+                })
+                // axios.post("http://localhost:8088/download",qs.stringify({
+                //     "filename" : row.name
+                // })).then(res => {
+                //     console.log("下载成功")
+                // }).catch(e => {
+                //     this.error.push(e)
+                // })
                 // this.$router.push({ })
             }
         }
