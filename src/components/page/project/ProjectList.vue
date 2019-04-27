@@ -14,14 +14,26 @@
             <div class="form-box">
                 <el-form ref="form"  label-width="80px">
                     <el-form-item label="技术实现">
-                        <div v-for="(type, index) in typeList" style="float: left; margin-right: 20px">
-                            <el-button type="text" @click="searchType($event)" v-model="tech">{{type}}</el-button>
-                        </div>
+                        <el-select v-model="value1" clearable placeholder="请选择" @change="getProjectList()">
+                            <el-option
+                                    v-for="item in typeList"
+                                    :value="item">
+                            </el-option>
+                        </el-select>
+                        <!--<div v-for="(type, index) in typeList" style="float: left; margin-right: 20px">-->
+                            <!--<el-button type="text" @click="searchType($event)" v-model="tech">{{type}}</el-button>-->
+                        <!--</div>-->
                     </el-form-item>
                     <el-form-item label="实施时间">
-                        <div v-for="(finishDate, index) in finishDates" style="float: left; margin-right: 20px">
-                            <el-button type="text" @click="searchFinishDate($event)">{{finishDate}}</el-button>
-                        </div>
+                        <el-select v-model="value2" clearable placeholder="请选择" @change="getProjectList()">
+                            <el-option
+                                    v-for="item in finishDates"
+                                    :value="item">
+                            </el-option>
+                        </el-select>
+                        <!--<div v-for="(finishDate, index) in finishDates" style="float: left; margin-right: 20px">-->
+                            <!--<el-button type="text" @click="searchFinishDate($event)">{{finishDate}}</el-button>-->
+                        <!--</div>-->
                         <!--<el-button >更多></el-button>-->
                         <!--<el-col :span="11">-->
                             <!--<el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>-->
@@ -33,18 +45,32 @@
                     </el-form-item>
                 </el-form>
             </div>
-            <el-row :gutter="10">
+            <el-row :gutter="30" style="margin: 10px 50px 10px 50px">
                 <el-col :span="8" v-for="project in projectss">
-                    <el-card class="box-card">
+                    <el-card class="box-card" @click.native="projectShow(project.projectName)">
                         <div>
-                            <img :src="imgUrl+project.firstPicture">
-                            {{project.projectDetail}}
+                            <div>
+                                <figure class="image" align="center">
+                                    <img  width="100%" :src="imgUrl+project.firstPicture" alt="Image">
+                                </figure>
+                            </div>
+                            <br>
+                            <div>
+                                <h1 >{{project.projectName}}</h1>
+                                <br>
+                                <!--<el-button size="medium"  type="text" @click="projectShow($event)">{{project.projectName}}</el-button>-->
+                                <p>项目简介：{{project.projectDetail}}</p>
+                            </div>
                         </div>
-                        <div slot="header" class="clearfix">
-                            <!--<span @click="projectShow($event)">{{project.projectName}}</span>-->
-                            <el-button type="text" @click="projectShow($event)">{{project.projectName}}</el-button>
-                            <!--<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
-                        </div>
+                        <!--<div>-->
+                            <!--<img :src="imgUrl+project.firstPicture">-->
+                            <!--{{project.projectDetail}}-->
+                        <!--</div>-->
+                        <!--<div slot="header" class="clearfix">-->
+                            <!--&lt;!&ndash;<span @click="projectShow($event)">{{project.projectName}}</span>&ndash;&gt;-->
+                            <!--<el-button type="text" @click="projectShow($event)">{{project.projectName}}</el-button>-->
+                            <!--&lt;!&ndash;<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>&ndash;&gt;-->
+                        <!--</div>-->
                     </el-card>
                 </el-col>
             </el-row>
@@ -53,35 +79,6 @@
                 </el-pagination>
             </div>
         </div>
-
-        <!-- 编辑弹出框 -->
-        <!--<el-dialog title="编辑" :visible.sync="editVisible" width="30%">-->
-            <!--<el-form ref="form" :model="form" label-width="50px">-->
-                <!--<el-form-item label="日期">-->
-                    <!--<el-date-picker type="date" placeholder="选择日期" v-model="form.date" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>-->
-                <!--</el-form-item>-->
-                <!--<el-form-item label="姓名">-->
-                    <!--<el-input v-model="form.name"></el-input>-->
-                <!--</el-form-item>-->
-                <!--<el-form-item label="地址">-->
-                    <!--<el-input v-model="form.address"></el-input>-->
-                <!--</el-form-item>-->
-
-            <!--</el-form>-->
-            <!--<span slot="footer" class="dialog-footer">-->
-                <!--<el-button @click="editVisible = false">取 消</el-button>-->
-                <!--<el-button type="primary" @click="saveEdit">确 定</el-button>-->
-            <!--</span>-->
-        <!--</el-dialog>-->
-
-        <!-- 删除提示框 -->
-        <!--<el-dialog title="提示" :visible.sync="delVisible" width="300px" center>-->
-            <!--<div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div>-->
-            <!--<span slot="footer" class="dialog-footer">-->
-                <!--<el-button @click="delVisible = false">取 消</el-button>-->
-                <!--<el-button type="primary" @click="deleteRow">确 定</el-button>-->
-            <!--</span>-->
-        <!--</el-dialog>-->
     </div>
 </template>
 
@@ -95,72 +92,24 @@
         data() {
             return {
                 imgUrl:'http://localhost:8088/show?pictureName=',
-                // technologies: [
-                //     {
-                //         label: "Java",
-                //         value: "Java"
-                //     },
-                //     {
-                //         label: "Android",
-                //         value: "Android"
-                //     },
-                //     {
-                //         label: "Python",
-                //         value: "Python"
-                //     }
-                // ],
-                projectss: [],
-                //     [
-                //         {
-                //             name: "project1",
-                //             description: "description1"
-                //         },
-                //         {
-                //             name: "project2",
-                //             description: "description2"
-                //         },
-                //         {
-                //             name: "project3",
-                //             description: "description3"
-                //         },
-                //     ],
-                //     [
-                //         {
-                //             name: "project4",
-                //             description: "description4"
-                //         },
-                //         {
-                //             name: "project5",
-                //             description: "description5"
-                //         }
-                //     ]
-                // ],
-                finishDates: [],
-                //     {
-                //         label: "2017上",
-                //         value: "2017上"
-                //     },
-                //     {
-                //         label: "2017下",
-                //         value: "2017下"
-                //     },
-                //     {
-                //         label: "更早",
-                //         value: "更早"
-                //     }
-                // ],
-                typeList:[],
-                //     {label:"Javaweb",value:"Javaweb"},
-                //     {label:"Python",value:"Python"},
-                //     {label:"Android",value:"Android"},
-                //     {label:"嵌入式",value:"嵌入式"},
-                //     {label:".Net",value:".Net"},
-                //     {label:"大数据",value:"大数据"}
-                // ],
+                // searchLists:[],
+                // typeName:'',
+                // finishDate:'',
+
+                projectss: [],  //项目列表
+                finishDates: [], //时间列表
+                typeList:[],  //类型列表
+
                 tableData: [],
+
+                //分页
                 pageIndex: 1,
-                pageSize: 10,
+                pageSize: 9,
                 total: 0,
+
+                value1:null,
+                value2:null,
+
                 multipleSelection: [],
                 select_cate: '',
                 select_word: '',
@@ -178,19 +127,16 @@
             }
         },
         created() {
-            this.getProjectList();
+            this.getProjectCount();
             this.gettypeList();
             this.getfinishDateList();
+            this.getProjectList();
         },
         methods: {
-            // getProjectByName(){
-            //     axios.post('http://localhost:8088/searchName',qs.stringify({
-            //         'pName' :
-            //     }))
-            // },
             projectShow(btn){
-                console.log(btn.target.innerText)
-                this.$router.push({ path:'/projectShow?name='+btn.target.innerText})
+                // console.log(btn.target.innerText)
+                console.log(btn)
+                this.$router.push({ path:'/projectShow?name='+btn})
                 // axios.post('http://localhost:8088/projectShow',qs.stringify({
                 //     "projectName" : btn.target.innerText
                 // })).then(response => {
@@ -198,13 +144,39 @@
                 // })
             },
             getProjectList(){
-              axios.get('http://localhost:8088/projectList').then(response => {
+                console.log("type:"+this.value1)
+                console.log("finish:"+this.value2)
+                let pagination = {
+                    "typeName" : this.value1,
+                    "finishDate" : this.value2,
+                    "index" : this.pageIndex
+                }
+                this.getProjectCount();
+              axios.post('http://localhost:8088/projectList',pagination).then(response => {
                       console.log(response.data);
                       console.log(response.data['projectDetail'])
                       this.projectss = response.data;
+                      // this.total = this.projectss.length;
+                      // console.log("total:"+this.total)
+                      this.$forceUpdate()
+                      // this.total = this.projectss.length;
                   }).catch(e => {
                       this.error.push(e)
               })
+            },
+            getProjectCount(){
+                // console.log("type:"+this.value1)
+                // console.log("finish:"+this.value2)
+                let pagination = {
+                    "typeName" : this.value1,
+                    "finishDate" : this.value2,
+                    "index" : this.pageIndex
+                }
+                axios.post("http://localhost:8088/ProjectCount",pagination).then(res => {
+                    this.total = res.data;
+                }).catch(e => {
+                    this.error.push(e)
+                })
             },
             gettypeList(){
                 axios.get('http://localhost:8088/typeList').then(response => {
@@ -225,6 +197,19 @@
             // 分页导航
             handleCurrentChange(val) {
                 this.pageIndex = val;
+                this.getProjectList();
+
+                // axios.post('http://localhost:8088/projectList',qs.stringify({
+                //     "index" : this.pageIndex
+                // })).then(response => {
+                //     console.log(response.data);
+                //     console.log(response.data['projectDetail'])
+                //     this.projectss = response.data;
+                //     // this.total = this.projectss.length;
+                // }).catch(e => {
+                //     this.error.push(e)
+                // })
+                // this.projectss = this.lists.
             },
 
             search() {
@@ -239,27 +224,29 @@
                     this.errors.push(e)
                 })
             },
-            searchType(btn){
-                console.log(btn.target.innerText)
-                axios.post("http://localhost:8088/searchType",qs.stringify({
-                    "typeName" : btn.target.innerText
-                })).then(response => {
-                    console.log(response.data)
-                    this.projectss = response.data;
-                }).catch(e => {
-                    this.error.push(e)
-                })
-            },
-            searchFinishDate(btn){
-                axios.post('http://localhost:8088/searchTime',qs.stringify({
-                    "finishDate" : btn.target.innerText
-                })).then(response => {
-                    console.log(response.data)
-                    this.projectss = response.data;
-                }).catch(e => {
-                    this.error.push(e)
-                })
-            },
+            // searchType(btn){
+            //     console.log(btn.target.innerText)
+            //     this.typeName = btn.target.innerText
+            //     axios.post("http://localhost:8088/searchType",qs.stringify({
+            //         "typeName" : btn.target.innerText
+            //     })).then(response => {
+            //         console.log(response.data)
+            //         this.projectss = response.data;
+            //     }).catch(e => {
+            //         this.error.push(e)
+            //     })
+            // },
+            // searchFinishDate(btn){
+            //     this.finishDate = btn.target.innerText
+            //     axios.post('http://localhost:8088/searchTime',qs.stringify({
+            //         "finishDate" : btn.target.innerText
+            //     })).then(response => {
+            //         console.log(response.data)
+            //         this.projectss = response.data;
+            //     }).catch(e => {
+            //         this.error.push(e)
+            //     })
+            // },
             formatter(row, column) {
                 return row.address;
             },
@@ -312,27 +299,18 @@
     .handle-box {
         margin-bottom: 20px;
     }
-
-    .handle-select {
-        width: 120px;
-    }
-
     .handle-input {
         width: 300px;
         display: inline-block;
-    }
-    .del-dialog-cnt{
-        font-size: 16px;
-        text-align: center
     }
     .table{
         width: 100%;
         font-size: 14px;
     }
-    .red{
-        color: #ff0000;
-    }
     .mr10{
         margin-right: 10px;
+    }
+    .box-card{
+        height: 400px;
     }
 </style>

@@ -7,6 +7,10 @@
                     :type="activity.type"
                     :size="activity.size">
                     <el-card>
+                        <div>
+                            <el-button type="success" @click="addRating">点赞</el-button>
+                            目前赞数{{activity.rating}}
+                        </div>
                         <h4>{{activity.title}}</h4>
                         <p>{{activity.projectName}}</p>
                         <p>{{activity.projectTeacher}}</p>
@@ -99,6 +103,7 @@
                 // downloadhttp: 'E:\\coding-web\\vue-manage-system\\src\\assets\\img\\img.jpg',
                 activity:
                     {
+                        rating : 0,
                         title: "项目介绍",
                         type: 'primary',
                         size: 'large',
@@ -166,6 +171,7 @@
                     this.activity.projectStudent = response.data['studentName']
                     this.activity.projectDesc = response.data['projectDetail']
                     this.activity.teamDetail = response.data['teamDetail']
+                    this.activity.rating = response.data['rating']
                 }).catch(e => {
                     this.error.push(e)
                 })
@@ -212,11 +218,12 @@
             downloadFile(){
                 let row = this.currentRow
                  console.log(row)
-                axios.get("http://localhost:8088/download?filename="+row.name).then(res => {
-                    console.log("下载成功")
-                }).catch(e => {
-                    this.error.push(e)
-                })
+                window.location.assign("http://localhost:8088/download?filename="+row.name)
+                // axios.get("http://localhost:8088/download?filename="+row.name).then(res => {
+                //     console.log("下载成功")
+                // }).catch(e => {
+                //     this.error.push(e)
+                // })
                 // axios.post("http://localhost:8088/download",qs.stringify({
                 //     "filename" : row.name
                 // })).then(res => {
@@ -225,6 +232,15 @@
                 //     this.error.push(e)
                 // })
                 // this.$router.push({ })
+            },
+            addRating(){
+                axios.post("http://localhost:8088/addRating",qs.stringify({
+                    "projectName" : this.activity.projectName
+                })).then(res => {
+                    this.activity.rating = res.data
+                }).catch(e => {
+                    this.error.push(e)
+                })
             }
         }
     }

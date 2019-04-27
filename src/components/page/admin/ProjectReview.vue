@@ -53,6 +53,7 @@
                         <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
                     <!--</el-upload>-->
                     <el-table
+                            @row-click="downloadFile()"
                             max-height="250"
                             title="图片"
                             ref="multipleTable"
@@ -68,6 +69,17 @@
                                 prop="name"
                                 label="图片名称"
                                 width="200">
+                        </el-table-column>
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <el-button
+                                        size="mini"
+                                        @click="downloadFile(scope.$index, scope.row)">下载</el-button>
+                                <!--<el-button-->
+                                <!--size="mini"-->
+                                <!--type="danger"-->
+                                <!--@click="delFile(scope.$index, scope.row)">删除</el-button>-->
+                            </template>
                         </el-table-column>
                     </el-table>
                     <div style="margin-top: 20px">
@@ -88,6 +100,7 @@
                         <!--</el-upload>-->
                     <!--</el-form-item>-->
                     <el-table
+                            @row-click="downloadFile()"
                             title="视频"
                             max-height="250"
                             ref="multipleTable"
@@ -103,6 +116,17 @@
                                 prop="name"
                                 label="视频名称"
                                 width="200">
+                        </el-table-column>
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <el-button
+                                        size="mini"
+                                        @click="downloadFile(scope.$index, scope.row)">下载</el-button>
+                                <!--<el-button-->
+                                <!--size="mini"-->
+                                <!--type="danger"-->
+                                <!--@click="delFile(scope.$index, scope.row)">删除</el-button>-->
+                            </template>
                         </el-table-column>
                     </el-table>
                     <div style="margin-top: 20px">
@@ -122,6 +146,7 @@
                     <!--</el-form-item>-->
                     <br><br>
                     <el-table
+                            @row-click="downloadFile()"
                             title="文件"
                             max-height="250"
                             ref="multipleTable"
@@ -137,6 +162,17 @@
                                 prop="name"
                                 label="文件名称"
                                 width="200">
+                        </el-table-column>
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <el-button
+                                        size="mini"
+                                        @click="downloadFile(scope.$index, scope.row)">下载</el-button>
+                                <!--<el-button-->
+                                        <!--size="mini"-->
+                                        <!--type="danger"-->
+                                        <!--@click="delFile(scope.$index, scope.row)">删除</el-button>-->
+                            </template>
                         </el-table-column>
                     </el-table>
                     <div style="margin-top: 20px">
@@ -165,6 +201,7 @@
                 //     {name: 'food.jpeg', url: require('../../../assets/img/img.jpg')},
                 //     {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
                 // ],
+                currentRow:null,
                 PictureSelection: [],
                 VideoSelection:[],
                 FileSelection:[],
@@ -370,13 +407,22 @@
                 console.log(file);
             },
             handlePictureSelectionChange(val) {
+                // this.currentRow = val;
                 this.PictureSelection = val;
             },
             handleVideoSelectionChange(val) {
+                // this.currentRow = val;
                 this.VideoSelection = val;
             },
             handleFileSelectionChange(val) {
+                // this.currentRow = val;
                 this.FileSelection = val;
+            },
+            downloadFile(index, row){
+                // let row = this.currentRow
+                console.log(index)
+                console.log(row)
+                window.location.assign("http://localhost:8088/download?filename="+row.name)
             }
         }
     }

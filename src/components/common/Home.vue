@@ -7,7 +7,7 @@
             <div class="content">
                 <transition name="move" mode="out-in">
                     <keep-alive :include="tagsList">
-                        <router-view></router-view>
+                        <router-view :key="key"></router-view>
                     </keep-alive>
                 </transition>
             </div>
@@ -43,6 +43,11 @@
                 }
                 this.tagsList = arr;
             })
+        },
+        computed: {
+            key() {
+                return this.$route.name + "?_t=" + new Date().getTime();
+            }
         }
     }
 </script>

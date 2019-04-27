@@ -238,7 +238,12 @@
                 })
             },
             getProjectList(){
-                axios.get('http://localhost:8088/projectList').then(res => {
+                let pagination = {
+                    "typeName" : null,
+                    "finishDate" : null,
+                    "index" : -1
+                }
+                axios.post('http://localhost:8088/projectList',pagination).then(res => {
                     console.log(res.data)
                     this.ProjectList = res.data;
                 }).catch(e => {

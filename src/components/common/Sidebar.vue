@@ -66,6 +66,8 @@
 
 <script>
     import bus from '../common/bus';
+    import axios from 'axios'
+    import qs from 'qs'
     export default {
         data() {
             return {
@@ -197,10 +199,25 @@
             bus.$on('collapse', msg => {
                 this.collapse = msg;
             })
+            this.getHomePage();
         },
         methods: {
             getAuthority(){
-                this.authority = sessionStorage.getItem("authority");
+                if(null != sessionStorage.getItem("userName")){
+                    this.authority = sessionStorage.getItem("authority");
+                } else {
+                    this.authority = 0;
+                }
+            },
+            getHomePage(){
+                axios.post("http://localhost:8088/home_page",qs.stringify({
+                        "authority" : this.authority
+                })).then(res => {
+                    console.log(res.data)
+                    this.items = res.data
+                }).catch(e => {
+                    // this.error.push(e)
+                })
             }
         }
     }

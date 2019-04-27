@@ -1,11 +1,11 @@
 message 消息提示 提示上传成功
 popover弹出框 删除弹出确定删除
-collapse折叠面板 学生弹出介绍 finish
-upload 图片缩略图上传  finish
-rate评分 项目评分
+collapse折叠面板 学生弹出介绍finish
+upload 图片缩略图上传finish
+rate评分 项目评分finish
 pagination 分页
-标签页
-项目表单 项目名禁用
-老师上传项目 增加teamDetail
-项目上传改成导航栏   将内容与文件分开
+标签页finish
+项目表单 项目名禁用 finish
+老师上传项目 增加teamDetail finish
+项目上传改成导航栏   将内容与文件分开 finish
 
