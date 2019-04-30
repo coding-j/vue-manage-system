@@ -14,31 +14,33 @@
                     <el-step title="步骤 3"></el-step>
                     <el-step title="步骤 4"></el-step>
                 </el-steps>
-                <el-form ref="project" :model="project" label-width="17%">
+                <el-form ref="project" :model="project" label-width="17%" :rules="aaa">
                     <div class="basicInfo" v-if="active===0">
-                        <el-form-item label="项目名称">
+                        <el-form-item label="项目名称" prop="pname" >
                             <el-input v-model="project.pname"></el-input>
                         </el-form-item>
-                        <el-form-item label="项目小组成员">
+                        <el-form-item label="小组成员" prop="students">
                             <el-input v-model="project.students"></el-input>
+                            <span>用中文字符的逗号隔开,如：xxx，xxx，xxx</span>
                         </el-form-item>
-                        <el-form-item label="项目类型">
+                        <el-form-item label="项目类型" prop="type">
                             <el-select v-model="project.type" placeholder="请选择" filterable>
                                 <el-option v-for="(type, index) in projectConstant.types" :key="index" :label="type" :value="type"></el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="指导老师">
+                        <el-form-item label="指导老师" prop="teacher">
                             <el-select v-model="project.teacher" placeholder="请选择" filterable>
                                 <el-option v-for="(teacher, index) in projectConstant.teachers" :key="index" :label="teacher" :value="teacher"></el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="完成时间">
+                        <el-form-item label="完成时间" prop="finishDate">
                             <el-input v-model="project.finishDate"></el-input>
+                            <span>格式：2019春季学期</span>
                         </el-form-item>
-                        <el-form-item label="项目介绍">
+                        <el-form-item label="项目介绍" prop="detail">
                             <el-input type="textarea" :rows="5" v-model="project.detail"></el-input>
                         </el-form-item>
-                        <el-form-item label="团队介绍">
+                        <el-form-item label="团队介绍" prop="team">
                             <el-input type="textarea" :rows="5" v-model="project.team"></el-input>
                         </el-form-item>
                     </div>
@@ -46,12 +48,12 @@
                         <el-form-item label="图片">
                             <el-upload
                                     class="upload-demo"
-                                    ref="upload"
+
                                     drag
                                     :action="uploadUrl"
                                     accept=".png,.jpg"
                                     show-file-list
-                                    :before-upload="beforeUploadFile"
+                                    :before-upload="beforeUploadPic"
                                     :before-remove="beforeRemove"
                                     :on-change="fileChange"
                                     :on-progress="handleProgress"
@@ -60,11 +62,11 @@
                                     :on-preview="handlePreview"
                                     :on-remove="handleRemove"
                                     :file-list="picList"
-                                    :auto-upload="false"
+                                    :auto-upload="true"
                                     multiple>
                                 <i class="el-icon-upload"></i>
                                 <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                                <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                                <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过1M</div>
                             </el-upload>
                         </el-form-item>
                     </div>
@@ -72,12 +74,12 @@
                         <el-form-item label="视频">
                             <el-upload
                                     class="upload-demo"
-                                    ref="upload"
+
                                     drag
                                     :action="uploadUrl"
-                                    accept=".png,.jpg"
+                                    accept=".mp4"
                                     show-file-list
-                                    :before-upload="beforeUploadFile"
+                                    :before-upload="beforeUploadVideo"
                                     :before-remove="beforeRemove"
                                     :on-change="fileChange"
                                     :on-success="handleSuccess"
@@ -85,11 +87,11 @@
                                     :on-preview="handlePreview"
                                     :on-remove="handleRemove"
                                     :file-list="videoList"
-                                    :auto-upload="false"
+                                    :auto-upload="true"
                                     multiple>
                                 <i class="el-icon-upload"></i>
                                 <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                                <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                                <div class="el-upload__tip" slot="tip">只能上传mp4文件，且不超过100M</div>
                             </el-upload>
                         </el-form-item>
                     </div>
@@ -97,10 +99,9 @@
                         <el-form-item label="文件">
                             <el-upload
                                     class="upload-demo"
-                                    ref="upload"
                                     drag
                                     :action="uploadUrl"
-                                    accept=".png,.jpg"
+                                    accept=".ppt.pptx.word.xls"
                                     show-file-list
                                     :before-upload="beforeUploadFile"
                                     :before-remove="beforeRemove"
@@ -110,18 +111,18 @@
                                     :on-preview="handlePreview"
                                     :on-remove="handleRemove"
                                     :file-list="fileList"
-                                    :auto-upload="false"
+                                    :auto-upload="true"
                                     multiple>
                                 <i class="el-icon-upload"></i>
                                 <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                                <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                                <div class="el-upload__tip" slot="tip">只能上传ppt/pptx/word/xls文件，且不超过10M</div>
                             </el-upload>
                         </el-form-item>
                     </div>
                     <div class="btn">
                         <el-form-item>
                             <el-button type="primary" @click="prev()" v-if="active==1||active==2||active==3">上一步</el-button>
-                            <el-button type="primary" @click="next($event)" v-if="active==0||active==1||active==2">下一步</el-button>
+                            <el-button type="primary" @click="next('project')" v-if="active==0||active==1||active==2">下一步</el-button>
                             <el-button type="primary" @click="submitUpload" v-if="active==3">提交</el-button>
                             <!--<el-button>取消</el-button>-->
                         </el-form-item>
@@ -140,11 +141,45 @@
         name: 'ProjectForm',
         data: function(){
             return {
+                aaa:{
+                    pname:[
+                        {required: true, message: '请输入项目名称', trigger: 'blur'}
+                    ],
+                    students:[
+                        {required: true, message: '请输入项目学生姓名', trigger: 'blur'}
+                    ],
+                    type:[
+                        {required: true, message: '请选择项目类型',trigger: 'change'}
+                    ],
+                    teacher:[
+                        {required: true, message: '请选择指导老师',trigger: 'change'}
+                    ],
+                    finishDate:[
+                        {required: true, message:'请输入完成时间'}
+                    ],
+                    detail:[
+                        {required: true, message:'请输入项目介绍', trigger:'blur'}
+                    ],
+                    team:[
+                        {required:true, message:'请输入团队介绍',trigger:'blur'}
+                    ]
+                },
                 active: 0,
                 uploadUrl:'http://localhost:8088/file_upload',
                 picList:[],
                 videoList:[],
                 files:[],
+
+                //rule
+                // aaa:'',
+                // pName:'',
+                // student:'',
+                // teacher:'',
+                // date:'',
+                // type:'',
+                // prodes:'',
+                // teamDes:'',
+
                 project: {
                     pname: '',
                     students: [],
@@ -159,24 +194,10 @@
 
                 projectConstant: {
                     types: [
-                        // {
-                        //     id: 0,
-                        //     name: "type1"
-                        // },
-                        // {
-                        //     id: 1,
-                        //     name: "type2"
-                        // }
+
                     ],
                     teachers: [
-                        // {
-                        //     id: 0,
-                        //     name: "jxb"
-                        // },
-                        // {
-                        //     id: 1,
-                        //     name: "zwb"
-                        // }
+
                     ]
                 }
             }
@@ -190,9 +211,20 @@
                 --this.active;
                 if(this.active < 0) this.active = 0;
             },
-            next(){
+            next(formName){
                 // ++this.active;
-                if(this.active++ > 3) this.active = 0;
+                if(this.active == 0){
+                    this.$refs[formName].validate((valid) => {
+                        if(valid){
+                            this.active++;
+                        }else {
+                            return false;
+                        }
+                    })
+                }else{
+                    if(this.active++ > 3) this.active = 0;
+                }
+
             },
             // 文件上传成功时的钩子
             handleSuccess(res, file,fileList) {
@@ -232,7 +264,24 @@
                 console.log(file);
             },
             beforeUploadFile(file) {
-
+                let size = file.size / 1024 /1024
+                if(size > 10){
+                    this.$notify.warning({
+                        title: '警告',
+                        message: `文件大小不得超过10M`
+                    });
+                }
+            },
+            beforeUploadVideo(file){
+                let size = file.size /1024 /1024
+                if(size > 100){
+                    this.$notify.warning({
+                        title: '警告',
+                        message: `文件大小不得超过100M`
+                    });
+                }
+            },
+            beforeUploadPic(file){
                 let size = file.size / 1024 / 1024
                 if(size > 1) {
                     this.$notify.warning({
@@ -267,6 +316,7 @@
                     "teacherName": this.project.teacher,
                     "projectDetail": this.project.detail,
                     "teamDetail": this.project.team,
+                    "firstPicture":this.picList[0].name,
                     "pictureList" : this.picList,
                     "videoList" : this.videoList,
                     "fileList" : this.files
@@ -274,12 +324,13 @@
                 console.log(project)
                 console.log(this.files)
 
-                this.$refs.upload.submit();
+                // this.$refs.upload.submit();
                 axios.post('http://localhost:8088/uploadProject', project).then(res => {
                     this.$message({
-                        message: '恭喜你，这是一条成功消息',
+                        message: '上传成功',
                         type: 'success'
                     });
+                    this.$router.push({ path:'/project_list'})
                     console.log("上传成功")
                 }).catch(e => {
                     this.error.push(e)

@@ -231,7 +231,9 @@
                 this.dialogFormVisible = false;
             },
             getTeacherList(){
-                axios.get('http://localhost:8088/TeacherList').then(res => {
+                axios.post('http://localhost:8088/TeacherList',qs.stringify({
+                    "index" : -1
+                })).then(res => {
                     this.teacherList = res.data;
                 }).catch(e => {
                     this.error.push(e)
@@ -251,32 +253,63 @@
                 })
             },
             handleEdit(index, row){
-                this.$router.push({ path: '/teacherAdminShow?name='+row.teacherName})
+                this.$router.push({ path:'/teacherEdit?name='+row.teacherName  })
+                // this.$router.push({ path: '/teacherAdminShow?name='+row.teacherName})
             },
             handleDelete(index, row) {
-                axios.post('http://localhost:8088/deleteTeacher',qs.stringify({
-                    "teacherName": row.teacherName
-                })).then(res => {
-                    console.log("删除成功")
-                    location.reload()
-                }).catch(e => {
-                    this.error.push(e)
-                })
+                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    axios.post('http://localhost:8088/deleteTeacher',qs.stringify({
+                        "teacherName": row.teacherName
+                    })).then(res => {
+                        console.log("删除成功")
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                        location.reload()
+                    }).catch(e => {
+                        this.error.push(e)
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
                 //console.log(index, row);
             },
             toggleSelection() {
-                let rows = this.multipleSelection
-                if (rows) {
-                    rows.forEach(row => {
-                        console.log(row)
-                        axios.post('http://localhost:8088/projectDel',qs.stringify({
-                            "projectName" : row.projectName
-                        })).then(res => {
-                            console.log("删除成功")
-                            location.reload()
-                        })
+                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    let rows = this.multipleSelection
+                    if (rows) {
+                        rows.forEach(row => {
+                            console.log(row)
+                            axios.post('http://localhost:8088/projectDel',qs.stringify({
+                                "projectName" : row.projectName
+                            })).then(res => {
+                                console.log("删除成功")
+                                this.$message({
+                                    type: 'success',
+                                    message: '删除成功!'
+                                });
+                                location.reload()
+                            })
+                        });
+                    }
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
                     });
-                }
+                });
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;

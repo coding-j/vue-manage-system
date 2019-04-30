@@ -17,10 +17,10 @@
                     <el-carousel indicator-position="outside" height="510px">
                         <el-carousel-item v-for="item in projectList">
                             <div>
-                                <div style="position: relative">
+                                <div style="position: relative" @click="projectShow(item.projectName)">
                                     <div style="position: absolute" class="layout">
                                         <el-card class="box_style">
-                                            <span>{{item.projectDetail}}</span>
+                                            <span>{{item.projectName+':'+item.projectDetail | ellipsis}}</span>
                                         </el-card>
                                     </div>
                                     <img :src='imgUrl+item.firstPicture' height="100%" width="100%">
@@ -109,6 +109,15 @@
     //import pic1 from "../../assets/img/img.jpg";
     export default {
         name: 'dashboard',
+        filters: {
+            ellipsis:function (value) {
+                if (!value) return ''
+                if (value.length > 60) {
+                    return value.slice(0,60) + '...'
+                }
+                return value
+            }
+        },
         data() {
             return {
                 imgUrl:'http://localhost:8088/show?pictureName=',
@@ -141,6 +150,16 @@
             this.getTopProject();
         },
         methods: {
+            projectShow(btn){
+                // console.log(btn.target.innerText)
+                console.log(btn)
+                this.$router.push({ path:'/projectShow?name='+btn})
+                // axios.post('http://localhost:8088/projectShow',qs.stringify({
+                //     "projectName" : btn.target.innerText
+                // })).then(response => {
+                //
+                // })
+            },
             getTopProject(){
                 axios.get('http://localhost:8088/getHomePage').then(response => {
                     console.log(response.data);

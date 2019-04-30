@@ -59,7 +59,7 @@
                                 <h1 >{{project.projectName}}</h1>
                                 <br>
                                 <!--<el-button size="medium"  type="text" @click="projectShow($event)">{{project.projectName}}</el-button>-->
-                                <p>项目简介：{{project.projectDetail}}</p>
+                                <span>项目简介：{{project.projectDetail|ellipsis}}</span>
                             </div>
                         </div>
                         <!--<div>-->
@@ -89,6 +89,15 @@
     export default {
         components: {ElButton},
         name: 'ProjectList',
+        filters: {
+            ellipsis:function (value) {
+                if (!value) return ''
+                if (value.length > 40) {
+                    return value.slice(0,40) + '...'
+                }
+                return value
+            }
+        },
         data() {
             return {
                 imgUrl:'http://localhost:8088/show?pictureName=',
@@ -313,4 +322,5 @@
     .box-card{
         height: 400px;
     }
+
 </style>

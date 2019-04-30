@@ -93,6 +93,11 @@ export default new Router({
                     component: resolve => require(['../components/page/project/ProjectForm.vue'], resolve),
                     meta: { title: '实训项目上传', permission: true }
                 },
+                {
+                    path: '/about',
+                    component: resolve => require(['../components/page/about.vue'],resolve),
+                    meta: { title: '关于我们',permission:true}
+                },
 
                 // 测试
                 // {
@@ -135,11 +140,11 @@ export default new Router({
                     component: resolve => require(['../components/page/project/ProjectShow.vue'],resolve),
                     meta: { title: '实训项目展示', permission: true }
                 },
-                // {
-                //     path: '/test',
-                //     component: resolve => require(['../components/page/project/test.vue'],resolve),
-                //     meta: {title:'test',permission:true}
-                // },
+                {
+                    path: '/test',
+                    component: resolve => require(['../components/page/project/test.vue'],resolve),
+                    meta: {title:'test',permission:true}
+                },
 
 
 
@@ -165,7 +170,12 @@ export default new Router({
         {
             path: '*',
             redirect: '/404'
-        }
+        },
+        // {
+        //     path: '/test',
+        //     component: resolve => require(['../components/page/project/test.vue'],resolve),
+        //     hidden:true
+        // },
 
 
     ]

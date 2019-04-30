@@ -98,7 +98,7 @@
                     },
                     {
                         icon: 'el-icon-lx-emoji',
-                        index: 'icon',
+                        index: 'about',
                         title: '关于我们'
                     },
                     {

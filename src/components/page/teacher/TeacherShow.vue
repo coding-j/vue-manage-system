@@ -34,6 +34,7 @@
                            <font size="5">负责项目</font>
                            <div class="Line"></div><br>
                            <el-table
+                                   @row-click="openProjectDetails"
                                    ref="singleTable"
                                    height="250"
                                    :data="projectlist"
@@ -125,6 +126,9 @@
             },
             handleCurrentChange(val) {
                 this.currentRow = val;
+            },
+            openProjectDetails(row){
+                this.$router.push({ path:'/projectShow?name='+row.projectName  })
             }
         }
     }

@@ -55,18 +55,22 @@
                 //formName.preventDefault();
 
                 let user = {'userName' : this.ruleForm.username, 'password' : this.ruleForm.password};
-                axios.post('http://localhost:8088/login',user).then((response) => {
-                    var status = response.data;
-                    console.log(status);
-                    if(status != null){
+                axios.post('http://localhost:8088/login',user).then(response => {
+                    let status = response.data;
+                    console.log("status:"+status);
+                    if(status){
                         console.log("success")
                         sessionStorage.setItem("userName",response.data['userName']);
                         sessionStorage.setItem("authority",response.data['authority']);
                         // this.$store.dispatch("setUser",response.data['userName']);
                         // this.$store.dispatch("setAuthority",response.data['authority'])
+                        this.$message({
+                            message: '登陆成功',
+                            type: 'success'
+                        });
                         this.$router.push({ path:'/'})
                     } else{
-                        alert(response.data.message);
+                        this.$message.error("用户名或密码错误！");
                     }
                     console.log(response);
                 }).catch((error) =>{

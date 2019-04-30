@@ -52,6 +52,28 @@
                         <!--<el-button size="small" type="primary">点击上传</el-button>-->
                         <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
                     <!--</el-upload>-->
+                    <!--<el-upload-->
+                            <!--class="upload-demo"-->
+
+                            <!--drag-->
+                            <!--:action="uploadUrl"-->
+                            <!--accept=".png,.jpg"-->
+                            <!--show-file-list-->
+                            <!--:before-upload="beforeUploadPic"-->
+                            <!--:before-remove="beforeRemove"-->
+                            <!--:on-change="fileChange"-->
+                            <!--:on-progress="handleProgress"-->
+                            <!--:on-success="handleSuccessPic"-->
+                            <!--:on-error="handleError"-->
+                            <!--:on-preview="handlePreview"-->
+                            <!--:on-remove="handleRemove"-->
+                            <!--:file-list="picList"-->
+                            <!--:auto-upload="true"-->
+                            <!--multiple>-->
+                        <!--<i class="el-icon-upload"></i>-->
+                        <!--<div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>-->
+                        <!--<div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过1M</div>-->
+                    <!--</el-upload>-->
                     <el-table
                             @row-click="downloadFile()"
                             max-height="250"
@@ -286,9 +308,14 @@
                     "teacherName" : this.project.teacher,
                     "projectDetail" : this.project.detail,
                     "teamDetail" : this.project.team,
-                    "finishDate" : this.project.finishDate
+                    "finishDate" : this.project.finishDate,
+                    "firstPicture":this.picturess[0].name
                 }
                 axios.post('http://localhost:8088/projectEdit',project).then(res => {
+                    this.$message({
+                        message: '编辑成功',
+                        type: 'success'
+                    });
                     console.log("编辑成功")
                     location.reload()
                 }).catch(e => {
@@ -296,46 +323,92 @@
                 })
             },
             delPicture(){
-                let rows = this.PictureSelection
-                rows.forEach(row => {
-                    console.log(row);
-                    axios.post("http://localhost:8088/delPicture",qs.stringify({
-                        "pictureName":row.name
-                    })).then(res => {
-                        console.log("删除成功")
-                        location.reload()
-                    }).catch(e => {
-                        this.error.push(e)
+                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    let rows = this.PictureSelection
+                    rows.forEach(row => {
+                        console.log(row);
+                        axios.post("http://localhost:8088/delPicture",qs.stringify({
+                            "pictureName":row.name
+                        })).then(res => {
+                            console.log("删除成功")
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                            location.reload()
+                        }).catch(e => {
+                            this.error.push(e)
+                        })
                     })
-                })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             },
             delVideo(){
-                let rows = this.VideoSelection
-                rows.forEach(row => {
-                    console.log(row);
-                    axios.post("http://localhost:8088/delVideo",qs.stringify({
-                        "videoName":row.name
-                    })).then(res => {
-                        console.log("删除成功")
-                        location.reload()
-                    }).catch(e => {
-                        this.error.push(e)
+                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    let rows = this.VideoSelection
+                    rows.forEach(row => {
+                        console.log(row);
+                        axios.post("http://localhost:8088/delVideo",qs.stringify({
+                            "videoName":row.name
+                        })).then(res => {
+                            console.log("删除成功")
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                            location.reload()
+                        }).catch(e => {
+                            this.error.push(e)
+                        })
                     })
-                })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             },
             delFile(){
-                let rows = this.FileSelection
-                rows.forEach(row => {
-                    console.log(row);
-                    axios.post("http://localhost:8088/delFile",qs.stringify({
-                        "fileName":row.name
-                    })).then(res => {
-                        console.log("删除成功")
-                        location.reload()
-                    }).catch(e => {
-                        this.error.push(e)
+                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    let rows = this.FileSelection
+                    rows.forEach(row => {
+                        console.log(row);
+                        axios.post("http://localhost:8088/delFile",qs.stringify({
+                            "fileName":row.name
+                        })).then(res => {
+                            console.log("删除成功")
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                            location.reload()
+                        }).catch(e => {
+                            this.error.push(e)
+                        })
                     })
-                })
+
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             },
             getProject(pName){
                 axios.post("http://localhost:8088/projectShow",qs.stringify({
@@ -423,7 +496,36 @@
                 console.log(index)
                 console.log(row)
                 window.location.assign("http://localhost:8088/download?filename="+row.name)
-            }
+            },
+            //文件上传
+            beforeUploadPic(file){
+                let size = file.size / 1024 / 1024
+                if(size > 1) {
+                    this.$notify.warning({
+                        title: '警告',
+                        message: `文件大小不得超过1M`
+                    });
+                }
+            },
+            beforeRemove(file, fileList) {
+                return this.$confirm(`确定移除 ${ file.name }？`);
+            },
+            // 文件上传成功时的钩子
+            handleSuccessPic(res, file,fileList) {
+                // console.log(file,fileList)
+                this.$notify.success({
+                    title: '成功',
+                    message: `文件上传成功`
+                });
+
+            },
+            // 文件上传失败时的钩子
+            handleError(err, file) {
+                this.$notify.error({
+                    title: '错误',
+                    message: `文件上传失败`
+                });
+            },
         }
     }
 </script>

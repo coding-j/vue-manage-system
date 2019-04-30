@@ -12,16 +12,23 @@
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div>
 
-            <el-row :gutter="10">
+            <el-row :gutter="30" style="margin: 10px 50px 10px 50px">
                 <el-col :span="8" v-for="teachers in teacherList">
-                    <el-card class="box-card">
-                        <div><img :src="imgUrl+teachers.pictureUrl"></div>
-                        <div slot="header" class="clearfix">
-                            <el-button type="text" @click="teacherDetail($event)">{{teachers.teacherName}}</el-button>
-                            <!--<span>{{teachers.teacherName}}</span>-->
-                            <!--<el-button style="float: right; padding: 3px 0" type="text" @click="teacherDetail">操作按钮</el-button>-->
+                    <el-card class="box-card" @click.native="teacherDetail(teachers.teacherName)">
+                        <div>
+                            <div>
+                                <figure class="image" align="center">
+                                    <img  width="100%" :src="imgUrl+teachers.pictureUrl" alt="Image">
+                                </figure>
+                            </div>
+                            <br>
+                            <div>
+                                <h1 >{{teachers.teacherName}}</h1>
+                                <br>
+                                <!--<el-button size="medium"  type="text" @click="projectShow($event)">{{project.projectName}}</el-button>-->
+                                <p>老师简介：{{teachers.introduction | ellipsis}}</p>
+                            </div>
                         </div>
-                        {{teachers.introduction}}
                     </el-card>
                 </el-col>
             </el-row>
@@ -29,6 +36,23 @@
                 <el-pagination background @current-change="handleCurrentChange" :page-size="pageSize" layout="prev, pager, next" :total="total">
                 </el-pagination>
             </div>
+            <!--<el-row :gutter="10">-->
+                <!--<el-col :span="8" v-for="teachers in teacherList">-->
+                    <!--<el-card class="box-card">-->
+                        <!--<div><img :src="imgUrl+teachers.pictureUrl"></div>-->
+                        <!--<div slot="header" class="clearfix">-->
+                            <!--<el-button type="text" @click="teacherDetail($event)">{{teachers.teacherName}}</el-button>-->
+                            <!--&lt;!&ndash;<span>{{teachers.teacherName}}</span>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<el-button style="float: right; padding: 3px 0" type="text" @click="teacherDetail">操作按钮</el-button>&ndash;&gt;-->
+                        <!--</div>-->
+                        <!--{{teachers.introduction}}-->
+                    <!--</el-card>-->
+                <!--</el-col>-->
+            <!--</el-row>-->
+            <!--<div class="pagination">-->
+                <!--<el-pagination background @current-change="handleCurrentChange" :page-size="pageSize" layout="prev, pager, next" :total="total">-->
+                <!--</el-pagination>-->
+            <!--</div>-->
         </div>
     </div>
 </template>
@@ -38,13 +62,25 @@
     import qs from 'qs'
     export default {
         name: "TeacherList",
+        filters: {
+            ellipsis:function (value) {
+                if (!value) return ''
+                if (value.length > 40) {
+                    return value.slice(0,40) + '...'
+                }
+                return value
+            }
+        },
         data() {
             return {
                 imgUrl:'http://localhost:8088/show?pictureName=',
                 tableData: [],
+
+                //分页
                 pageIndex: 1,
-                pageSize: 10,
+                pageSize: 9,
                 total: 0,
+
                 multipleSelection: [],
                 select_cate: '',
                 select_word: '',
@@ -82,19 +118,31 @@
         },
         created() {
             this.getTeacherList();
+            this.getTeacherCount();
         },
         methods: {
             getTeacherList(){
-                axios.get('http://localhost:8088/TeacherList').then(response => {
+                axios.post('http://localhost:8088/TeacherList',qs.stringify({
+                    "index" : this.pageIndex
+                })).then(response => {
                     console.log(response.data);
                     this.teacherList = response.data;
+                    // this.total = this.teacherList.length;
                 }).catch(e => {
+                    this.error.push(e)
+                })
+            },
+            getTeacherCount(){
+                axios.get("http://localhost:8088/TeacherCount").then(res => {
+                    this.total = res.data
+                }).catch(e =>{
                     this.error.push(e)
                 })
             },
             // 分页导航
             handleCurrentChange(val) {
                 this.pageIndex = val;
+                this.getTeacherList()
             },
 
             search() {
@@ -151,7 +199,7 @@
                 this.delVisible = false;
             },
             teacherDetail(btn){
-                this.$router.push({ path: '/teacherShow?name='+btn.target.innerText})
+                this.$router.push({ path: '/teacherShow?name='+btn})
             }
         }
     }
