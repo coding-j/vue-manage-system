@@ -10,6 +10,8 @@ import './assets/css/icon.css';
 import './components/common/directives';
 import "babel-polyfill";
 import MagicGrid from 'vue-magic-grid'
+import VueGlide from 'vue-glide-js'
+Vue.use(VueGlide)
 Vue.use(MagicGrid)
 Vue.use(Vuex)
 Vue.config.productionTip = false

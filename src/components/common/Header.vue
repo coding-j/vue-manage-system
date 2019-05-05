@@ -23,7 +23,7 @@
                     <!--<span class="btn-bell-badge" v-if="message"></span>-->
                 <!--</div>-->
                 <!--登陆按钮-->
-                <div><el-button type="primary" @click="login" v-show="show" round>登陆</el-button></div>
+                <div><el-button type="success" @click="login" v-show="show" >登陆</el-button></div>
                 <div v-show="seen">
                     <!-- 用户头像 -->
                     <div class="user-avator"><img src="../../assets/img/img.jpg"></div>

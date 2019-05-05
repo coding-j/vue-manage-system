@@ -17,7 +17,7 @@ export default new Router({
                 {
                     path: '/dashboard',
                     component: resolve => require(['../components/page/Dashboard.vue'], resolve),
-                    meta: { title: '系统首页' }
+                    meta: { title: '热门推荐' }
                 },
                 {
                     path: '/icon',
@@ -143,8 +143,9 @@ export default new Router({
                 {
                     path: '/test',
                     component: resolve => require(['../components/page/project/test.vue'],resolve),
-                    meta: {title:'test',permission:true}
+                    hidden:true
                 },
+
 
 
 

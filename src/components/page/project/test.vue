@@ -1,599 +1,788 @@
 <template>
-    <div align="center">
-        <div id="test" class="crowd-funding">
-            <div class="crowd-funding__header">
-
-                <div class="crowd-funding__header__description">
-
-                    <h1 >实训项目展示平台</h1 >
-                    <div class="hashtags">
-                        <p>项目类型：Java &nbsp;&nbsp;&nbsp; 完成时间：2019年</p>
-                        <p><strong>指导老师：陆坤</strong></p>
-                        <p><strong>完成学生：蒋筱斌，芒果，文博</strong></p>
-                    </div>
+    <div id="app" class="wrapper" v-cloak v-bind:class="{'is-previous': isPreviousSlide, 'first-load': isFirstLoad}">
+        <div class="slide-wrapper"
+             v-for="(slide, index) in slides"
+             v-bind:key="index"
+             v-bind:class="{ active: index === currentSlide }"
+             v-bind:style="{ 'z-index': (slides.length - index), 'background-image': 'url(' + imgUrl+slide.firstPicture + ')' }">
+            <div class="slide-inner" @click="projectShow(slide.projectName)">
+                <div class="slide-bg-text">
+                    <p>{{ slide.projectName }}</p>
+                    <!--<p>{{ slide.headlineSecondLine }}</p>-->
                 </div>
-
-                <!--<div class="crowd-funding__header__details">-->
-                    <!--<h1>25</h1>-->
-                    <!--<p class="days-to-go">days to go</p>-->
-                    <!--<div class="funding-counter">-->
-                        <!--<p><strong>指导老师：陆坤</strong></p>-->
-                        <!--<p><strong>完成学生：蒋筱斌，芒果，文博</strong></p>-->
-                        <!--&lt;!&ndash;<div class="funding-counter__bar"></div>&ndash;&gt;-->
-                    <!--</div>-->
+                <!--<div class="slide-rect-filter">-->
+                    <!--<div class="slide-rect" v-bind:style="{'border-image-source': 'url(' + slide.rectImg + ')'}"></div>-->
                 <!--</div>-->
-
+                <div class="slide-content">
+                    <h1 class="slide-content-text">
+                        <!--<p>{{ slide.headlineFirstLine }}</p>-->
+                        <p>项目简介：{{ slide.projectDetail | ellipsis }}</p>
+                    </h1>
+                    <!--<a class="slide-content-cta">Call To Action</a>-->
+                </div>
+                <!--<h2 class="slide-side-text">-->
+                    <!--<span>{{ slide.sublineFirstLine }} / </span>-->
+                    <!--<span>{{ slide.sublineSecondLine }}</span>-->
+                <!--</h2>-->
             </div>
-
-            <text_slide>
-                <div class="crowd-funding__main" :key="activeNum">
-
-                    <el-collapse v-model="activeNames" @change="handleChange" style="width: 100%">
-                        <el-collapse-item title="项目介绍" name="1">
-                            <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
-                        </el-collapse-item>
-                        <el-collapse-item title="团队介绍" name="2">
-                            <div>控制反馈：通过界面样式和交互动效让用户可以清晰的感知自己的操作；</div>
-                        </el-collapse-item>
-                        <el-collapse-item title="图片介绍" name="3">
-                            <div>
-                                <el-carousel :interval="4000" type="card" height="200px">
-                                    <el-carousel-item v-for="item in pic.picList" :key="item">
-                                        <!--<img :src="imgUrl+item.name">-->
-                                        <img :src="item.imgUrla">
-                                    </el-carousel-item>
-                                </el-carousel>
-                            </div>
-                        </el-collapse-item>
-                        <el-collapse-item title="视频介绍" name="4">
-                            <div>
-                                <video width="320" height="240" controls="controls">
-                                    <source :src="video.viderUrl" type="video/mp4" />
-                                    <source :src="video.viderUrl" type="video/ogg" />
-                                    <source :src="video.viderUrl" type="video/webm" />
-                                    <object :data="video.viderUrl" width="320" height="240">
-                                    <embed :src="video.viderUrl" width="320" height="240"/>
-                                    </object>
-                                </video>
-                            </div>
-                        </el-collapse-item>
-                        <el-collapse-item title="文件列表" name="5">
-                            <div>
-                                <el-table
-                                    @row-click="downloadFile()"
-                                    ref="singleTable"
-                                    :data="file.fileList"
-                                    highlight-current-row
-                                    @current-change="handleCurrentChange"
-                                    style="width: 100%">
-                                    <el-table-column
-                                        type="index"
-                                        width="50">
-                                    </el-table-column>
-                                    <el-table-column
-                                        property="name"
-                                        label="文件名"
-                                        width="120">
-                                    </el-table-column>
-                                </el-table>
-                            </div>
-                        </el-collapse-item>
-                    </el-collapse>
-                    <!--<div class="crowd-funding__main__col col1">-->
-                        <!--&lt;!&ndash;<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="#85365f">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<path d="M 26.978516 3.0214844 C 26.978516 3.0214844 18 3 11 10 C 10.676811 10.323189 10.395406 10.675024 10.140625 11.039062 C 8.8995439 10.939831 6.9997651 10.972248 6.0273438 11.945312 C 3.7573437 14.215312 3 18 3 18 L 8 17.285156 L 8 19 L 11 22 L 12.714844 22 L 12 27 C 12 27 15.784688 26.242656 18.054688 23.972656 C 19.027752 23.000235 19.060169 21.100456 18.960938 19.859375 C 19.324976 19.604594 19.676811 19.323189 20 19 C 27 12 26.978516 3.0214844 26.978516 3.0214844 z M 19 9 C 20.105 9 21 9.895 21 11 C 21 12.105 20.105 13 19 13 C 17.895 13 17 12.105 17 11 C 17 9.895 17.895 9 19 9 z M 7.1992188 19.996094 C 6.8192188 20.096094 6.4591094 20.286984 6.1621094 20.583984 C 4.7961094 21.949984 5.0136719 24.984375 5.0136719 24.984375 C 5.0136719 24.984375 8.0281094 25.219938 9.4121094 23.835938 C 9.7091094 23.538937 9.9 23.176875 10 22.796875 L 9.5429688 22.339844 C 9.4979688 22.403844 9.4701094 22.478156 9.4121094 22.535156 C 8.4371094 23.510156 6.9746094 23.023438 6.9746094 23.023438 C 6.9746094 23.023438 6.4868906 21.560938 7.4628906 20.585938 C 7.5208906 20.527938 7.59225 20.501078 7.65625 20.455078 L 7.1992188 19.996094 z"></path>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</svg>&ndash;&gt;-->
-                        <!--<h4>项目介绍：</h4>-->
-                        <!--<span class="content">You know what to do. We know you know</span>-->
-                        <!--&lt;!&ndash;<span class="content">Why not help us build those super warm fortresses for our little friends!? <strong>Winter is coming</strong> and they need that money to buy that wood, insulation and tools</span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<div class="button"><strong><small>donate now</small></strong></div>&ndash;&gt;-->
-                    <!--</div>-->
-
-                    <!--<div class="crowd-funding__main__col col2">-->
-                        <!--&lt;!&ndash;<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="#85365f">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<path d="M 6.5292969 2.515625 A 1 1 0 0 0 5.8085938 2.8085938 A 1 1 0 0 0 5.8085938 4.2226562 A 1 1 0 0 0 7.2226562 4.2226562 A 1 1 0 0 0 7.2226562 2.8085938 A 1 1 0 0 0 6.5292969 2.515625 z M 23.5 2.515625 A 1 1 0 0 0 22.777344 2.8085938 A 1 1 0 0 0 22.777344 4.2226562 A 1 1 0 0 0 24.191406 4.2226562 A 1 1 0 0 0 24.191406 2.8085938 A 1 1 0 0 0 23.5 2.515625 z M 15 3 C 10.029 3 6 7.029 6 12 C 6 17 10 19 12 23 L 18 23 C 20 19 24 17 24 12 C 24 7.029 19.971 3 15 3 z M 15 6 L 15 11 L 19 11 L 15 18 L 15 13 L 11 13 L 15 6 z M 3 11 A 1 1 0 0 0 2 12 A 1 1 0 0 0 3 13 A 1 1 0 0 0 4 12 A 1 1 0 0 0 3 11 z M 27 11 A 1 1 0 0 0 26 12 A 1 1 0 0 0 27 13 A 1 1 0 0 0 28 12 A 1 1 0 0 0 27 11 z M 6.5292969 19.484375 A 1 1 0 0 0 5.8066406 19.777344 A 1 1 0 0 0 5.8066406 21.191406 A 1 1 0 0 0 7.2226562 21.191406 A 1 1 0 0 0 7.2226562 19.777344 A 1 1 0 0 0 6.5292969 19.484375 z M 23.498047 19.486328 A 1 1 0 0 0 22.777344 19.777344 A 1 1 0 0 0 22.777344 21.193359 A 1 1 0 0 0 24.191406 21.193359 A 1 1 0 0 0 24.191406 19.777344 A 1 1 0 0 0 23.498047 19.486328 z M 12 25 L 12 26 C 12 27.105 12.895 28 14 28 A 1 1 0 0 0 15 29 A 1 1 0 0 0 16 28 C 17.105 28 18 27.105 18 26 L 18 25 L 12 25 z"></path>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</svg>&ndash;&gt;-->
-                        <!--<h4>团队介绍:</h4>-->
-                        <!--<span class="content">You know what to do. We know you know</span>-->
-                        <!--&lt;!&ndash;<ul>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<li class="list-content">Why should you care? Who knows.</li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<li class="list-content">Why should you care? Who knows.</li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<li class="list-content">Why should you care? Who knows.</li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<li class="list-content">Why should you care? Who knows.</li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-                    <!--</div>-->
-                    <!--<div>-->
-                        <!--<el-carousel :interval="4000" type="card" height="280px">-->
-                            <!--<el-carousel-item v-for="item in pic.picList" :key="item">-->
-                                <!--&lt;!&ndash;<img :src="imgUrl+item.name">&ndash;&gt;-->
-                                <!--<img :src="item.imgUrla">-->
-                            <!--</el-carousel-item>-->
-                        <!--</el-carousel>-->
-                    <!--</div>-->
-                </div>
-
-                <!--<div  style="width: 100%; height: 100%;" :key="activeNum" >-->
-                    <!--<el-carousel :interval="4000" type="card" height="280px">-->
-                        <!--<el-carousel-item v-for="item in pic.picList" :key="item">-->
-                            <!--&lt;!&ndash;<img :src="imgUrl+item.name">&ndash;&gt;-->
-                            <!--<img :src="item.imgUrla">-->
-                        <!--</el-carousel-item>-->
-                    <!--</el-carousel>-->
-                <!--</div>-->
-
-                <!--<div  style="width: 100%; height: 100%;" :key="activeNum" >-->
-                    <!--<video width="320" height="240" controls="controls">-->
-                        <!--<source :src="video.viderUrl" type="video/mp4" />-->
-                        <!--<source :src="video.viderUrl" type="video/ogg" />-->
-                        <!--<source :src="video.viderUrl" type="video/webm" />-->
-                        <!--<object :data="video.viderUrl" width="320" height="240">-->
-                            <!--<embed :src="video.viderUrl" width="320" height="240"/>-->
-                        <!--</object>-->
-                    <!--</video>-->
-                <!--</div>-->
-
-                <!--<div  style="width: 100%; height: 100%; align: left;" :key="activeNum" >-->
-                    <!--<el-table-->
-                            <!--@row-click="downloadFile()"-->
-                            <!--ref="singleTable"-->
-                            <!--:data="file.fileList"-->
-                            <!--highlight-current-row-->
-                            <!--@current-change="handleCurrentChange"-->
-                            <!--style="width: 100%">-->
-                        <!--<el-table-column-->
-                                <!--type="index"-->
-                                <!--width="50">-->
-                        <!--</el-table-column>-->
-                        <!--<el-table-column-->
-                                <!--property="name"-->
-                                <!--label="文件名"-->
-                                <!--width="120">-->
-                        <!--</el-table-column>-->
-                    <!--</el-table>-->
-                <!--</div>-->
-            </text_slide>
-
-            <span class="arrow arrow-left" @click="onClick"></span>
-            <span class="arrow arrow-right" @click="onClick"></span>
-
         </div>
-        <!--<div class="inspired-by">-->
-            <!--<a target="_blank" href="https://dribbble.com/shots/3874641-Daily-UI-Day-32-Crowdfunding">-->
-                <!--<small>inspired by <strong>this dribbble</strong> shot</small>-->
-            <!--</a>-->
-            <!--<a class="second-link" target="_blank" href="https://codepen.io/akosstegner/pen/MQvbEe">-->
-                <!--<small> and <strong>this pen</strong></small>-->
-            <!--</a>-->
-        <!--</div>-->
+        <div class="controls-container">
+            <button class="controls-button"
+                    v-for="(slide, index) in slides"
+                    v-bind:key="index"
+                    v-bind:class="{ active: index === currentSlide }"
+                    v-on:click="updateSlide(index)">{{ slide.projectName }}</button>
+        </div>
+        <div class="pagination-container">
+            <span class="pagination-item"
+                  v-for="(slide, index) in slides"
+                  v-bind:key="index"
+                  v-bind:class="{ active: index === currentSlide }"
+                  v-on:click="updateSlide(index)"></span>
+        </div>
     </div>
 </template>
-<!--<script src="../../../assets/css/static/anime.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.8/vue.min.js"></script>-->
 <script>
-    import text_slide from '../project/text_slide'
-
+    import axios from 'axios'
     export default {
-        name: "test",
-        components: {text_slide},
-        data: () => ({
-            activeNum: 0,
-            activeNames: ['1'],
-
-            imgUrl:'http://localhost:8088/show?pictureName=',
-            activeNames: ['1','2','3','4','5'],
-            currentRow:null,
-            // downloadhttp: 'E:\\coding-web\\vue-manage-system\\src\\assets\\img\\img.jpg',
-            activity:
-                {
-                    rating : 0,
-                    title: "项目介绍",
-                    type: 'primary',
-                    size: 'large',
-                    projectName:"项目一",
-                    projectTeacher: "导师一",
-                    projectType: "Javaweb",
-                    projectStudent: "学生1、学生2、学生3、学生4、学生5",
-                    projectDesc: "这是一个怎么样的项目",
-                    teamDetail: "hhh",
-                    icon: 'el-icon-more'
-                },
-            pic:{
-                title: '图片展示',
-                type: 'primary',
-                size: 'large',
-                icon: 'el-icon-picture',
-                picList: [
-                    {imgUrla: require('../../../assets/img/login-bg.jpg')},
-                    {imgUrla: require('../../../assets/img/login-bg.jpg')},
-                    {imgUrla: require('../../../assets/img/login-bg.jpg')},
-                    {imgUrla: require('../../../assets/img/login-bg.jpg')},
-                    {imgUrla: require('../../../assets/img/login-bg.jpg')}
-                ]
-            },
-            video:{
-                title: '视频展示',
-                type: 'primary',
-                size: 'large',
-                icon: 'el-icon-caret-right',
-                viderUrl: require('../../../assets/vedio/vedio.mp4')
-                // viderUrl: 'http://babylife.qiniudn.com/FtRVyPQHHocjVYjeJSrcwDkApTLQ',
-            },
-
-            file:{
-                title: '文件展示',
-                type: 'primary',
-                size: 'large',
-                icon: 'el-icon-document',
-                fileList: [
-                    {id:'1',name: "文件1"},
-                    {id:'2',name: "文件2"},
-                    {id:'3',name: "文件3"}
-                ]
-            }
-        }),
-
-        computed: {
-            activeItem() {
-                return this.items[this.activeNum];
+        name: 'test',
+        filters: {
+            ellipsis:function (value) {
+                if (!value) return ''
+                if (value.length > 60) {
+                    return value.slice(0,60) + '...'
+                }
+                return value
             }
         },
-
+        data() {
+            return {
+                imgUrl:'http://localhost:8088/show?pictureName=',
+                currentSlide: 0,
+                isPreviousSlide: false,
+                isFirstLoad: true,
+                slides: [
+                    // {
+                    //     projectName: '实训项目展示平台',
+                    //     projectDetail: "无论是小学、中学还是大学，学生的作品展示已经是学校教学必不可少的一个环节。目前，学校的作品展示方式主要分为两种：一种是现实的，即必须有实物放在展览台上或者现场操作展示；另一种是虚拟的，即通过视频、照片或者网络展示。第一种实物展示最大的特点就是生动直观，观赏者可以近距离从各个角度观赏作品，但是这种展示方法也有很多缺点，首先一点就是无法长时间保存，无法成为学校长期使用的教学资源；其次，并不是所有的作品都是以实物的形式呈现，尤其是在软件工程领域；最后，实物的展示只能展示结果，忽视了过程，而在教学过程中更注重的是过程的学习。总结以上几点，我校实训项目的展示平台的设计与实现就尤为的重要，目前，我校学生的课程设计、学科竞赛和创新作品在老师评定完成绩或是比赛评奖结束后就失去了价值，其实，这些作品还可以供其他同学参考交流甚至完善，我们希望学校可以通过我们设计实训项目展示平台通过网页的形式，保存和展示实训项目，可以方便的看到学生的实训成果",
+                    //     // sublineFirstLine: "Nihil sub sole",
+                    //     // sublineSecondLine: "novum",
+                    //     // bgImg: "https://i.postimg.cc/C5yvGSkm/slide0.jpg",
+                    //     bgImg: require('../../../assets/img/TIM图片20190430134150.jpg'),
+                    //     // rectImg: "https://i.postimg.cc/vTW0XkvM/slide-rect0.jpg"
+                    // },
+                    // {
+                    //     projectName: "Nulla",
+                    //     projectDetail: "Auctor",
+                    //     // sublineFirstLine: "Il n'y a rien de neuf sous",
+                    //     // sublineSecondLine: "le soleil",
+                    //     bgImg: "https://i.postimg.cc/Qx34VNXM/slide1.jpg",
+                    //     // rectImg: "https://i.postimg.cc/ryWZ8R2b/slide-rect1.jpg"
+                    // },
+                    // {
+                    //     projectName: "Nullam",
+                    //     projectDetail: "Ultricies",
+                    //     // sublineFirstLine: "Τίποτα καινούργιο κάτω από",
+                    //     // sublineSecondLine: "τον ήλιο",
+                    //     bgImg: "https://i.postimg.cc/t4RBtrnQ/slide2.jpg",
+                    //     // rectImg: "https://i.postimg.cc/3JFLGMRF/slide-rect2.jpg"
+                    // },
+                    // {
+                    //     projectName: "Nullam",
+                    //     projectDetail: "Ultricies",
+                    //     // sublineFirstLine: "Τίποτα καινούργιο κάτω από",
+                    //     // sublineSecondLine: "τον ήλιο",
+                    //     bgImg: "https://i.postimg.cc/t4RBtrnQ/slide2.jpg",
+                    //     // rectImg: "https://i.postimg.cc/3JFLGMRF/slide-rect2.jpg"
+                    // },
+                    // {
+                    //     projectName: "Nullam",
+                    //     projectDetail: "Ultricies",
+                    //     // sublineFirstLine: "Τίποτα καινούργιο κάτω από",
+                    //     // sublineSecondLine: "τον ήλιο",
+                    //     bgImg: "https://i.postimg.cc/t4RBtrnQ/slide2.jpg",
+                    //     // rectImg: "https://i.postimg.cc/3JFLGMRF/slide-rect2.jpg"
+                    // }
+                ]
+            }
+        },
         created(){
-            let pName = this.$route.query.name;
-            console.log("name:"+pName)
-            this.getProject(pName);
-            this.getPicture(pName);
-            this.getVideo(pName);
-            this.getFile(pName);
+            this.getTopProject();
         },
+        mounted: function () {
+            var productRotatorSlide = document.getElementById("app");
+            var startX = 0;
+            var endX = 0;
 
+            productRotatorSlide.addEventListener("touchstart", (event) => startX = event.touches[0].pageX);
+
+            productRotatorSlide.addEventListener("touchmove", (event) => endX = event.touches[0].pageX);
+
+            productRotatorSlide.addEventListener("touchend", function(event) {
+                var threshold = startX - endX;
+
+                if (threshold < 150 && 0 < this.currentSlide) {
+                    this.currentSlide--;
+                }
+                if (threshold > -150 && this.currentSlide < this.slides.length - 1) {
+                    this.currentSlide++;
+                }
+            }.bind(this));
+        },
         methods: {
-            onClick() {
-                this.activeNum = this.activeNum >= 3 ? 0 : ++this.activeNum;
-                console.log("activeNum:"+this.activeNum)
-            },
-            handleChange(val) {
-                console.log(val);
-            },
-
-
-            getProject(pName){
-                console.log(pName)
-                axios.post('http://localhost:8088/projectShow',qs.stringify({
-                    "pName" : pName
-                })).then(response => {
-                    this.activity.projectName = response.data['projectName']
-                    this.activity.projectTeacher = response.data['teacherName']
-                    this.activity.projectType = response.data['type']
-                    this.activity.projectStudent = response.data['studentName']
-                    this.activity.projectDesc = response.data['projectDetail']
-                    this.activity.teamDetail = response.data['teamDetail']
-                    this.activity.rating = response.data['rating']
+            getTopProject(){
+                axios.get('http://localhost:8088/getHomePage').then(response => {
+                    console.log(response.data);
+                    this.slides = response.data;
                 }).catch(e => {
-                    this.error.push(e)
+                    this.errors.push(e)
                 })
             },
-            getPicture(pName){
-                axios.post('http://localhost:8088/projectPicture',qs.stringify({
-                    'projectName' : pName
-                })).then(response => {
-                    this.pic.picList = response.data
-                    console.log(this.pic.picList)
-                }).catch(e => {
-                    this.error.push(e)
-                })
-            },
-            getVideo(pName){
-                axios.post('http://localhost:8088/projectVideo',qs.stringify({
-                    'projectName' : pName
-                })).then(response => {
-                    this.video.viderUrl = response.data
-                }).catch(e => {
-                    this.error.push(e)
-                })
-            },
-            getFile(pName){
-                axios.post('http://localhost:8088/projectFile',qs.stringify({
-                    'projectName' : pName
-                })).then(response => {
-                    this.file.fileList = response.data
-                    // console.log(this)
-                }).catch(e => {
-                    this.error.push(e)
-                })
-            },
-
-            handleChange(val) {
-                console.log(val);
-            },
-            setCurrent(row) {
-                this.$refs.singleTable.setCurrentRow(row);
-            },
-            handleCurrentChange(val) {
-                this.currentRow = val;
-            },
-            downloadFile(){
-                let row = this.currentRow
-                console.log(row)
-                window.location.assign("http://localhost:8088/download?filename="+row.name)
-                // axios.get("http://localhost:8088/download?filename="+row.name).then(res => {
-                //     console.log("下载成功")
-                // }).catch(e => {
-                //     this.error.push(e)
+            projectShow(btn){
+                // console.log(btn.target.innerText)
+                console.log(btn)
+                this.$router.push({ path:'/projectShow?name='+btn})
+                // axios.post('http://localhost:8088/projectShow',qs.stringify({
+                //     "projectName" : btn.target.innerText
+                // })).then(response => {
+                //
                 // })
-                // axios.post("http://localhost:8088/download",qs.stringify({
-                //     "filename" : row.name
-                // })).then(res => {
-                //     console.log("下载成功")
-                // }).catch(e => {
-                //     this.error.push(e)
-                // })
-                // this.$router.push({ })
             },
-            addRating(){
-                axios.post("http://localhost:8088/addRating",qs.stringify({
-                    "projectName" : this.activity.projectName
-                })).then(res => {
-                    this.activity.rating = res.data
-                }).catch(e => {
-                    this.error.push(e)
-                })
+            updateSlide(index) {
+                index < this.currentSlide ? this.isPreviousSlide = true : this.isPreviousSlide = false;
+                this.currentSlide = index;
+                this.isFirstLoad = false;
             }
         }
     }
+
 </script>
 
-<style lang="scss">
-    @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
-
-    * {
+<style  lang="scss">
+    @import url("https://fonts.googleapis.com/css?family=Playfair+Display:700,900");
+    @import url("https://fonts.googleapis.com/css?family=Montserrat:400,700");
+    html {
         box-sizing: border-box;
-        font-family: 'Roboto';
+    }
+
+    *,
+    *:before,
+    *:after {
+        box-sizing: inherit;
+    }
+
+    @mixin media($breakpoint) {
+        @media (max-width: $breakpoint) {
+            @content;
+        }
+    }
+
+    @mixin media-min($breakpoint) {
+        @media (min-width: $breakpoint) {
+            @content;
+        }
+    }
+
+    @mixin media-height($breakpoint) {
+        @media (max-height: $breakpoint) {
+            @content;
+        }
+    }
+
+    // ------------- VARIABLES ------------- //
+    $whitespace-height: 50px;
+    $left-offset: 13vw;
+    $rect-width: 48vh;
+    $rect-height: 62vh;
+    $rect-border-width: 5vh;
+    $control-btn-padding: 1.6rem;
+    $control-active-btn-offset: .3rem;
+    $left-offset-small: 9vw;
+    $rect-height-small: 20vw;
+    $rect-width-small: 16vw;
+    $rect-border-width-small: 5vh;
+    // ------------- GENERAL ------------- //
+    %callout {
+        font-family: 'Montserrat';
+        text-transform: uppercase;
+        color: #fff;
+        letter-spacing: .12rem;
+        font-size: .7rem;
+        line-height: 1;
+    }
+
+    [v-cloak] {
+        opacity: 0;
     }
 
     body {
-        /*display: flex;*/
-        /*flex-direction: column;*/
-        /*justify-content: center;*/
-        /*align-items: center;*/
-        /*width: 100%;*/
-        /*min-height: 100vh;*/
-        /*background: linear-gradient(to top right, #d5888c, #fdfafa 43%, #fdfafa 56%, #85365f);*/
-        /*margin: 0 auto;*/
-        /*padding: 20px 50px;*/
+        cursor: default;
+        ::selection {
+            background-color: rgba(46, 49, 52, .7);
+            color: #f5f5f1;
+        }
+        ::-moz-selection {
+            background-color: rgba(46, 49, 52, .7);
+            color: #f5f5f1;
+        }
     }
 
-    .crowd-funding {
+    .wrapper {
+        height: calc(108vh - #{$whitespace-height});
+        min-height: 36rem;
         position: relative;
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        max-width: 800px;
-        height: 100%;
-        min-height: 550px;
-        max-height: 1000px;
-        box-shadow: 0px 2px 4px hsla(0, 0%, 0%, .18);
-        box-shadow: 0 10px 40px 0 rgba(0, 0, 0, .27);
-        border-radius: 3px;
-
-    &__header {
-         display: flex;
-         justify-content: space-between;
-         align-items: flex-end;
-         height: 40%;
-         min-height: 250px;
-         padding: 20px 30px;
-         background: linear-gradient(
-                 rgba(133, 54, 95, .8),
-                 rgba(200, 70, 87, .8)
-         ), url('https://images.unsplash.com/photo-1444212477490-ca407925329e?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=86d24240ca6b1df611e98ed6bd7a1efc&auto=format&fit=crop&w=1400&q=80');
-
-         background: linear-gradient(
-                 rgba(200, 70, 87, .3),
-                 rgba(133, 54, 95, .8)
-         ), url('https://images.unsplash.com/photo-1444212477490-ca407925329e?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=86d24240ca6b1df611e98ed6bd7a1efc&auto=format&fit=crop&w=1400&q=80');
-
-         background-size: cover;
-         background-position: center;
-         color: #fdfafa;
-         border-radius: 3px 3px 0 0;
-     // border-bottom: 6px solid #85365f;
-
-    h1 {
-        font-size: 50px;
-        letter-spacing: 3px;
-        margin-bottom: 7px;
-        padding: 0;
-        line-height: 50px;
-        opacity: .9;
+        @include media(630px) {
+            height: 100vh;
+            min-height: 0;
+        }
     }
 
-    p {
-        font-size: 16px;
-        opacity: .8;
-        margin: 0 0 3px 0;
-        padding: 0;
-        line-height: 18px;
+    // ------------- SLIDES ------------- //
+    .slide {
+        &-wrapper {
+            background-size: cover;
+            height: 100%;
+            background-position: center center;
+            position: absolute;
+            width: 100%;
+            background-blend-mode: darken;
+            &:nth-child(1) {
+                /*background-color: rgba(115, 129, 153, .4);*/
+                &:before {
+                    background-color: rgba(115, 129, 153, .25);
+                }
+                .slide-content-text {
+                    text-shadow: 2px 5px 45px rgba(85, 96, 113, 0.25);
+                }
+            }
+            &:nth-child(2) {
+                /*background-color: rgba(144, 171, 184, .7);*/
+                &:before {
+                    background-color: rgba(144, 171, 184, .3);
+                }
+                .slide-content-text {
+                    text-shadow: 2px 5px 45px rgba(121, 142, 152, 0.2);
+                }
+            }
+            &:nth-child(3) {
+                /*background-color: rgba(86, 125, 156, .5);*/
+                &:before {
+                    background-color: rgba(86, 125, 156, 0.2);
+                }
+                .slide-content-text {
+                    text-shadow: 2px 5px 55px rgba(57, 83, 103, 0.4);
+                }
+            }
+            &:before {
+                content: "";
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                z-index: 1;
+            }
+        }
+        &-inner {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            overflow: hidden;
+        }
+        &-bg-text {
+            font-family: 'Playfair Display';
+            color: #000;
+            font-size: 30vh;
+            line-height: .8;
+            opacity: .03;
+            font-weight: 900;
+            margin-top: -4rem;
+            position: absolute;
+            top: 50%;
+            left: 5vw;
+            transform: translateY(-50%);
+            > p:last-child {
+                padding-left: 4rem;
+            }
+        }
+        &-content {
+            color: #fff;
+            margin-top: 5rem;
+            position: absolute;
+            top: 50%;
+            left: calc(#{$left-offset} + (.7) * #{$rect-width});
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            @include media(1000px) {
+                left: calc(#{$left-offset} + 1rem);
+            }
+            @include media-height(730px) {
+                top: 30%;
+                transform: translateY(-30%);
+                left: calc(#{$left-offset-small} + (.7) * #{$rect-width-small});
+            }
+            &-text {
+                font-family: 'SimSun';
+                font-size: 5rem;
+                letter-spacing: .1rem;
+                width: 400px;
+                line-height: 1;
+                font-weight: 500;
+                will-change: auto;
+                @include media-height(790px) {
+                    font-size: 1.2rem;
+                }
+                @include media(1150px) {
+                    font-size: 1rem;
+                }
+                @include media(840px) {
+                    font-size: 1rem;
+                }
+                @include media(630px) {
+                    margin-bottom: 5.5rem;
+                }
+                @include media(500px) {
+                    font-size: 3.5rem;
+                }
+                > p:last-child {
+                    padding-left: 3rem;
+                }
+            }
+            &-cta {
+                @extend %callout;
+                cursor: pointer;
+                align-self: flex-start;
+                margin-top: 4.5rem;
+                margin-left: calc((.3) * 48vh + 4.5rem);
+                padding: .9rem 2.2rem;
+                border-left: 1px solid #fff;
+                border-right: 1px solid #fff;
+                transition: .18s ease-in-out;
+                font-weight: 700;
+                @include media(1000px) {
+                    background-color: rgba(255, 255, 255, .3);
+                    padding-top: 1.2rem;
+                    padding-bottom: 1.2rem;
+                }
+                @include media(630px) {
+                    display: none;
+                }
+                &:hover {
+                    color: #000;
+                    background-color: #fff;
+                }
+            }
+        }
+        &-rect {
+            height: $rect-height;
+            width: $rect-width;
+            border-image-slice: 10%;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: $left-offset;
+            border-width: $rect-border-width;
+            border-style: solid;
+            box-shadow: 2px 2px 90px 30px rgba(41, 50, 61, 0.22);
+            will-change: auto;
+            @include media-height(790px) {
+                left: $left-offset-small;
+                height: $rect-height-small;
+                width: $rect-width-small;
+                border-width: $rect-border-width-small;
+            }
+            @include media-height(730px) {
+                top: 30%;
+                transform: translateY(-30%);
+            }
+            &-filter {
+                filter: brightness(110%) contrast(110%) saturate(110%);
+            }
+        }
+        &-side-text {
+            @extend %callout;
+            position: absolute;
+            left: calc(#{$left-offset} - 3rem);
+            writing-mode: vertical-rl;
+            top: calc((50% - (#{$rect-height} / 2)) + (#{$rect-border-width} / 2));
+            @include media-height(790px) {
+                left: calc(#{$left-offset-small} - 3rem);
+                top: calc((50% - (#{$rect-height-small} / 2)) + (#{$rect-border-width-small} / 2));
+            }
+            @include media-height(730px) {
+                top: calc((40% - (#{$rect-height-small} / 2)) + (#{$rect-border-width-small} / 2));
+            }
+            > span:first-child {
+                font-weight: 700;
+            }
+            &:after {
+                content: "";
+                width: 1px;
+                background-color: #fff;
+                height: 40px;
+                display: block;
+                position: absolute;
+                top: calc(100% + 25px);
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
     }
 
-    .hashtags {
-        opacity: .8;
-        font-size: 10px;
-        margin-top: 5px;
+    // ------------- CONTROLS ------------- //
+    .controls {
+        &-container {
+            position: absolute;
+            z-index: 200;
+            display: flex;
+            bottom: 0;
+            right: 100px;
+            left: 60px;
+            align-items: flex-end;
+            @include media(630px) {
+                display: none;
+            }
+        }
+        &-button {
+            @extend %callout;
+            cursor: pointer;
+            background-color: rgba(208, 206, 204, .32);
+            border: 0;
+            padding: $control-btn-padding 2.2rem;
+            flex-basis: 0;
+            flex-grow: 1;
+            min-width: 15rem;
+            transition: .25s ease-in-out;
+            outline: 0;
+            @include media(730px) {
+                padding: 1.2rem 1.4rem;
+                min-width: 13rem;
+            }
+            &:not(.active) {
+                &:hover {
+                    color: #000;
+                    background-color: #fff;
+                }
+            }
+            &.active {
+                cursor: default;
+                font-weight: 700;
+                background-color: #3b3e45;
+                padding-top: $control-btn-padding + $control-active-btn-offset;
+                padding-bottom: $control-btn-padding + $control-active-btn-offset;
+                margin-bottom: -$control-active-btn-offset;
+                position: relative;
+                @include media(730px) {
+                    padding-top: 1.4rem;
+                    padding-bottom: 1.4rem;
+                    margin-bottom: -0.15rem;
+                }
+                &:after {
+                    content: "";
+                    background-color: #e3e3e3;
+                    height: 5px;
+                    width: calc(100% - 8px);
+                    position: absolute;
+                    top: 100%;
+                    left: 4px;
+                }
+            }
+            &:not(.active) + & {
+                border-left: 1px solid rgba(255, 255, 255, .2);
+            }
+        }
     }
 
-    &__description {
-        /*align-items: center;*/
-         width: 100%;
-     }
-
-    &__details {
-         width: 40%;
-         display: flex;
-         flex-direction: column;
-         align-items: flex-end;
-
-    .days-to-go {
-        margin-top: 5px;
-        margin-bottom: 5px;
+    // ------------- PAGINATION ------------- //
+    .pagination {
+        &-container {
+            position: absolute;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            @include media(920px) {
+                display: none;
+            }
+        }
+        &-item {
+            width: 30px;
+            height: 1px;
+            /*background-color: rgba(255, 255, 255, .6);*/
+            transition: .18s ease-in-out;
+            & + & {
+                margin-top: 1rem;
+            }
+            &.active {
+                background-color: #fff;
+                position: relative;
+                transform: translateX(-.6rem);
+                width: 35px;
+                &:after {
+                    content: "";
+                    height: 4px;
+                    width: 2px;
+                    border-radius: 35%;
+                    background-color: #fff;
+                    display: inline-block;
+                    position: absolute;
+                    right: 0;
+                    top: 50%;
+                    transform: translateX(.6rem) translateY(-50%);
+                }
+            }
+            &:not(.active) {
+                cursor: pointer;
+                &:hover {
+                    background-color: #fff;
+                    width: 35px;
+                }
+            }
+        }
     }
 
-    .funding-counter {
-        display: flex;
-        flex-direction: column;
-
-    p {
-        opacity: 1;
-
-    @media (max-width: 523px) {
-        font-size: 12px;
-    }
-    }
-
-    &__bar {
-         width: 100%;
-         height: 5px;
-         border: 1px solid #fff;
-         margin-top: 3px;
-         background: linear-gradient(to right, #fff 40%, transparent 40%);
-         border-radius: 1px;
-     }
-    }
-    }
+    // ------------- ANIMATION EFFECT ------------- //
+    $slide-swipe: .9s;
+    $text-cut-up: .5s;
+    @keyframes slideLeft {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(-100%);
+        }
     }
 
-    &__main {
-         display: flex;
-         justify-content: space-between;
-         height: 100%;
-         min-height: 1600px;
-         padding: 20px 30px;
-         background: #fdfafa;
-         color: #85365f;
-         border-radius: 0 0 3px 3px;
-         overflow: hidden;
-
-    h4 {
-        margin: 0 0 10px 0;
+    @keyframes slideRight {
+        from {
+            transform: translateX(-100%);
+        }
+        to {
+            transform: translateX(0);
+        }
     }
 
-    .content {
-        font-size: 12px;
-        font-weight: 300;
-        margin: 5px 0;
-        line-height: 8px;
+    @keyframes cutTextUp {
+        from {
+            clip-path: inset(0 0 -10% 0);
+        }
+        to {
+            clip-path: inset(0 0 100% 0);
+        }
     }
 
-    &__col {
-         display: flex;
-         flex-direction: column;
-         width: 45%;
-
-    .icon {
-        width: 30px;
-        height: 30px;
-        margin-bottom: 10px;
+    @keyframes cutTextDown {
+        from {
+            clip-path: inset(100% 0 0 0);
+        }
+        to {
+            clip-path: inset(-10% 0 -20% 0);
+            opacity: 1;
+        }
     }
 
-    .button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        max-width: 150px;
-        margin-top: 15px;
-        color: #fdfafa;
-        background-color: #85365f;
-        border: 1px solid #85365f;
-        border-radius: 2px;
-        transition: all 200ms;
-        cursor: pointer;
-
-    &:hover {
-         background: #fdfafa;
-         color: #85365f;
-     }
+    @keyframes cutTextDownFromTop {
+        from {
+            clip-path: inset(0 0 100% 0);
+        }
+        to {
+            clip-path: inset(0 0 -30% 0);
+            opacity: 1;
+        }
     }
 
-    ul {
-        list-style: none;
-        padding: 0;
-        margin: 5px 0 0 0;
-
-    li {
-        position: relative;
-        padding-left: 15px;
+    @keyframes rectMovement {
+        0% {
+            transform: translateX(0) rotate(0) translateY(-50%);
+        }
+        60% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateX(calc(-#{$rect-width} + -#{$left-offset})) rotate(12deg) translateY(-50%);
+            opacity: 0;
+        }
     }
 
-    .list-content {
-        font-size: 12px;
-        font-weight: 300;
-        margin: 7px 0;
+    @include media-height(730px) {
+        @keyframes rectMovement {
+            0% {
+                transform: translateX(0) rotate(0) translateY(-30%);
+            }
+            60% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(calc(-#{$rect-width} + -#{$left-offset})) rotate(12deg) translateY(-30%);
+                opacity: 0;
+            }
+        }
     }
 
-    li::before {
-        box-sizing: border-box;
-        position: absolute;
-        left: 0;
-        top: 2px;
-        content: "";
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        border: 2px solid #85365f;
-    }
-    }
-    }
-
-    }
-    }
-
-    .arrow {
-        position: absolute;
-        content: "";
-        top: calc(50% - 10px);
-        width: 25px;
-        height: 25px;
-        transform: rotate(45deg);
-        transition: all 200ms;
-        cursor: pointer;
+    @keyframes rectMovementFromRight {
+        0% {
+            transform: translateX(calc(#{$rect-width})) rotate(12deg) translateY(-50%);
+            opacity: 0;
+        }
+        60% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateX(0) rotate(0) translateY(-50%);
+            opacity: 1;
+            @include media-height(730px) {
+                transform: translateX(0) rotate(0) translateY(-30%);
+            }
+        }
     }
 
-    .arrow-right {
-        right: -40px;
-        border-top: 2px solid #85365f;
-        border-right: 2px solid #85365f;
-
-    &:hover {
-         right: -43px;
-     }
+    @include media-height(730px) {
+        @keyframes rectMovementFromRight {
+            0% {
+                transform: translateX(calc(#{$rect-width})) rotate(12deg) translateY(-30%);
+                opacity: 0;
+            }
+            60% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(0) rotate(0) translateY(-30%);
+                opacity: 1;
+            }
+        }
     }
 
-    .arrow-left {
-        left: -40px;
-        border-bottom: 2px solid #85365f;
-        border-left: 2px solid #85365f;
-
-    &:hover {
-         left: -43px;
-     }
+    @keyframes rectMovementRight {
+        0% {
+            transform: translateX(calc(-#{$rect-width} + -#{$left-offset})) rotate(12deg) translateY(-50%);
+        }
+        40% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateX(0) rotate(0) translateY(-50%);
+            opacity: 1;
+            @include media-height(730px) {
+                transform: translateX(0) rotate(0) translateY(-30%);
+            }
+        }
     }
 
-    .inspired-by {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        width: 100%;
-        max-width: 800px;
-    a {
-        font-size: 14px;
-        padding: 3px 0;
-        text-decoration: none;
-        color: #85365f;
-        opacity: .8;
+    @include media-height(730px) {
+        @keyframes rectMovementRight {
+            0% {
+                transform: translateX(calc(-#{$rect-width} + -#{$left-offset})) rotate(12deg) translateY(-30%);
+            }
+            40% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(0) rotate(0) translateY(-30%);
+                opacity: 1;
+            }
+        }
     }
 
-    a.second-link {
-        margin-left: 3px
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
     }
+
+    .slide-wrapper {
+        opacity: 0;
+        transition-delay: $slide-swipe + $text-cut-up;
+        transition-duration: 0s;
+        transition-property: opacity;
+        will-change: opacity, transform;
+        &:not(.active) {
+            animation-delay: $text-cut-up;
+            animation-name: slideLeft;
+            animation-duration: $slide-swipe;
+            animation-timing-function: cubic-bezier(0.18, 0.54, 0.52, 0.93);
+            pointer-events: none;
+            .slide-content-text > p,
+            .slide-side-text {
+                animation-name: cutTextUp;
+                animation-duration: $text-cut-up;
+                animation-timing-function: ease-out;
+            }
+            .slide-rect {
+                animation-name: rectMovement;
+                animation-duration: $text-cut-up;
+                animation-timing-function: ease;
+                animation-fill-mode: forwards;
+            }
+        }
+        &.active {
+            transition-delay: 0s;
+            opacity: 1;
+            .slide-content-text > p {
+                opacity: 0;
+                animation-delay: $text-cut-up + .3s;
+                animation-name: cutTextDown;
+                animation-duration: $text-cut-up;
+                animation-timing-function: ease;
+                animation-fill-mode: forwards;
+            }
+            .slide-rect {
+                opacity: 0;
+                animation-name: rectMovementFromRight;
+                animation-duration: $text-cut-up - .05s;
+                animation-timing-function: ease;
+                animation-fill-mode: forwards;
+                animation-delay: $slide-swipe;
+            }
+        }
+        .is-previous & {
+            &:not(.active) {
+                animation: none;
+                .slide-rect {
+                    animation: none;
+                }
+            }
+            &.active {
+                transform: translateX(-100%);
+                animation-fill-mode: forwards;
+                animation-delay: $text-cut-up;
+                animation-name: slideRight;
+                animation-duration: $slide-swipe - .1s;
+                animation-timing-function: cubic-bezier(0.18, 0.54, 0.52, 0.93);
+                .slide-rect {
+                    opacity: 0;
+                    animation-name: rectMovementRight;
+                    animation-duration: $text-cut-up;
+                    animation-timing-function: ease-out;
+                    animation-fill-mode: forwards;
+                    animation-delay: $slide-swipe;
+                }
+            }
+        }
+    }
+
+    .first-load {
+        .slide-wrapper.active .slide-side-text,
+        .slide-wrapper.active .slide-content-cta,
+        .slide-wrapper.active .slide-rect,
+        .controls-container {
+            opacity: 0;
+            animation-name: fadeIn;
+            animation-delay: .3s;
+            animation-duration: .3s;
+            animation-fill-mode: forwards;
+            animation-timing-function: ease-in;
+        }
+        .slide-wrapper.active .slide-content-text > p {
+            animation-name: fadeIn;
+            animation-delay: $text-cut-up;
+            animation-duration: $text-cut-up + .2s;
+        }
     }
 </style>
+

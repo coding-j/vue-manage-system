@@ -67,7 +67,7 @@
                         <el-collapse-item title="文件列表" name="5">
                             <div>
                                 <el-table
-                                        @row-click="downloadFile()"
+                                        @row-click="watch()"
                                         ref="singleTable"
                                         :data="file.fileList"
                                         highlight-current-row
@@ -81,6 +81,13 @@
                                             property="name"
                                             label="文件名"
                                             width="120">
+                                    </el-table-column>
+                                    <el-table-column label="操作">
+                                        <template slot-scope="scope">
+                                            <el-button
+                                                    size="mini"
+                                                    @click="downloadFile(scope.$index, scope.row)">下载</el-button>
+                                        </template>
                                     </el-table-column>
                                 </el-table>
                             </div>
@@ -325,10 +332,11 @@
             handleCurrentChange(val) {
                 this.currentRow = val;
             },
-            downloadFile(){
-                let row = this.currentRow
+            downloadFile(index,row){
+                // let row = this.currentRow
                 console.log(row)
                 window.location.assign("http://localhost:8088/download?filename="+row.name)
+                // window.open("http://localhost:8088/show?pictureName="+row.name)
                 // axios.get("http://localhost:8088/download?filename="+row.name).then(res => {
                 //     console.log("下载成功")
                 // }).catch(e => {
@@ -342,6 +350,14 @@
                 //     this.error.push(e)
                 // })
                 // this.$router.push({ })
+            },
+            watch(){
+                let row = this.currentRow
+                console.log(row)
+                let url = "http://localhost:8088/show?pictureName="+row.name
+                let enUrl = "https://view.officeapps.live.com/op/view.aspx?src=" + encodeURIComponent(url)
+                console.log(enUrl)
+                window.open(enUrl)
             },
             addRating(){
                 axios.post("http://localhost:8088/addRating",qs.stringify({
