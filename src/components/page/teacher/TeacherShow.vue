@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-row style="padding: 30px 80px 10px 50px" :gutter="20">
+        <el-row style="padding: 30px 80px 10px 50px" :gutter="100">
             <el-col :span="6">
                 <img :src="imgUrl+pictureUrl" class="pic_size"><br><br>
                 <div align="center" v-bind:style="{fontSize:25+'px'}">

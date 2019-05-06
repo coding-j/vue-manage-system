@@ -124,7 +124,7 @@
             edit(){
                 let teacher = {
                     "teacherName" : this.teacher.teacherName,
-                    "pictureUrl" : this.file.name,
+                    "pictureUrl" : this.fileList[0].name,
                     "working" : this.teacher.work_unit,
                     "address": this.teacher.address,
                     "introduction":this.teacher.TeacherDetail,

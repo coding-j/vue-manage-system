@@ -91,7 +91,7 @@ export default new Router({
                     // 实训项目列表
                     path: '/project_form',
                     component: resolve => require(['../components/page/project/ProjectForm.vue'], resolve),
-                    meta: { title: '实训项目上传', permission: true }
+                    meta: { title: '实训项目上传', permission: false }
                 },
                 {
                     path: '/about',
@@ -108,12 +108,12 @@ export default new Router({
                 {
                     path: '/projectReview',
                     component: resolve => require(['../components/page/admin/ProjectReview.vue'],resolve),
-                    meta: { title: '项目审核', permission: true }
+                    meta: { title: '项目审核', permission: false }
                 },
                 {
                     path: '/admin',
                     component: resolve => require(['../components/page/admin/ProjectReviewList.vue'],resolve),
-                    meta: { title: '管理员', permission: true }
+                    meta: { title: '管理员', permission: false }
                 },
                 {
                     path: '/teacherShow',
@@ -123,12 +123,12 @@ export default new Router({
                 {
                     path: '/teacherEdit',
                     component: resolve => require(['../components/page/admin/TeacherEdit.vue'],resolve),
-                    meta: { title: '老师信息编辑', permission: true }
+                    meta: { title: '老师信息编辑', permission: false }
                 },
                 {
                     path: 'teacherAdminShow',
                     component: resolve => require(['../components/page/admin/TeacherAdminShow.vue'],resolve),
-                    meta: { title: '管理员教师管理', permission: true }
+                    meta: { title: '管理员教师管理', permission: false }
                 },
                 {
                     path: '/teacherList',

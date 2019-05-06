@@ -6,7 +6,7 @@
                 <div class="crowd-funding__header__description">
 
                     <h1 >{{activity.projectName}}</h1 >
-                    <div class="hashtags">
+                    <div class="hashtags" style="color: #fff">
                         <p>项目类型：{{activity.projectType}} &nbsp;&nbsp;&nbsp; 完成时间：{{activity.finishDate}}</p>
                         <p><strong>指导老师：{{activity.projectTeacher}}</strong></p>
                         <p><strong>完成学生：{{activity.projectStudent}}</strong></p>
@@ -44,16 +44,30 @@
                         </el-collapse-item>
                         <el-collapse-item title="图片介绍" name="3">
                             <div>
-                                <el-carousel :interval="4000" type="card" height="200px">
+                                <el-carousel :interval="4000" type="card" height="300px">
                                     <el-carousel-item v-for="item in pic.picList" :key="item">
-                                        <img :src="imgUrl+item.name">
+                                        <img :src="imgUrl+item.name" @click="show(imgUrl+item.name)">
                                         <!--<img :src="item.imgUrla">-->
                                     </el-carousel-item>
                                 </el-carousel>
                             </div>
+                            <VueEasyLightbox
+                                    :visible="visible"
+                                    :imgs="imgs"
+                                    :index="index"
+                                    @hide="handleHide"
+                            ></VueEasyLightbox>
                         </el-collapse-item>
                         <el-collapse-item title="视频介绍" name="4">
                             <div>
+                                <!--<div class="player">-->
+                                    <!--<video-player  class="video-player vjs-custom-skin"-->
+                                                   <!--ref="videoPlayer"-->
+                                                   <!--:playsinline="true"-->
+                                                   <!--:options="playerOptions"-->
+                                    <!--&gt;-->
+                                    <!--</video-player>-->
+                                <!--</div>-->
                                 <video width="320" height="240" controls="controls">
                                     <source :src="imgUrl+video.viderUrl" type="video/mp4" />
                                     <source :src="imgUrl+video.viderUrl" type="video/ogg" />
@@ -186,10 +200,15 @@
     import text_slide from '../project/text_slide'
     import axios from 'axios'
     import qs from 'qs'
+    import { videoPlayer } from 'vue-video-player'
+    import VueEasyLightbox from 'vue-easy-lightbox'
     export default {
         name: "ProjectShow",
-        components: {text_slide},
+        components: {text_slide,videoPlayer,VueEasyLightbox},
         data: () => ({
+            imgs: '',  // Img Url , string or Array
+            visible: false,
+            index: 0,  // default
             activeNum: 0,
             activeNames: ['1'],
 
@@ -248,7 +267,30 @@
                     {id:'2',name: "文件2"},
                     {id:'3',name: "文件3"}
                 ]
-            }
+            },
+            // playerOptions: {
+            //     // playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
+            //     autoplay: false, // 如果true,浏览器准备好时开始回放。
+            //     muted: false, // 默认情况下将会消除任何音频。
+            //     loop: false, // 导致视频一结束就重新开始。
+            //     preload: 'auto', // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
+            //     language: 'zh-CN',
+            //     aspectRatio: '16:9', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+            //     fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
+            //     sources: [{
+            //         type: 'video/mp4',
+            //         src: this.imgUrl+this.video.viderUrl  // 你的视频地址（必填）
+            //     }],
+            //     // poster: require('../assets/logo.png'), // 你的封面地址
+            //     width: document.documentElement.clientWidth,
+            //     notSupportedMessage: '此视频暂无法播放，请稍后再试' // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
+            //     // controlBar: {
+            //     //   timeDivider: true,
+            //     //   durationDisplay: true,
+            //     //   remainingTimeDisplay: false,
+            //     //   fullscreenToggle: true // 全屏按钮
+            //     // }
+            // }
         }),
 
         computed: {
@@ -267,6 +309,14 @@
         },
 
         methods: {
+            show(btn) {
+                this.imgs = btn;
+                this.visible = true
+            },
+            handleHide() {
+                this.visible = false
+            },
+
             onClick() {
                 this.activeNum = this.activeNum >= 3 ? 0 : ++this.activeNum;
                 console.log("activeNum:"+this.activeNum)
@@ -367,6 +417,11 @@
                 }).catch(e => {
                     this.error.push(e)
                 })
+            }
+        },
+        computed: {
+            player () {
+                return this.$refs.videoPlayer.player
             }
         }
     }
