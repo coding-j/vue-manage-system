@@ -128,7 +128,7 @@
                 this.currentRow = val;
             },
             openProjectDetails(row){
-                this.$router.push({ path:'/projectShow?name='+row.projectName  })
+                this.$router.push({ path:'/projectShow?id='+row.projectId })
             }
         }
     }

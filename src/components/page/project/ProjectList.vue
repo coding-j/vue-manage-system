@@ -47,7 +47,7 @@
             </div>
             <el-row :gutter="30" style="margin: 10px 50px 10px 50px">
                 <el-col :span="8" v-for="project in projectss">
-                    <el-card class="box-card" @click.native="projectShow(project.projectName)">
+                    <el-card class="box-card" @click.native="projectShow(project.projectId)">
                         <div>
                             <div>
                                 <figure class="image" align="center">
@@ -145,7 +145,7 @@
             projectShow(btn){
                 // console.log(btn.target.innerText)
                 console.log(btn)
-                this.$router.push({ path:'/projectShow?name='+btn})
+                this.$router.push({ path:'/projectShow?id='+btn})
                 // axios.post('http://localhost:8088/projectShow',qs.stringify({
                 //     "projectName" : btn.target.innerText
                 // })).then(response => {

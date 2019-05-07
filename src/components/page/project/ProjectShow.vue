@@ -81,7 +81,6 @@
                         <el-collapse-item title="文件列表" name="5">
                             <div>
                                 <el-table
-                                        @row-click="watch()"
                                         ref="singleTable"
                                         :data="file.fileList"
                                         highlight-current-row
@@ -98,6 +97,9 @@
                                     </el-table-column>
                                     <el-table-column label="操作">
                                         <template slot-scope="scope">
+                                            <el-button
+                                                    size="mini"
+                                                    @click="watch(scope.$index, scope.row)">查看</el-button>
                                             <el-button
                                                     size="mini"
                                                     @click="downloadFile(scope.$index, scope.row)">下载</el-button>
@@ -221,6 +223,7 @@
             // downloadhttp: 'E:\\coding-web\\vue-manage-system\\src\\assets\\img\\img.jpg',
             activity:
                 {
+                    projectId:0,
                     rating : 0,
                     title: "项目介绍",
                     type: 'primary',
@@ -300,12 +303,12 @@
         },
 
         created(){
-            let pName = this.$route.query.name;
-            console.log("name:"+pName)
-            this.getProject(pName);
-            this.getPicture(pName);
-            this.getVideo(pName);
-            this.getFile(pName);
+            let id = this.$route.query.id;
+            console.log("name:"+id)
+            this.getProject(id);
+            this.getPicture(id);
+            this.getVideo(id);
+            this.getFile(id);
         },
 
         methods: {
@@ -326,11 +329,12 @@
             },
 
 
-            getProject(pName){
-                console.log(pName)
+            getProject(id){
+                console.log(id)
                 axios.post('http://localhost:8088/projectShow',qs.stringify({
-                    "pName" : pName
+                    "projectId" : id
                 })).then(response => {
+                    this.activity.projectId = response.data['projectId']
                     this.activity.projectName = response.data['projectName']
                     this.activity.projectTeacher = response.data['teacherName']
                     this.activity.projectType = response.data['type']
@@ -343,9 +347,9 @@
                     this.error.push(e)
                 })
             },
-            getPicture(pName){
+            getPicture(id){
                 axios.post('http://localhost:8088/projectPicture',qs.stringify({
-                    'projectName' : pName
+                    'projectId' : id
                 })).then(response => {
                     this.pic.picList = response.data
                     console.log(this.pic.picList)
@@ -353,18 +357,18 @@
                     this.error.push(e)
                 })
             },
-            getVideo(pName){
+            getVideo(id){
                 axios.post('http://localhost:8088/projectVideo',qs.stringify({
-                    'projectName' : pName
+                    'projectId' : id
                 })).then(response => {
                     this.video.viderUrl = response.data[0].name
                 }).catch(e => {
                     this.error.push(e)
                 })
             },
-            getFile(pName){
+            getFile(id){
                 axios.post('http://localhost:8088/projectFile',qs.stringify({
-                    'projectName' : pName
+                    'projectId' : id
                 })).then(response => {
                     this.file.fileList = response.data
                     // console.log(this)
@@ -401,8 +405,8 @@
                 // })
                 // this.$router.push({ })
             },
-            watch(){
-                let row = this.currentRow
+            watch(index,row){
+                // let row = this.currentRow
                 console.log(row)
                 let url = "http://localhost:8088/show?pictureName="+row.name
                 let enUrl = "https://view.officeapps.live.com/op/view.aspx?src=" + encodeURIComponent(url)
@@ -411,7 +415,7 @@
             },
             addRating(){
                 axios.post("http://localhost:8088/addRating",qs.stringify({
-                    "projectName" : this.activity.projectName
+                    "projectId" : this.activity.projectId
                 })).then(res => {
                     this.activity.rating = res.data
                 }).catch(e => {

@@ -210,8 +210,6 @@
         },
 
         methods: {
-
-
             addTeacher(){
                 let teacher = {
                     "teacherName" : this.form.name,
@@ -315,7 +313,7 @@
                 this.multipleSelection = val;
             },
             openProjectDetails(row){
-                this.$router.push({ path:'/projectReview?name='+row.projectName  })
+                this.$router.push({ path:'/projectReview?id='+row.projectId  })
             },
             // openTeacherDetails(row){
             //     console.log(row.teacherName)

@@ -289,11 +289,11 @@
             }
         },
         created(){
-            let pName = this.$route.query.name;
-            this.getProject(pName);
-            this.getPicture(pName);
-            this.getVideo(pName);
-            this.getFile(pName);
+            let id = this.$route.query.id;
+            this.getProject(id);
+            this.getPicture(id);
+            this.getVideo(id);
+            this.getFile(id);
             this.getTeacherList();
             this.getProjectType();
             // this.teacherShow(tName);
@@ -410,9 +410,9 @@
                     });
                 });
             },
-            getProject(pName){
+            getProject(id){
                 axios.post("http://localhost:8088/projectShow",qs.stringify({
-                    "pName" : pName
+                    "projectId" : id
                 })).then(res => {
                     console.log(res.data)
                     this.project.pname = res.data['projectName']
@@ -426,9 +426,9 @@
                     this.error.push(e)
                 })
             },
-            getPicture(pName){
+            getPicture(id){
                 axios.post('http://localhost:8088/projectPicture',qs.stringify({
-                    "projectName" : pName
+                    "projectId" : id
                 })).then(res => {
                     console.log("picture:"+res.data)
                     this.picturess = res.data
@@ -436,9 +436,9 @@
                     this.error.push(e)
                 })
             },
-            getVideo(pName){
+            getVideo(id){
                 axios.post('http://localhost:8088/projectVideo',qs.stringify({
-                    "projectName" : pName
+                    "projectId" : id
                 })).then(res => {
                     console.log("video:"+res.data)
                     this.vedioList = res.data
@@ -446,9 +446,9 @@
                     this.error.push(e)
                 })
             },
-            getFile(pName){
+            getFile(id){
                 axios.post('http://localhost:8088/projectFile',qs.stringify({
-                    "projectName" : pName
+                    "projectId" : id
                 })).then(res => {
                     console.log("file:"+res.data)
                     this.fileList = res.data

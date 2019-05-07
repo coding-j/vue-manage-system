@@ -5,7 +5,7 @@
              v-bind:key="index"
              v-bind:class="{ active: index === currentSlide }"
              v-bind:style="{ 'z-index': (slides.length - index), 'background-image': 'url(' + imgUrl+slide.firstPicture + ')' }">
-            <div class="slide-inner" @click="projectShow(slide.projectName)">
+            <div class="slide-inner" @click="projectShow(slide.projectId)">
                 <div class="slide-bg-text">
                     <p>{{ slide.projectName }}</p>
                     <!--<p>{{ slide.headlineSecondLine }}</p>-->
@@ -142,7 +142,7 @@
             projectShow(btn){
                 // console.log(btn.target.innerText)
                 console.log(btn)
-                this.$router.push({ path:'/projectShow?name='+btn})
+                this.$router.push({ path:'/projectShow?id='+btn})
                 // axios.post('http://localhost:8088/projectShow',qs.stringify({
                 //     "projectName" : btn.target.innerText
                 // })).then(response => {
