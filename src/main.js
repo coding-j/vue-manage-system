@@ -29,12 +29,20 @@ require('vue-video-player/src/custom-theme.css')
 
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
+
     const role = sessionStorage.getItem('userName');
     const authority = sessionStorage.getItem("authority")
     console.log('authority:' + authority)
     // if (!role && to.path !== '/') {
     //     next('/');
     // } else
+
+    // if(navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE9.0"){
+    //     xxxxxxx
+    // }else{
+    //     this.props.history.push(window.AppConf.routeRootPath)
+    // }
+
     if (to.path == '/project_form') {
         // 如果是老师权限则可进入
         if(authority == 2){
@@ -52,6 +60,7 @@ router.beforeEach((to, from, next) => {
             next('/')
         }
     } else {
+
         // 简单的判断IE10及以下不进入富文本编辑器，该组件不兼容
         if (navigator.userAgent.indexOf('MSIE') > -1 && to.path === '/editor') {
             Vue.prototype.$alert('vue-quill-editor组件不兼容IE10及以下浏览器，请使用更高版本的浏览器查看', '浏览器不兼容通知', {

@@ -181,6 +181,7 @@
                     "finishDate" : this.value2,
                     "index" : this.pageIndex
                 }
+                console.log('getCount:'+pagination.typeName)
                 axios.post("http://localhost:8088/ProjectCount",pagination).then(res => {
                     this.total = res.data;
                 }).catch(e => {
@@ -224,13 +225,24 @@
             search() {
                 // this.is_search = true;
                 console.log(this.select_word)
-                axios.post('http://localhost:8088/searchName',qs.stringify({
-                    "projectName" : this.select_word
-                })).then(response => {
+                this.getProjectCountByName()
+                axios.post('http://localhost:8088/searchName',{
+                    "projectName" : this.select_word,
+                    "index" : this.pageIndex
+                }).then(response => {
                     this.projectss = response.data;
                     console.log(response.data)
                 }).catch(e => {
                     this.errors.push(e)
+                })
+            },
+            getProjectCountByName(){
+                axios.post("http://localhost:8088/ProjectCountByName",qs.stringify({
+                    "projectName" : this.select_word
+                })).then(response => {
+                    this.total = response.data
+                }).catch(e => {
+                    this.error.push(e)
                 })
             },
             // searchType(btn){

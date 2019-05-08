@@ -14,7 +14,7 @@
 
             <el-row :gutter="30" style="margin: 10px 50px 10px 50px">
                 <el-col :span="8" v-for="teachers in teacherList">
-                    <el-card class="box-card" @click.native="teacherDetail(teachers.teacherName)">
+                    <el-card class="box-card" @click.native="teacherDetail(teachers.teacherId)">
                         <div>
                             <div>
                                 <figure class="image" align="center">
@@ -127,6 +127,7 @@
                 })).then(response => {
                     console.log(response.data);
                     this.teacherList = response.data;
+                    console.log(this.teacherList)
                     // this.total = this.teacherList.length;
                 }).catch(e => {
                     this.error.push(e)
@@ -199,7 +200,7 @@
                 this.delVisible = false;
             },
             teacherDetail(btn){
-                this.$router.push({ path: '/teacherShow?name='+btn})
+                this.$router.push({ path: '/teacherShow?id='+btn})
             }
         }
     }

@@ -93,16 +93,17 @@
             }
         },
         created(){
-            let tName = this.$route.query.name;
-            this.teacherShow(tName);
-            this.teacher_pro(tName);
+            let id = this.$route.query.id;
+            this.teacherShow(id);
+            this.teacher_pro(id);
         },
         methods: {
-            teacherShow(tName){
+            teacherShow(id){
                 axios.post('http://localhost:8088/teacherShow',qs.stringify({
-                    'tName' : tName
+                    'teacherId' : id
                 })).then(response => {
                     console.log(response.data);
+                    this.teacherId = response.data['teacherId'];
                     this.teacherName = response.data['teacherName'];
                     console.log(this.teacherName)
                     this.pictureUrl = response.data['pictureUrl'];
@@ -114,9 +115,9 @@
                     this.error.push(e)
                 });
             },
-            teacher_pro(tName){
-                axios.post('http://localhost:8088/searchProjectByTeacherName',qs.stringify({
-                    'teacherName' : tName
+            teacher_pro(id){
+                axios.post('http://localhost:8088/searchProjectByTeacherId',qs.stringify({
+                    'teacherId' : id
                 })).then(response => {
                     console.log(response.data);
                     this.projectlist = response.data;

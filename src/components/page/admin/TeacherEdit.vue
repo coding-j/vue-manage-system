@@ -93,15 +93,16 @@
             }
         },
         created(){
-            let tName = this.$route.query.name;
-            this.getTeacher(tName);
+            let id = this.$route.query.id;
+            this.getTeacher(id);
         },
         methods: {
-            getTeacher(tName){
+            getTeacher(id){
                 axios.post('http://localhost:8088/teacherShow',qs.stringify({
-                    'tName' : tName
+                    'teacherId' : id
                 })).then(response => {
                     console.log(response.data);
+                    this.teacher.teacherId = response.data['teacherId'];
                     this.teacher.teacherName = response.data['teacherName'];
                     // this.pictureUrl = response.data['pictureUrl'];
                     this.teacher.work_unit = response.data['working'];
@@ -135,7 +136,7 @@
                         message: '编辑成功',
                         type: 'success'
                     });
-                    this.$router.push({ path:'/teacherShow?name='+this.teacher.teacherName  })
+                    this.$router.push({ path:'/teacherShow?id='+this.teacher.teacherId  })
                     console.log("编辑成功")
                 }).catch(e => {
                     this.error.push(e)

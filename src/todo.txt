@@ -9,3 +9,5 @@ pagination 分页
 老师上传项目 增加teamDetail finish
 项目上传改成导航栏   将内容与文件分开 finish
 
+admin teacherEdit
+

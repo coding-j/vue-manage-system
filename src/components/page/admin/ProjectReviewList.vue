@@ -251,7 +251,7 @@
                 })
             },
             handleEdit(index, row){
-                this.$router.push({ path:'/teacherEdit?name='+row.teacherName  })
+                this.$router.push({ path:'/teacherEdit?id='+row.teacherId  })
                 // this.$router.push({ path: '/teacherAdminShow?name='+row.teacherName})
             },
             handleDelete(index, row) {

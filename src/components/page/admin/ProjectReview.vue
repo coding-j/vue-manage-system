@@ -317,7 +317,8 @@
                         type: 'success'
                     });
                     console.log("编辑成功")
-                    location.reload()
+                    this.getProject(this.project.projectId)
+                    // location.reload()
                 }).catch(e => {
                     this.error.push(e)
                 })
