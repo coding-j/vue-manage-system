@@ -18,7 +18,7 @@
                         <div>
                             <div>
                                 <figure class="image" align="center">
-                                    <img  width="100%" :src="imgUrl+teachers.pictureUrl" alt="Image">
+                                    <img  width="100%" height="230px" :src="imgUrl+teachers.pictureUrl" alt="Image">
                                 </figure>
                             </div>
                             <br>
@@ -73,7 +73,7 @@
         },
         data() {
             return {
-                imgUrl:'http://localhost:8088/showTeacherPicture?pictureName=',
+                imgUrl:'/project/showTeacherPicture?pictureName=',
                 tableData: [],
 
                 //分页
@@ -122,7 +122,7 @@
         },
         methods: {
             getTeacherList(){
-                axios.post('http://localhost:8088/TeacherList',qs.stringify({
+                axios.post('/project/TeacherList',qs.stringify({
                     "index" : this.pageIndex
                 })).then(response => {
                     console.log(response.data);
@@ -134,7 +134,7 @@
                 })
             },
             getTeacherCount(){
-                axios.get("http://localhost:8088/TeacherCount").then(res => {
+                axios.get("/project/TeacherCount").then(res => {
                     this.total = res.data
                 }).catch(e =>{
                     this.error.push(e)
@@ -147,7 +147,7 @@
             },
 
             search() {
-                axios.post('http://localhost:8088/searchTeacherByName',qs.stringify({
+                axios.post('/project/searchTeacherByName',qs.stringify({
                     "teacherName" : this.select_word
                 })).then(response => {
                     this.teacherList = response.data;
@@ -232,5 +232,8 @@
     }
     .mr10{
         margin-right: 10px;
+    }
+    .box-card{
+        height: 400px;
     }
 </style>

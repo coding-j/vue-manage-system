@@ -58,7 +58,7 @@
         },
         data() {
             return {
-                imgUrl:'http://localhost:8088/showPicture?pictureName=',
+                imgUrl:'/project/showPicture?pictureName=',
                 currentSlide: 0,
                 isPreviousSlide: false,
                 isFirstLoad: true,
@@ -132,7 +132,7 @@
         },
         methods: {
             getTopProject(){
-                axios.get('http://localhost:8088/getHomePage').then(response => {
+                axios.get('/project/getHomePage').then(response => {
                     console.log(response.data);
                     this.slides = response.data;
                 }).catch(e => {
@@ -143,7 +143,7 @@
                 // console.log(btn.target.innerText)
                 console.log(btn)
                 this.$router.push({ path:'/projectShow?name='+btn})
-                // axios.post('http://localhost:8088/projectShow',qs.stringify({
+                // axios.post('/project/projectShow',qs.stringify({
                 //     "projectName" : btn.target.innerText
                 // })).then(response => {
                 //

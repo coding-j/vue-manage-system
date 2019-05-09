@@ -55,7 +55,7 @@
                 //formName.preventDefault();
 
                 let user = {'userName' : this.ruleForm.username, 'password' : this.ruleForm.password};
-                axios.post('http://localhost:8088/login',user).then(response => {
+                axios.post('/project/login',user).then(response => {
                     let status = response.data;
                     console.log("status:"+status);
                     if(status){

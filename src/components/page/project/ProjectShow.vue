@@ -222,8 +222,8 @@
             //rating
             // star:'目前赞数'+this.activity.rating,
 
-            imgUrl:'http://localhost:8088/showPicture?pictureName=',
-            imgUrl2:'http://localhost:8088/showVideo?videoName=',
+            imgUrl:'/project/showPicture?pictureName=',
+            imgUrl2:'/project/showVideo?videoName=',
             activeNames: ['1','2','3','4','5'],
             currentRow:null,
             // downloadhttp: 'E:\\coding-web\\vue-manage-system\\src\\assets\\img\\img.jpg',
@@ -337,7 +337,7 @@
 
             getProject(id){
                 console.log(id)
-                axios.post('http://localhost:8088/projectShow',qs.stringify({
+                axios.post('/project/projectShow',qs.stringify({
                     "projectId" : id
                 })).then(response => {
                     this.activity.projectId = response.data['projectId']
@@ -354,7 +354,7 @@
                 })
             },
             getPicture(id){
-                axios.post('http://localhost:8088/projectPicture',qs.stringify({
+                axios.post('/project/projectPicture',qs.stringify({
                     'projectId' : id
                 })).then(response => {
                     this.pic.picList = response.data
@@ -364,7 +364,7 @@
                 })
             },
             getVideo(id){
-                axios.post('http://localhost:8088/projectVideo',qs.stringify({
+                axios.post('/project/projectVideo',qs.stringify({
                     'projectId' : id
                 })).then(response => {
                     this.video.viderUrl = response.data[0].name
@@ -373,7 +373,7 @@
                 })
             },
             getFile(id){
-                axios.post('http://localhost:8088/projectFile',qs.stringify({
+                axios.post('/project/projectFile',qs.stringify({
                     'projectId' : id
                 })).then(response => {
                     this.file.fileList = response.data
@@ -395,14 +395,14 @@
             downloadFile(index,row){
                 // let row = this.currentRow
                 console.log(row)
-                window.location.assign("http://localhost:8088/download?filename="+row.name)
-                // window.open("http://localhost:8088/show?pictureName="+row.name)
-                // axios.get("http://localhost:8088/download?filename="+row.name).then(res => {
+                window.location.assign("/project/download?filename="+row.name)
+                // window.open("/project/show?pictureName="+row.name)
+                // axios.get("/project/download?filename="+row.name).then(res => {
                 //     console.log("下载成功")
                 // }).catch(e => {
                 //     this.error.push(e)
                 // })
-                // axios.post("http://localhost:8088/download",qs.stringify({
+                // axios.post("/project/download",qs.stringify({
                 //     "filename" : row.name
                 // })).then(res => {
                 //     console.log("下载成功")
@@ -414,13 +414,13 @@
             watch(index,row){
                 // let row = this.currentRow
                 console.log(row)
-                let url = "http://localhost:8088/showFile?fileName="+row.name
+                let url = "/project/showFile?fileName="+row.name
                 let enUrl = "https://view.officeapps.live.com/op/view.aspx?src=" + encodeURIComponent(url)
                 console.log(enUrl)
                 window.open(enUrl)
             },
             addRating(){
-                axios.post("http://localhost:8088/addRating",qs.stringify({
+                axios.post("/project/addRating",qs.stringify({
                     "projectId" : this.activity.projectId
                 })).then(res => {
                     this.activity.rating = res.data
@@ -795,7 +795,7 @@
         <!--name: "ProjectShow",-->
         <!--data(){-->
             <!--return {-->
-                <!--imgUrl:'http://localhost:8088/show?pictureName=',-->
+                <!--imgUrl:'/project/show?pictureName=',-->
                 <!--activeNames: ['1'],-->
                 <!--currentRow:null,-->
                 <!--// downloadhttp: 'E:\\coding-web\\vue-manage-system\\src\\assets\\img\\img.jpg',-->
@@ -860,7 +860,7 @@
 
             <!--getProject(pName){-->
                 <!--console.log(pName)-->
-                <!--axios.post('http://localhost:8088/projectShow',qs.stringify({-->
+                <!--axios.post('/project/projectShow',qs.stringify({-->
                     <!--"pName" : pName-->
                 <!--})).then(response => {-->
                     <!--this.activity.projectName = response.data['projectName']-->
@@ -875,7 +875,7 @@
                 <!--})-->
             <!--},-->
             <!--getPicture(pName){-->
-                <!--axios.post('http://localhost:8088/projectPicture',qs.stringify({-->
+                <!--axios.post('/project/projectPicture',qs.stringify({-->
                     <!--'projectName' : pName-->
                 <!--})).then(response => {-->
                     <!--this.pic.picList = response.data-->
@@ -885,7 +885,7 @@
                 <!--})-->
             <!--},-->
             <!--getVideo(pName){-->
-                <!--axios.post('http://localhost:8088/projectVideo',qs.stringify({-->
+                <!--axios.post('/project/projectVideo',qs.stringify({-->
                     <!--'projectName' : pName-->
                 <!--})).then(response => {-->
                     <!--this.video.viderUrl = response.data-->
@@ -894,7 +894,7 @@
                 <!--})-->
             <!--},-->
             <!--getFile(pName){-->
-                <!--axios.post('http://localhost:8088/projectFile',qs.stringify({-->
+                <!--axios.post('/project/projectFile',qs.stringify({-->
                     <!--'projectName' : pName-->
                 <!--})).then(response => {-->
                     <!--this.file.fileList = response.data-->
@@ -916,13 +916,13 @@
             <!--downloadFile(){-->
                 <!--let row = this.currentRow-->
                  <!--console.log(row)-->
-                <!--window.location.assign("http://localhost:8088/download?filename="+row.name)-->
-                <!--// axios.get("http://localhost:8088/download?filename="+row.name).then(res => {-->
+                <!--window.location.assign("/project/download?filename="+row.name)-->
+                <!--// axios.get("/project/download?filename="+row.name).then(res => {-->
                 <!--//     console.log("下载成功")-->
                 <!--// }).catch(e => {-->
                 <!--//     this.error.push(e)-->
                 <!--// })-->
-                <!--// axios.post("http://localhost:8088/download",qs.stringify({-->
+                <!--// axios.post("/project/download",qs.stringify({-->
                 <!--//     "filename" : row.name-->
                 <!--// })).then(res => {-->
                 <!--//     console.log("下载成功")-->
@@ -932,7 +932,7 @@
                 <!--// this.$router.push({ })-->
             <!--},-->
             <!--addRating(){-->
-                <!--axios.post("http://localhost:8088/addRating",qs.stringify({-->
+                <!--axios.post("/project/addRating",qs.stringify({-->
                     <!--"projectName" : this.activity.projectName-->
                 <!--})).then(res => {-->
                     <!--this.activity.rating = res.data-->

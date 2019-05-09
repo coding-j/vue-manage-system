@@ -311,7 +311,7 @@
                     "finishDate" : this.project.finishDate,
                     "firstPicture":this.picturess[0].name
                 }
-                axios.post('http://localhost:8088/projectEdit',project).then(res => {
+                axios.post('/project/projectEdit',project).then(res => {
                     this.$message({
                         message: '编辑成功',
                         type: 'success'
@@ -332,7 +332,7 @@
                     let rows = this.PictureSelection
                     rows.forEach(row => {
                         console.log(row);
-                        axios.post("http://localhost:8088/delPicture",qs.stringify({
+                        axios.post("/project/delPicture",qs.stringify({
                             "pictureName":row.name
                         })).then(res => {
                             console.log("删除成功")
@@ -361,7 +361,7 @@
                     let rows = this.VideoSelection
                     rows.forEach(row => {
                         console.log(row);
-                        axios.post("http://localhost:8088/delVideo",qs.stringify({
+                        axios.post("/project/delVideo",qs.stringify({
                             "videoName":row.name
                         })).then(res => {
                             console.log("删除成功")
@@ -390,7 +390,7 @@
                     let rows = this.FileSelection
                     rows.forEach(row => {
                         console.log(row);
-                        axios.post("http://localhost:8088/delFile",qs.stringify({
+                        axios.post("/project/delFile",qs.stringify({
                             "fileName":row.name
                         })).then(res => {
                             console.log("删除成功")
@@ -412,7 +412,7 @@
                 });
             },
             getProject(id){
-                axios.post("http://localhost:8088/projectShow",qs.stringify({
+                axios.post("/project/projectShow",qs.stringify({
                     "projectId" : id
                 })).then(res => {
                     console.log(res.data)
@@ -428,7 +428,7 @@
                 })
             },
             getPicture(id){
-                axios.post('http://localhost:8088/projectPicture',qs.stringify({
+                axios.post('/project/projectPicture',qs.stringify({
                     "projectId" : id
                 })).then(res => {
                     console.log("picture:"+res.data)
@@ -438,7 +438,7 @@
                 })
             },
             getVideo(id){
-                axios.post('http://localhost:8088/projectVideo',qs.stringify({
+                axios.post('/project/projectVideo',qs.stringify({
                     "projectId" : id
                 })).then(res => {
                     console.log("video:"+res.data)
@@ -448,7 +448,7 @@
                 })
             },
             getFile(id){
-                axios.post('http://localhost:8088/projectFile',qs.stringify({
+                axios.post('/project/projectFile',qs.stringify({
                     "projectId" : id
                 })).then(res => {
                     console.log("file:"+res.data)
@@ -458,14 +458,14 @@
                 })
             },
             getProjectType(){
-                axios.get('http://localhost:8088/typeList').then(res => {
+                axios.get('/project/typeList').then(res => {
                     this.projectConstant.types = res.data
                 }).catch(e => {
                     this.error.push(e)
                 })
             },
             getTeacherList(){
-                axios.get('http://localhost:8088/TeacherNameList').then(res => {
+                axios.get('/project/TeacherNameList').then(res => {
                     this.projectConstant.teachers = res.data
                 }).catch(e => {
                     this.error.push(e)
@@ -496,7 +496,7 @@
                 // let row = this.currentRow
                 console.log(index)
                 console.log(row)
-                window.location.assign("http://localhost:8088/download?filename="+row.name)
+                window.location.assign("/project/download?filename="+row.name)
             },
             //文件上传
             beforeUploadPic(file){

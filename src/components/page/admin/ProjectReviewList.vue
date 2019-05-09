@@ -32,7 +32,7 @@
                                 ref="upload"
                                 drag
                                 :limit="1"
-                                action="http://localhost:8088/file_upload"
+                                action="/project/file_upload"
                                 accept=".png,.jpg"
                                 show-file-list
                                 :before-upload="beforeUploadFile"
@@ -240,7 +240,7 @@
                     "workExperience": this.form.workExperience
                 }
                 console.log(teacher)
-                axios.post('http://localhost:8088/addTeacher',teacher).then(res => {
+                axios.post('/project/addTeacher',teacher).then(res => {
                     console.log("添加成功")
                     location.reload()
                 }).catch(e => {
@@ -249,7 +249,7 @@
                 this.dialogFormVisible = false;
             },
             getTeacherList(){
-                axios.post('http://localhost:8088/TeacherList',qs.stringify({
+                axios.post('/project/TeacherList',qs.stringify({
                     "index" : -1
                 })).then(res => {
                     this.teacherList = res.data;
@@ -263,7 +263,7 @@
                     "finishDate" : null,
                     "index" : -1
                 }
-                axios.post('http://localhost:8088/projectList',pagination).then(res => {
+                axios.post('/project/projectList',pagination).then(res => {
                     console.log(res.data)
                     this.ProjectList = res.data;
                 }).catch(e => {
@@ -280,7 +280,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    axios.post('http://localhost:8088/deleteTeacher',qs.stringify({
+                    axios.post('/project/deleteTeacher',qs.stringify({
                         "teacherName": row.teacherName
                     })).then(res => {
                         console.log("删除成功")
@@ -310,7 +310,7 @@
                     if (rows) {
                         rows.forEach(row => {
                             console.log(row)
-                            axios.post('http://localhost:8088/projectDel',qs.stringify({
+                            axios.post('/project/projectDel',qs.stringify({
                                 "projectName" : row.projectName
                             })).then(res => {
                                 console.log("删除成功")
@@ -379,7 +379,7 @@
                 return this.$confirm(`确定移除 ${ file.name }？`);
             },
             searchTeacher(){
-                axios.post('http://localhost:8088/searchTeacherName',qs.stringify({
+                axios.post('/project/searchTeacherName',qs.stringify({
                     "teacherName" : this.search
                 })).then(res => {
                     console.log(res.data)

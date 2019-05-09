@@ -41,7 +41,7 @@
             submitForm(formName){
                 formName.preventDefault();
 
-                axios.post('http://localhost:8088/project/login',qs.stringify({
+                axios.post('/project/project/login',qs.stringify({
                     'userName' : this.ruleForm.username,
                     'password' : this.ruleForm.password
                 })).then((response) => {

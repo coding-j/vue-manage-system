@@ -100,7 +100,7 @@
         },
         data() {
             return {
-                imgUrl:'http://localhost:8088/showPicture?pictureName=',
+                imgUrl:'/project/showPicture?pictureName=',
                 // searchLists:[],
                 // typeName:'',
                 // finishDate:'',
@@ -146,7 +146,7 @@
                 // console.log(btn.target.innerText)
                 console.log(btn)
                 this.$router.push({ path:'/projectShow?id='+btn})
-                // axios.post('http://localhost:8088/projectShow',qs.stringify({
+                // axios.post('/project/projectShow',qs.stringify({
                 //     "projectName" : btn.target.innerText
                 // })).then(response => {
                 //
@@ -161,7 +161,7 @@
                     "index" : this.pageIndex
                 }
                 this.getProjectCount();
-              axios.post('http://localhost:8088/projectList',pagination).then(response => {
+              axios.post('/project/projectList',pagination).then(response => {
                       console.log(response.data);
                       console.log(response.data['projectDetail'])
                       this.projectss = response.data;
@@ -182,14 +182,14 @@
                     "index" : this.pageIndex
                 }
                 console.log('getCount:'+pagination.typeName)
-                axios.post("http://localhost:8088/ProjectCount",pagination).then(res => {
+                axios.post("/project/ProjectCount",pagination).then(res => {
                     this.total = res.data;
                 }).catch(e => {
                     this.error.push(e)
                 })
             },
             gettypeList(){
-                axios.get('http://localhost:8088/typeList').then(response => {
+                axios.get('/project/typeList').then(response => {
                     console.log(response.data);
                     this.typeList = response.data;
                 }).catch(e => {
@@ -197,7 +197,7 @@
                 })
             },
             getfinishDateList(){
-                axios.get('http://localhost:8088/finishDateList').then(response => {
+                axios.get('/project/finishDateList').then(response => {
                     console.log(response);
                     this.finishDates = response.data;
                 }).catch(e => {
@@ -209,7 +209,7 @@
                 this.pageIndex = val;
                 this.getProjectList();
 
-                // axios.post('http://localhost:8088/projectList',qs.stringify({
+                // axios.post('/project/projectList',qs.stringify({
                 //     "index" : this.pageIndex
                 // })).then(response => {
                 //     console.log(response.data);
@@ -226,7 +226,7 @@
                 // this.is_search = true;
                 console.log(this.select_word)
                 this.getProjectCountByName()
-                axios.post('http://localhost:8088/searchName',{
+                axios.post('/project/searchName',{
                     "projectName" : this.select_word,
                     "index" : this.pageIndex
                 }).then(response => {
@@ -237,7 +237,7 @@
                 })
             },
             getProjectCountByName(){
-                axios.post("http://localhost:8088/ProjectCountByName",qs.stringify({
+                axios.post("/project/ProjectCountByName",qs.stringify({
                     "projectName" : this.select_word
                 })).then(response => {
                     this.total = response.data
@@ -248,7 +248,7 @@
             // searchType(btn){
             //     console.log(btn.target.innerText)
             //     this.typeName = btn.target.innerText
-            //     axios.post("http://localhost:8088/searchType",qs.stringify({
+            //     axios.post("/project/searchType",qs.stringify({
             //         "typeName" : btn.target.innerText
             //     })).then(response => {
             //         console.log(response.data)
@@ -259,7 +259,7 @@
             // },
             // searchFinishDate(btn){
             //     this.finishDate = btn.target.innerText
-            //     axios.post('http://localhost:8088/searchTime',qs.stringify({
+            //     axios.post('/project/searchTime',qs.stringify({
             //         "finishDate" : btn.target.innerText
             //     })).then(response => {
             //         console.log(response.data)

@@ -7,15 +7,15 @@
             </el-breadcrumb>
         </div>
         <div>
-            <!--<img src="http://localhost:8088/show?pictureName=foo.jpg">-->
+            <!--<img src="/project/show?pictureName=foo.jpg">-->
             <el-upload
                     class="upload-demo"
-                    action="http://localhost:8088/file_upload"
+                    action="/project/file_upload"
                     :on-preview="handlePreview"
                     :on-remove="handleRemove"
                     :on-success="handleSuccess"
                     :on-change="fileChange"
-                    :auto-upload="false"
+                    :auto-upload="true"
                     :file-list="fileList"
                     :limit="1"
                     list-type="picture">
@@ -73,6 +73,8 @@
         name: "TeacherEdit",
         data(){
             return {
+                uidName:'',
+                status:'',
                 //fontSize: 30,
                 data:[],
                 file:'',
@@ -98,7 +100,7 @@
         },
         methods: {
             getTeacher(id){
-                axios.post('http://localhost:8088/teacherShow',qs.stringify({
+                axios.post('/project/teacherShow',qs.stringify({
                     'teacherId' : id
                 })).then(response => {
                     console.log(response.data);
@@ -113,43 +115,76 @@
                     // this.fileList[0].name = this.teacher.pictureUrl
                     let file = {
                         name : this.teacher.pictureUrl,
-                        url : 'http://localhost:8088/showTeacherPicture?pictureName='+ this.teacher.pictureUrl
+                        url : '/project/showTeacherPicture?pictureName='+ this.teacher.pictureUrl
                     }
                     this.fileList.push(file)
-                    // this.fileList[0].url = 'http://localhost:8088/show?pictureName='+ this.fileList[0].name
+                    // this.fileList[0].url = '/project/show?pictureName='+ this.fileList[0].name
                     console.log(this.fileList)
                 }).catch(e => {
                     this.error.push(e)
                 });
             },
             edit(){
-                let teacher = {
-                    "teacherName" : this.teacher.teacherName,
-                    "picture" : this.fileList[0],
-                    "working" : this.teacher.work_unit,
-                    "address": this.teacher.address,
-                    "introduction":this.teacher.TeacherDetail,
-                    "workExperience": this.teacher.workExperience
-                }
-                axios.post('http://localhost:8088/TeacherEdit',teacher).then(res => {
-                    this.$message({
-                        message: '编辑成功',
-                        type: 'success'
-                    });
-                    this.$router.push({ path:'/teacherShow?id='+this.teacher.teacherId  })
-                    console.log("编辑成功")
+                console.log(this.fileList[0])
+                axios.post('/project/uidName',qs.stringify({
+                    "pictureName" : this.fileList[0].name
+                })).then(res => {
+                    console.log(res.data)
+                    this.status = res.data;
+                    let teacher;
+                    if(this.status == "fail"){
+                        console.log("123123132132131321")
+                        console.log(this.fileList[0])
+                        console.log(this.fileList[0].name)
+                        console.log(this.fileList[0].size)
+                        teacher = {
+                            "teacherName" : this.teacher.teacherName,
+                            "pictureUrl" : this.fileList[0].name,
+                            "uidName" : this.fileList[0].size+"_"+this.fileList[0].name,
+                            "working" : this.teacher.work_unit,
+                            "address": this.teacher.address,
+                            "introduction":this.teacher.TeacherDetail,
+                            "workExperience": this.teacher.workExperience
+                        }
+                    }else {
+                        teacher = {
+                            "teacherName" : this.teacher.teacherName,
+                            "pictureUrl" : this.status.split("_")[1],
+                            "uidName" : this.status,
+                            "working" : this.teacher.work_unit,
+                            "address": this.teacher.address,
+                            "introduction":this.teacher.TeacherDetail,
+                            "workExperience": this.teacher.workExperience
+                        }
+                    }
+
+                    axios.post('/project/TeacherEdit',teacher).then(res => {
+                        this.$message({
+                            message: '编辑成功',
+                            type: 'success'
+                        });
+                        this.$router.push({ path:'/teacherShow?id='+this.teacher.teacherId  })
+                        console.log("编辑成功")
+                    }).catch(e => {
+                        this.error.push(e)
+                    })
                 }).catch(e => {
                     this.error.push(e)
                 })
             },
             handleRemove(file, fileList) {
                 console.log(file, fileList);
+                this.fileList.pop();
+                console.log(this.fileList.length)
             },
             handlePreview(file) {
                 console.log(file);
             },
             handleSuccess(res, file,fileList) {
                 // console.log(file,fileList)
+
+                this.fileList.push(file);
+                console.log(this.fileList.length)
                 this.$notify.success({
                     title: '成功',
                     message: `文件上传成功`

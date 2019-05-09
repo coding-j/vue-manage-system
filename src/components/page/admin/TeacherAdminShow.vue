@@ -79,7 +79,7 @@
         name: "TeacherAdminShow",
         data(){
             return {
-                imgUrl:'http://localhost:8088/showPicture?pictureName=',
+                imgUrl:'/project/showPicture?pictureName=',
                 pictureUrl:'',
                 //fontSize: 30,
                 teacherName: "",
@@ -110,7 +110,7 @@
                 this.$router.push({ path:'/teacherEdit?name='+this.teacherName  })
             },
             teacherShow(tName){
-                axios.post('http://localhost:8088/teacherShow',qs.stringify({
+                axios.post('/project/teacherShow',qs.stringify({
                     'tName' : tName
                 })).then(response => {
                     console.log(response.data);
@@ -126,7 +126,7 @@
                 });
             },
             teacher_pro(tName){
-                axios.post('http://localhost:8088/searchProjectByTeacherName',qs.stringify({
+                axios.post('/project/searchProjectByTeacherName',qs.stringify({
                     'teacherName' : tName
                 })).then(response => {
                     console.log(response.data);

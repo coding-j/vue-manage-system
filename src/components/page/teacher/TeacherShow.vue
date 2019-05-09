@@ -71,7 +71,7 @@
         name: "TeacherShow",
         data(){
             return {
-                imgUrl:'http://localhost:8088/showTeacherPicture?pictureName=',
+                imgUrl:'/project/showTeacherPicture?pictureName=',
                 pictureUrl:'',
                 //fontSize: 30,
                 teacherName: "",
@@ -99,7 +99,7 @@
         },
         methods: {
             teacherShow(id){
-                axios.post('http://localhost:8088/teacherShow',qs.stringify({
+                axios.post('/project/teacherShow',qs.stringify({
                     'teacherId' : id
                 })).then(response => {
                     console.log(response.data);
@@ -116,7 +116,7 @@
                 });
             },
             teacher_pro(id){
-                axios.post('http://localhost:8088/searchProjectByTeacherId',qs.stringify({
+                axios.post('/project/searchProjectByTeacherId',qs.stringify({
                     'teacherId' : id
                 })).then(response => {
                     console.log(response.data);

@@ -165,7 +165,7 @@
                     ]
                 },
                 active: 0,
-                uploadUrl:'http://localhost:8088/file_upload',
+                uploadUrl:'/project/file_upload',
                 picList:[],
                 videoList:[],
                 files:[],
@@ -291,14 +291,14 @@
                 }
             },
             getProjectType(){
-                axios.get('http://localhost:8088/typeList').then(res => {
+                axios.get('/project/typeList').then(res => {
                     this.projectConstant.types = res.data
                 }).catch(e => {
                     this.error.push(e)
                 })
             },
             getTeacherList(){
-                axios.get('http://localhost:8088/TeacherNameList').then(res => {
+                axios.get('/project/TeacherNameList').then(res => {
                     this.projectConstant.teachers = res.data
                 }).catch(e => {
                     this.error.push(e)
@@ -325,7 +325,7 @@
                 console.log("files:"+this.files)
 
                 // this.$refs.upload.submit();
-                axios.post('http://localhost:8088/uploadProject', project).then(res => {
+                axios.post('/project/uploadProject', project).then(res => {
                     this.$message({
                         message: '上传成功',
                         type: 'success'

@@ -210,7 +210,7 @@
                 }
             },
             getHomePage(){
-                axios.post("http://localhost:8088/home_page",qs.stringify({
+                axios.post("/project/home_page",qs.stringify({
                         "authority" : this.authority
                 })).then(res => {
                     console.log(res.data)

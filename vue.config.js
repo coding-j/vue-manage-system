@@ -4,8 +4,11 @@ module.exports = {
     devServer: {
         proxy: {
             '/project':{
-                target:'http://localhost:8088',
+                target:'http://localhost:8088/project',
                 changeOrigin:true,
+                pathRewrite:{
+                    '/project':''
+                }
             },
             '/api':{
                 target:'http://jsonplaceholder.typicode.com',
