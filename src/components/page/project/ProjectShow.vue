@@ -5,14 +5,19 @@
 
                 <div class="crowd-funding__header__description">
 
-                    <h1 >{{activity.projectName}}</h1 >
-                    <div class="hashtags" style="color: #fff">
-                        <p>项目类型：{{activity.projectType}} &nbsp;&nbsp;&nbsp; 完成时间：{{activity.finishDate}}</p>
-                        <p><strong>指导老师：{{activity.projectTeacher}}</strong></p>
-                        <p><strong>完成学生：{{activity.projectStudent}}</strong></p>
+                    <div>
+                        <h1 class="btn_add">{{activity.projectName}}</h1>
                         <el-tooltip :content="'目前赞数'+activity.rating" placement="top" effect="light">
                             <el-button type="success" icon="el-icon-star-off" circle @click="addRating"></el-button>
                         </el-tooltip>
+                    </div>
+                    <div class="hashtags" style="color: #fff">
+                        <br/><br/>
+                        <p>项目类型：{{activity.projectType}} &nbsp;&nbsp;&nbsp; 完成时间：{{activity.finishDate}}</p>
+                        <br/>
+                        <p><strong>指导老师：{{activity.projectTeacher}}</strong></p>
+                        <br/>
+                        <p><strong>完成学生：{{activity.projectStudent}}</strong></p>
                         <!--<span>目前赞数{{activity.rating}}</span>-->
                     </div>
                 </div>
@@ -37,10 +42,10 @@
 
                     <el-collapse v-model="activeNames" @change="handleChange" style="width: 100%">
                         <el-collapse-item title="项目介绍" name="1">
-                            <div>{{activity.projectDesc}}</div>
+                            <div style="text-align: left">{{activity.projectDesc}}</div>
                         </el-collapse-item>
                         <el-collapse-item title="团队介绍" name="2">
-                            <div>{{activity.teamDetail}}</div>
+                            <div style="text-align: left">{{activity.teamDetail}}</div>
                         </el-collapse-item>
                         <el-collapse-item title="图片介绍" name="3">
                             <div>
@@ -69,11 +74,11 @@
                                     <!--</video-player>-->
                                 <!--</div>-->
                                 <video width="320" height="240" controls="controls">
-                                    <source :src="imgUrl+video.viderUrl" type="video/mp4" />
-                                    <source :src="imgUrl+video.viderUrl" type="video/ogg" />
-                                    <source :src="imgUrl+video.viderUrl" type="video/webm" />
-                                    <object :data="imgUrl+video.viderUrl" width="320" height="240">
-                                        <embed :src="imgUrl+video.viderUrl" width="320" height="240"/>
+                                    <source :src="imgUrl2+video.viderUrl" type="video/mp4" />
+                                    <source :src="imgUrl2+video.viderUrl" type="video/ogg" />
+                                    <source :src="imgUrl2+video.viderUrl" type="video/webm" />
+                                    <object :data="imgUrl2+video.viderUrl" width="320" height="240">
+                                        <embed :src="imgUrl2+video.viderUrl" width="320" height="240"/>
                                     </object>
                                 </video>
                             </div>
@@ -93,7 +98,7 @@
                                     <el-table-column
                                             property="name"
                                             label="文件名"
-                                            width="120">
+                                            width="630">
                                     </el-table-column>
                                     <el-table-column label="操作">
                                         <template slot-scope="scope">
@@ -217,7 +222,8 @@
             //rating
             // star:'目前赞数'+this.activity.rating,
 
-            imgUrl:'http://localhost:8088/show?pictureName=',
+            imgUrl:'http://localhost:8088/showPicture?pictureName=',
+            imgUrl2:'http://localhost:8088/showVideo?videoName=',
             activeNames: ['1','2','3','4','5'],
             currentRow:null,
             // downloadhttp: 'E:\\coding-web\\vue-manage-system\\src\\assets\\img\\img.jpg',
@@ -408,7 +414,7 @@
             watch(index,row){
                 // let row = this.currentRow
                 console.log(row)
-                let url = "http://localhost:8088/show?pictureName="+row.name
+                let url = "http://localhost:8088/showFile?fileName="+row.name
                 let enUrl = "https://view.officeapps.live.com/op/view.aspx?src=" + encodeURIComponent(url)
                 console.log(enUrl)
                 window.open(enUrl)
@@ -684,6 +690,10 @@
         a.second-link {
             margin-left: 3px
         }
+    }
+    .btn_add{
+        display: inline-block;
+        vertical-align: middle;
     }
 </style>
 

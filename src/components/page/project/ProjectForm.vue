@@ -21,7 +21,7 @@
                         </el-form-item>
                         <el-form-item label="小组成员" prop="students">
                             <el-input v-model="project.students"></el-input>
-                            <span>用中文字符的逗号隔开,如：xxx，xxx，xxx</span>
+                            <span>用中文字符的顿号隔开,如：xxx、xxx、xxx</span>
                         </el-form-item>
                         <el-form-item label="项目类型" prop="type">
                             <el-select v-model="project.type" placeholder="请选择" filterable>
@@ -101,7 +101,7 @@
                                     class="upload-demo"
                                     drag
                                     :action="uploadUrl"
-                                    accept=".ppt.pptx.word.xls"
+                                    accept=".ppt.pptx.doc.docx.xls.xlsx"
                                     show-file-list
                                     :before-upload="beforeUploadFile"
                                     :before-remove="beforeRemove"
@@ -321,8 +321,8 @@
                     "videoList" : this.videoList,
                     "fileList" : this.files
                 }
-                console.log(project)
-                console.log(this.files)
+                // console.log(project)
+                console.log("files:"+this.files)
 
                 // this.$refs.upload.submit();
                 axios.post('http://localhost:8088/uploadProject', project).then(res => {

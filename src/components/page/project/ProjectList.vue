@@ -51,7 +51,7 @@
                         <div>
                             <div>
                                 <figure class="image" align="center">
-                                    <img  width="100%" :src="imgUrl+project.firstPicture" alt="Image">
+                                    <img  width="100%" height="230px" :src="imgUrl+project.firstPicture" alt="Image">
                                 </figure>
                             </div>
                             <br>
@@ -100,7 +100,7 @@
         },
         data() {
             return {
-                imgUrl:'http://localhost:8088/show?pictureName=',
+                imgUrl:'http://localhost:8088/showPicture?pictureName=',
                 // searchLists:[],
                 // typeName:'',
                 // finishDate:'',

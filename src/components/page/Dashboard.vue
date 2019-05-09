@@ -14,10 +14,12 @@
                 <!--<div class="slide-rect" v-bind:style="{'border-image-source': 'url(' + slide.rectImg + ')'}"></div>-->
                 <!--</div>-->
                 <div class="slide-content">
-                    <h1 class="slide-content-text">
-                        <!--<p>{{ slide.headlineFirstLine }}</p>-->
-                        <p>项目简介：{{ slide.projectDetail | ellipsis }}</p>
-                    </h1>
+                    <!--<h1 class="slide-content-text">-->
+                        <!--&lt;!&ndash;<p>{{ slide.headlineFirstLine }}</p>&ndash;&gt;-->
+                        <!--<el-card class="box_style">-->
+                            <!--<p><span style="color:#fff;">项目简介：{{ slide.projectDetail | ellipsis }}</span></p>-->
+                        <!--</el-card>-->
+                    <!--</h1>-->
                     <!--<a class="slide-content-cta">Call To Action</a>-->
                 </div>
                 <!--<h2 class="slide-side-text">-->
@@ -27,11 +29,13 @@
             </div>
         </div>
         <div class="controls-container">
+            <el-tooltip v-for="(slide, index) in slides" :content="slide.projectDetail" placement="bottom" effect="light">
             <button class="controls-button"
-                    v-for="(slide, index) in slides"
+
                     v-bind:key="index"
                     v-bind:class="{ active: index === currentSlide }"
                     v-on:click="updateSlide(index)">{{ slide.projectName }}</button>
+            </el-tooltip>
         </div>
         <div class="pagination-container">
             <span class="pagination-item"
@@ -58,7 +62,7 @@
         },
         data() {
             return {
-                imgUrl:'http://localhost:8088/show?pictureName=',
+                imgUrl:'http://localhost:8088/showPicture?pictureName=',
                 currentSlide: 0,
                 isPreviousSlide: false,
                 isFirstLoad: true,
@@ -306,7 +310,7 @@
         }
         &-content {
             color: #fff;
-            margin-top: 5rem;
+            margin-top: 1rem;
             position: absolute;
             top: 50%;
             left: calc(#{$left-offset} + (.7) * #{$rect-width});
@@ -783,6 +787,13 @@
             animation-delay: $text-cut-up;
             animation-duration: $text-cut-up + .2s;
         }
+    }
+    .box_style{
+        background: rgba(0,0,0,0.5);
+        width: 400px;
+        /*height: 300px;*/
+        position: fixed;
+        pointer-events: none;
     }
 </style>
 

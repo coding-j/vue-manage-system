@@ -58,7 +58,7 @@
         },
         data() {
             return {
-                imgUrl:'http://localhost:8088/show?pictureName=',
+                imgUrl:'http://localhost:8088/showPicture?pictureName=',
                 currentSlide: 0,
                 isPreviousSlide: false,
                 isFirstLoad: true,

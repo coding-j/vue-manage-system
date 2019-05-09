@@ -113,7 +113,7 @@
                     // this.fileList[0].name = this.teacher.pictureUrl
                     let file = {
                         name : this.teacher.pictureUrl,
-                        url : 'http://localhost:8088/show?pictureName='+ this.teacher.pictureUrl
+                        url : 'http://localhost:8088/showTeacherPicture?pictureName='+ this.teacher.pictureUrl
                     }
                     this.fileList.push(file)
                     // this.fileList[0].url = 'http://localhost:8088/show?pictureName='+ this.fileList[0].name
@@ -125,7 +125,7 @@
             edit(){
                 let teacher = {
                     "teacherName" : this.teacher.teacherName,
-                    "pictureUrl" : this.fileList[0].name,
+                    "picture" : this.fileList[0],
                     "working" : this.teacher.work_unit,
                     "address": this.teacher.address,
                     "introduction":this.teacher.TeacherDetail,

@@ -10,21 +10,22 @@
             <div>
 
                 <el-dialog title="添加老师" :visible.sync="dialogFormVisible">
-                    <el-form :model="form">
-                        <el-form-item label="导师名" :label-width="formLabelWidth">
+                    <el-form :model="form" ref="form" :rules="bbb">
+                        <el-form-item label="导师名" :label-width="formLabelWidth" prop="name">
                             <el-input v-model="form.name" autocomplete="off"></el-input>
                         </el-form-item>
-                        <el-form-item label="工作单位" :label-width="formLabelWidth">
+                        <el-form-item label="工作单位" :label-width="formLabelWidth" prop="working">
                             <el-input v-model="form.working" autocomplete="off"></el-input>
                         </el-form-item>
-                        <el-form-item label="通讯地址" :label-width="formLabelWidth">
+                        <el-form-item label="通讯地址" :label-width="formLabelWidth" prop="address">
                             <el-input v-model="form.address" autocomplete="off"></el-input>
                         </el-form-item>
-                        <el-form-item label="个人简介" :label-width="formLabelWidth">
+                        <el-form-item label="个人简介" :label-width="formLabelWidth" prop="introduction">
                             <el-input type="textarea" :rows="5" v-model="form.introduction" autocomplete="off"></el-input>
                         </el-form-item>
-                        <el-form-item label="工作经历" :label-width="formLabelWidth">
+                        <el-form-item label="工作经历" :label-width="formLabelWidth" prop="workExperience">
                             <el-input type="textarea" :rows="5" v-model="form.workExperience" autocomplete="off"></el-input>
+                            <span>格式：xx,xx,xx</span>
                         </el-form-item>
                         <el-upload
                                 class="upload-demo"
@@ -78,7 +79,7 @@
                     <el-table-column
                             align="right">
                         <template slot="header" slot-scope="scope">
-                            <el-button type="primary" round @click="dialogFormVisible = true">添加老师</el-button>
+                            <el-button type="primary" @click="dialogFormVisible = true">添加老师</el-button>
                             <!--<el-input-->
                                     <!--v-model="search"-->
                                     <!--size="mini"-->
@@ -148,6 +149,25 @@
         name: "ProjectReviewList",
         data(){
             return {
+
+                bbb:{
+                    name:[
+                        {required: true, message: '请输入老师名称', trigger: 'blur'}
+                    ],
+                    working:[
+                        {required: true, message: '请输入工作单位', trigger: 'blur'}
+                    ],
+                    address:[
+                        {required: true, message: '请输入联系地址', trigger: 'blur'}
+                    ],
+                    introduction:[
+                        {required: true, message: '请输入个人简介', trigger: 'blur'}
+                    ],
+                    workExperience:[
+                        {required: true, message: '请输入工作经历', trigger: 'blur'}
+                    ]
+                },
+
                 fileName: '',
                 dialogFormVisible : false,
                 formLabelWidth: '120px',
@@ -213,7 +233,7 @@
             addTeacher(){
                 let teacher = {
                     "teacherName" : this.form.name,
-                    "pictureUrl" : this.fileName,
+                    "picture" : this.fileName,
                     "working" : this.form.working,
                     "address" : this.form.address,
                     "introduction" : this.form.introduction,
@@ -322,7 +342,7 @@
             // },
             // 文件上传成功时的钩子
             handleSuccess(res, file) {
-                this.fileName = file.name
+                this.fileName = file
                 this.$notify.success({
                     title: '成功',
                     message: `文件上传成功`

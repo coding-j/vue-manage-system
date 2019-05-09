@@ -73,7 +73,7 @@
         },
         data() {
             return {
-                imgUrl:'http://localhost:8088/show?pictureName=',
+                imgUrl:'http://localhost:8088/showTeacherPicture?pictureName=',
                 tableData: [],
 
                 //分页

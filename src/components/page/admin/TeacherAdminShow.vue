@@ -79,7 +79,7 @@
         name: "TeacherAdminShow",
         data(){
             return {
-                imgUrl:'http://localhost:8088/show?pictureName=',
+                imgUrl:'http://localhost:8088/showPicture?pictureName=',
                 pictureUrl:'',
                 //fontSize: 30,
                 teacherName: "",
