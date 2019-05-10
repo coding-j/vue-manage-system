@@ -50,8 +50,8 @@
                         <el-collapse-item title="图片介绍" name="3">
                             <div>
                                 <el-carousel :interval="4000" type="card" height="300px">
-                                    <el-carousel-item v-for="item in pic.picList" :key="item">
-                                        <img :src="imgUrl+item.name" @click="show(imgUrl+item.name)">
+                                    <el-carousel-item v-for="(item,index) in pic.picList" :key="index">
+                                        <img :src="imgUrl+item.name" @click="show(index)">
                                         <!--<img :src="item.imgUrla">-->
                                     </el-carousel-item>
                                 </el-carousel>
@@ -213,7 +213,7 @@
         name: "ProjectShow",
         components: {text_slide,videoPlayer,VueEasyLightbox},
         data: () => ({
-            imgs: '',  // Img Url , string or Array
+            imgs: [],  // Img Url , string or Array
             visible: false,
             index: 0,  // default
             activeNum: 0,
@@ -319,7 +319,14 @@
 
         methods: {
             show(btn) {
-                this.imgs = btn;
+                this.index = btn;
+                // this.imgs = btn;
+                // console.log("pic:"+this.pic.picList)
+                for(let i=0;i<this.pic.picList.length;i++){
+                    this.imgs[i] = this.imgUrl+this.pic.picList[i].name
+                }
+                console.log("index:"+this.index)
+                console.log("imgs:"+this.imgs)
                 this.visible = true
             },
             handleHide() {
@@ -358,8 +365,11 @@
                     'projectId' : id
                 })).then(response => {
                     this.pic.picList = response.data
-                    console.log(this.pic.picList)
+
+                    // console.log("imgs:"+this.imgs)
+                    // console.log(this.pic.picList)
                 }).catch(e => {
+                    // console.log("imgs:"+this.imgs)
                     this.error.push(e)
                 })
             },

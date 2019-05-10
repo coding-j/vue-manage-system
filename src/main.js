@@ -49,7 +49,7 @@ router.beforeEach((to, from, next) => {
             to.meta.permission = true
             next()
         }else{
-            next('/')
+            next('/403')
         }
         // authority === 1 ? next() : next('/403');
     } else if ((to.path =='/projectReview' || to.path == '/admin' || to.path == '/teacherEdit' || to.path == '/teacherAdminShow')){
@@ -57,7 +57,7 @@ router.beforeEach((to, from, next) => {
             to.meta.permission = true
             next()
         }else {
-            next('/')
+            next('/403')
         }
     } else {
 
