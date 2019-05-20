@@ -81,7 +81,7 @@
                     console.log("logout")
                     sessionStorage.removeItem("userName")
                     sessionStorage.removeItem("authority")
-                    // this.$router.push({ path:'/'})
+                    this.$router.push({ path:'/'})
                     location.reload()
                 }
             },
@@ -185,6 +185,8 @@
     }
     .user-avator{
         margin-left: 20px;
+        display: inline-block;
+        vertical-align: middle;
     }
     .user-avator img{
         display: block;

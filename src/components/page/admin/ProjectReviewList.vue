@@ -27,24 +27,26 @@
                             <el-input type="textarea" :rows="5" v-model="form.workExperience" autocomplete="off"></el-input>
                             <span>格式：xx,xx,xx</span>
                         </el-form-item>
-                        <el-upload
-                                class="upload-demo"
-                                ref="upload"
-                                drag
-                                :limit="1"
-                                action="/project/file_upload"
-                                accept=".png,.jpg"
-                                show-file-list
-                                :before-upload="beforeUploadFile"
-                                :before-remove="beforeRemove"
-                                :on-success="handleSuccess"
-                                :on-error="handleError"
-                                :on-remove="handleRemove"
-                                multiple>
-                            <i class="el-icon-upload"></i>
-                            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-                        </el-upload>
+                        <el-form-item label="图片上传" :label-width="formLabelWidth">
+                            <el-upload
+                                    class="upload-demo"
+                                    ref="upload"
+                                    drag
+                                    :limit="1"
+                                    action="/project/file_upload"
+                                    accept=".png,.jpg"
+                                    show-file-list
+                                    :before-upload="beforeUploadFile"
+                                    :before-remove="beforeRemove"
+                                    :on-success="handleSuccess"
+                                    :on-error="handleError"
+                                    :on-remove="handleRemove"
+                                    multiple>
+                                <i class="el-icon-upload"></i>
+                                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                                <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                            </el-upload>
+                        </el-form-item>
                         <!--<div>-->
                         <!--<el-table :data="data">-->
                         <!--<el-table-column prop="name" label="工作经历">-->
@@ -69,8 +71,8 @@
             </div>
             <div>
                 <el-table
-
-                        :data="teacherList.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+                        height="250"
+                        :data="teacherList"
                         style="width: 100%">
                     <el-table-column
                             label="Name"
@@ -89,11 +91,14 @@
                         <template slot-scope="scope">
                             <el-button
                                     size="mini"
-                                    @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                                    @click="passwordEdit(scope.$index, scope.row)">重置密码</el-button>
+                            <el-button
+                                    size="mini"
+                                    @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                             <el-button
                                     size="mini"
                                     type="danger"
-                                    @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+                                    @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -230,6 +235,30 @@
         },
 
         methods: {
+            // dialogFormVisibletrue(){
+            //     this.dialogFormVisible = true
+            //     console.log("true")
+            // },
+            passwordEdit(index, row){
+                this.$prompt('请输入密码', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    axios.post("/project/passwordEdit",{
+                        "password" : value,
+                        "teacherId": row.teacherId
+                    })
+                    this.$message({
+                        type: 'success',
+                        message: "密码修改成功"
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消输入'
+                    });
+                });
+            },
             addTeacher(){
                 let teacher = {
                     "teacherName" : this.form.name,
@@ -242,6 +271,10 @@
                 console.log(teacher)
                 axios.post('/project/addTeacher',teacher).then(res => {
                     console.log("添加成功")
+                    this.$message({
+                        type: 'success',
+                        message: "添加成功"
+                    });
                     location.reload()
                 }).catch(e => {
                     this.error.push(e)
@@ -311,7 +344,7 @@
                         rows.forEach(row => {
                             console.log(row)
                             axios.post('/project/projectDel',qs.stringify({
-                                "projectName" : row.projectName
+                                "projectId" : row.projectId
                             })).then(res => {
                                 console.log("删除成功")
                                 this.$message({

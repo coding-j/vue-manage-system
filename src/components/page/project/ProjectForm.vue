@@ -91,7 +91,7 @@
                                     multiple>
                                 <i class="el-icon-upload"></i>
                                 <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                                <div class="el-upload__tip" slot="tip">只能上传mp4文件，且不超过100M</div>
+                                <div class="el-upload__tip" slot="tip">只能上传mp4文件，且不超过500M</div>
                             </el-upload>
                         </el-form-item>
                     </div>
@@ -101,7 +101,7 @@
                                     class="upload-demo"
                                     drag
                                     :action="uploadUrl"
-                                    accept=".ppt.pptx.doc.docx.xls.xlsx"
+                                    accept=".ppt,.pptx,.doc,.docx,.xls,.xlsx"
                                     show-file-list
                                     :before-upload="beforeUploadFile"
                                     :before-remove="beforeRemove"
@@ -283,10 +283,10 @@
             },
             beforeUploadPic(file){
                 let size = file.size / 1024 / 1024
-                if(size > 1) {
+                if(size > 10) {
                     this.$notify.warning({
                         title: '警告',
-                        message: `文件大小不得超过1M`
+                        message: `文件大小不得超过10M`
                     });
                 }
             },

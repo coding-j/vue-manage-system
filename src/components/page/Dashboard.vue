@@ -29,12 +29,13 @@
             </div>
         </div>
         <div class="controls-container">
-            <el-tooltip v-for="(slide, index) in slides" :content="slide.projectDetail" placement="bottom" effect="light">
-            <button class="controls-button"
+            <el-tooltip v-for="(slide, index) in slides" placement="bottom" effect="light">
+                <div slot="content"  v-html="slide.projectDetail"></div>
+                <button class="controls-button"
 
-                    v-bind:key="index"
-                    v-bind:class="{ active: index === currentSlide }"
-                    v-on:click="updateSlide(index)">{{ slide.projectName }}</button>
+                        v-bind:key="index"
+                        v-bind:class="{ active: index === currentSlide }"
+                        v-on:click="updateSlide(index)">{{ slide.projectName }}</button>
             </el-tooltip>
         </div>
         <div class="pagination-container">
@@ -135,10 +136,34 @@
             }.bind(this));
         },
         methods: {
+            // insertStr(str,n) {
+            //     console.log(str)
+            //     let x=''
+            //     let string= str.split('')
+            //     for(let i=0;i<string.length;i+=n){
+            //         string[i] += '<br/>'
+            //     }
+            //     x=string.join("")
+            //     return x
+            // },
             getTopProject(){
                 axios.get('/project/getHomePage').then(response => {
                     console.log(response.data);
                     this.slides = response.data;
+                    // this.slides.projectDetail = this.insertStr(this.slides.projectDetail,20)
+                    // console.log(this.slides.projectDetail)
+                    for(let j=0;j<this.slides.length;j++){
+                        let str = this.slides[j].projectDetail
+                        let string = str.split('')
+                        for(let i=0;i<string.length;i+=20){
+                            if(i == 0) continue
+                            string[i]+='<br/>'
+                        }
+                        str = string.join("")
+                        this.slides[j].projectDetail = str
+                        console.log(this.slides[j].projectDetail)
+                    }
+
                 }).catch(e => {
                     this.errors.push(e)
                 })

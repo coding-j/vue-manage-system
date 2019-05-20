@@ -13,7 +13,7 @@
                     </div>
                     <div class="hashtags" style="color: #fff">
                         <br/><br/>
-                        <p>项目类型：{{activity.projectType}} &nbsp;&nbsp;&nbsp; 完成时间：{{activity.finishDate}}</p>
+                        <p><strong>项目类型：{{activity.projectType}} &nbsp;&nbsp;&nbsp; 完成时间：{{activity.finishDate}}</strong></p>
                         <br/>
                         <p><strong>指导老师：{{activity.projectTeacher}}</strong></p>
                         <br/>
@@ -102,9 +102,9 @@
                                     </el-table-column>
                                     <el-table-column label="操作">
                                         <template slot-scope="scope">
-                                            <el-button
-                                                    size="mini"
-                                                    @click="watch(scope.$index, scope.row)">查看</el-button>
+                                            <!--<el-button-->
+                                                    <!--size="mini"-->
+                                                    <!--@click="watch(scope.$index, scope.row)">查看</el-button>-->
                                             <el-button
                                                     size="mini"
                                                     @click="downloadFile(scope.$index, scope.row)">下载</el-button>
